@@ -1,0 +1,79 @@
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1 21.8  0.2  24316 15360 ?        Ss   18:06   0:01 /sbin/init
+root           2  0.1  0.0   3180  2204 hvc0     Sl+  18:06   0:00 /init
+root           6  0.0  0.0   3180  2044 hvc0     Sl+  18:06   0:00 plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+root          56  5.6  0.2  42072 16444 ?        S<s  18:06   0:00 /usr/lib/systemd/systemd-journald
+systemd+      73  3.0  0.2  22540 14568 ?        Ss   18:06   0:00 /usr/lib/systemd/systemd-resolved
+root          95  9.9  0.1  35116 12260 ?        Ss   18:06   0:00 /usr/lib/systemd/systemd-udevd
+root         112  1.2  0.0  33768  6272 ?        S    18:06   0:00 (udev-worker)
+root         113  0.6  0.1  34204  7152 ?        S    18:06   0:00 (udev-worker)
+root         126  0.8  0.1  35120  7612 ?        S    18:06   0:00 (udev-worker)
+root         127  0.8  0.1  35120  7212 ?        S    18:06   0:00 (udev-worker)
+root         128  2.5  0.1  35268  8508 ?        S    18:06   0:00 (udev-worker)
+root         129  0.8  0.1  35120  7604 ?        S    18:06   0:00 (udev-worker)
+root         130  1.8  0.1  35264  7960 ?        S    18:06   0:00 (udev-worker)
+root         131  0.6  0.1  35120  8192 ?        S    18:06   0:00 (udev-worker)
+root         132  2.3  0.0   2888  1952 ?        Ss   18:06   0:00 /bin/sh /usr/lib/systemd/scripts/chronyd-starter.sh -n -F 1
+root         133  8.5  0.1  35120  7552 ?        S    18:06   0:00 (udev-worker)
+root         134  0.5  0.1  35120  7740 ?        S    18:06   0:00 (udev-worker)
+root         135  0.3  0.0   4472  3108 ?        Ss   18:06   0:00 /usr/sbin/cron -f -P
+root         136  1.3  0.1  35264  8328 ?        S    18:06   0:00 (udev-worker)
+message+     137  1.8  0.0   8788  5300 ?        Ss   18:06   0:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root         138  1.0  0.1  35120  8676 ?        S    18:06   0:00 (udev-worker)
+root         139  1.1  0.1  35120  8076 ?        S    18:06   0:00 (udev-worker)
+root         140  1.5  0.1  35260  7804 ?        S    18:06   0:00 (udev-worker)
+root         142  1.1  0.1  35120  7592 ?        S    18:06   0:00 (udev-worker)
+root         143  0.6  0.0  35120  6644 ?        S    18:06   0:00 (udev-worker)
+root         145  1.6  0.1  35120  8424 ?        S    18:06   0:00 (udev-worker)
+root         146  1.0  0.1  35120  7296 ?        S    18:06   0:00 (udev-worker)
+root         147  0.8  0.1  35120  7428 ?        S    18:06   0:00 (udev-worker)
+root         148  1.3  0.1  35268  7492 ?        S    18:06   0:00 (udev-worker)
+root         150  0.8  0.1  35120  7232 ?        S    18:06   0:00 (udev-worker)
+root         151  1.1  0.0  35120  6648 ?        S    18:06   0:00 (udev-worker)
+root         152  1.6  0.1  35688  8556 ?        S    18:06   0:00 (udev-worker)
+root         153 10.6  0.1  35260  8216 ?        S    18:06   0:00 (udev-worker)
+root         155  1.1  0.1  35120  7432 ?        S    18:06   0:00 (udev-worker)
+root         156  1.3  0.1  35120  7500 ?        S    18:06   0:00 (udev-worker)
+root         157  1.0  0.1  35252  7660 ?        S    18:06   0:00 (udev-worker)
+root         158  1.5  0.1  35264  7720 ?        S    18:06   0:00 (udev-worker)
+root         159  1.0  0.1  35120  7556 ?        S    18:06   0:00 (udev-worker)
+root         161  3.8  0.1  35252  7768 ?        S    18:06   0:00 (udev-worker)
+root         162  0.8  0.1  35252  8056 ?        S    18:06   0:00 (udev-worker)
+root         164  1.0  0.1  35252  7432 ?        S    18:06   0:00 (udev-worker)
+root         165  0.5  0.1  35252  7576 ?        S    18:06   0:00 (udev-worker)
+root         167  0.8  0.1  35252  7240 ?        S    18:06   0:00 (udev-worker)
+root         168  0.8  0.1  35252  7332 ?        S    18:06   0:00 (udev-worker)
+root         169  3.8  0.1  35272  7880 ?        S    18:06   0:00 (udev-worker)
+root         170  2.0  0.1  35276  8824 ?        S    18:06   0:00 (udev-worker)
+root         171  2.3  0.1  35252  7448 ?        S    18:06   0:00 (udev-worker)
+root         172  1.0  0.1  35252  7356 ?        S    18:06   0:00 (udev-worker)
+root         173  1.5  0.1  35252  7736 ?        S    18:06   0:00 (udev-worker)
+root         174 12.2  0.4  44092 29732 ?        Ss   18:06   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root         184 14.3  0.5 2107272 42016 ?       Ssl  18:06   0:00 /usr/lib/snapd/snapd
+root         186  4.5  0.1  18432  9320 ?        Ss   18:06   0:00 /usr/lib/systemd/systemd-logind
+root         191  6.3  0.2 1792300 15224 ?       Ssl  18:06   0:00 /usr/libexec/wsl-pro-service
+syslog       197  2.8  0.0 220548  5820 ?        Ssl  18:06   0:00 /usr/sbin/rsyslogd -n -iNONE
+_chrony      256  0.7  0.0  20420  6308 ?        S    18:06   0:00 /usr/sbin/chronyd -n -F 1 -x
+postgres     257  4.1  0.4 224992 33740 ?        Ss   18:06   0:00 /usr/lib/postgresql/18/bin/postgres -D /var/lib/postgresql/18/main -c config_file=/etc/postgresql/18/main/postgresql.conf
+_chrony      264  0.0  0.0  12092  2436 ?        S    18:06   0:00 /usr/sbin/chronyd -n -F 1 -x
+postgres     286  0.0  0.1 225128  7064 ?        Ss   18:06   0:00 postgres: 18/main: io worker 0
+postgres     287  0.0  0.0 225128  6400 ?        Ss   18:06   0:00 postgres: 18/main: io worker 1
+postgres     288  0.0  0.0 224992  5892 ?        Ss   18:06   0:00 postgres: 18/main: io worker 2
+postgres     289  0.0  0.0 225128  6048 ?        Ss   18:06   0:00 postgres: 18/main: checkpointer 
+postgres     290  0.0  0.0 225128  6116 ?        Ss   18:06   0:00 postgres: 18/main: background writer 
+postgres     306  0.0  0.0 225128  6088 ?        Ss   18:06   0:00 postgres: 18/main: walwriter 
+postgres     311  0.0  0.1 226584  9152 ?        Ss   18:06   0:00 postgres: 18/main: autovacuum launcher 
+postgres     312  0.0  0.1 226584  8392 ?        Ss   18:06   0:00 postgres: 18/main: logical replication launcher 
+mysql        315 47.7  7.4 982504 526328 ?       Ssl  18:06   0:02 /usr/sbin/mysqld
+root         320  4.2  0.1  16524  7480 ?        Ss   18:06   0:00 /usr/lib/systemd/systemd-timedated
+root         323  8.2  0.4 123456 32600 ?        Ssl  18:06   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+root         326  0.4  0.0   5492  2720 tty1     Ss+  18:06   0:00 /usr/sbin/agetty --noreset --noclear --issue-file=/etc/issue:/etc/issue.d:/run/issue.d:/usr/lib/issue.d - linux
+root         456  0.0  0.0   3188  1112 ?        Ss   18:06   0:00 /init
+root         459  0.0  0.0   3204  1188 ?        S    18:06   0:00 /init
+archit       462  3.2  0.0   5080  3812 pts/0    Ss+  18:06   0:00 bash -lc cd '/mnt/c/Users/archi/Github Projects/Devops-HW/02-shell-scripting' && printf 'system-report\nprocesses.log\n' | ./system-info.sh
+root         463  1.3  0.0   8648  5532 ?        Ss   18:06   0:00 login -- archit
+archit       511 40.0  0.1  22332 13044 ?        Ss   18:06   0:00 /usr/lib/systemd/systemd --user
+archit       513  0.0  0.0  22908  4072 ?        S    18:06   0:00 (sd-pam)
+archit       540 28.0  0.0   6136  5476 pts/1    Ss+  18:06   0:00 -bash
+archit       593 10.0  0.0   4948  3664 pts/0    S+   18:06   0:00 bash ./system-info.sh
+archit       608  200  0.0   7212  4364 pts/0    R+   18:06   0:00 ps aux

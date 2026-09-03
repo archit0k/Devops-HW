@@ -45,3 +45,24 @@ curl -I https://example.com
 4. Test the application port with `curl` or `ss`.
 
 On Windows, equivalent commands are `ipconfig /all`, `route print`, `nslookup`, `ping`, `tracert`, and `netstat -ano`.
+
+## Captured local output (Windows, 2026-09-03)
+
+```text
+Wi-Fi IPv4 address: 100.129.164.156
+Subnet mask:        255.255.240.0
+Default gateway:    100.129.160.1
+
+ping 127.0.0.1 (2 packets)
+Reply from 127.0.0.1: bytes=32 time<1ms TTL=128
+Reply from 127.0.0.1: bytes=32 time<1ms TTL=128
+Packets: Sent = 2, Received = 2, Lost = 0 (0% loss)
+
+nslookup example.com
+Server:  UnKnown
+Address: 100.129.160.1
+Name:    example.com
+Addresses: 172.66.147.243, 104.20.23.154
+```
+
+`netstat -ano -p tcp` also confirmed local listening sockets, including ports 135, 445, 3306, and 5432.
