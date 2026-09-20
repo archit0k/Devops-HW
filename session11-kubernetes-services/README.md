@@ -17,9 +17,9 @@ The manifests cover ClusterIP, NodePort, LoadBalancer, ExternalName, Headless Se
 kubectl apply -f 01-clusterip/
 kubectl get svc,endpoints
 kubectl apply -f 02-nodeport/
-minikube service <nodeport-service-name> --url
+minikube service web-service-nodeport --url
 kubectl apply -f 05-headless/
-kubectl exec -it <client-pod> -- nslookup <headless-service>
+kubectl exec -it headless-dns-client -- nslookup web-service-headless
 ```
 
 A normal Service selects matching labels and Kubernetes writes EndpointSlices automatically. A selector-less Service has no automatic backend discovery; its Endpoint/EndpointSlice must be maintained manually. A StatefulSet gives stable names such as `db-0`, whereas Deployment Pods are replaceable and get new generated names.

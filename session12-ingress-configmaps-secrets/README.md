@@ -12,7 +12,7 @@ kubectl apply -f 01-configmap/app-config.yaml
 kubectl get configmap
 kubectl apply -f 02-secret/db-secret.yaml
 kubectl get secret
-kubectl get secret <secret-name> -o jsonpath='{.data.<key>}' | base64 --decode
+kubectl get secret yatri-db-secret -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 --decode
 ```
 
 Use `echo -n` before `base64`; plain `echo` appends a newline and changes the decoded password. Updating a ConfigMap does not restart Pods that read it through environment variables, so a rollout restart is needed for those Pods to receive new values.
@@ -31,6 +31,20 @@ kubectl get ingress
 ```
 
 The full demo routes `/api` to the backend and `/` to the frontend. The `ingress-tls.yaml` example binds a TLS Secret so the controller can terminate HTTPS before forwarding traffic to ClusterIP services.
+
+### Local observation
+
+The ConfigMap and Secret were applied and listed successfully in the local cluster:
+
+```text
+NAME                         DATA   AGE
+configmap/yatri-app-config   5      2s
+
+NAME                     TYPE     DATA   AGE
+secret/yatri-db-secret   Opaque   3      2s
+```
+
+![ConfigMap and Secret output](./screenshots/01-configmap-secret.png)
 
 ## Secret-management flow
 

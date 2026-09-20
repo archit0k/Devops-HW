@@ -34,6 +34,20 @@ kubectl / controllers
 
 The control plane stores desired state in **etcd**. The **API server** is the only public control-plane entry point; the **scheduler** chooses a node for unscheduled pods, and controller managers continually reconcile actual state with desired state. On each worker, **kubelet** starts the assigned Pod through a CRI-compatible runtime, while **kube-proxy** programs Service traffic rules.
 
-## 3. Checks recorded for this lab
+## 3. Verification sequence
 
-The version, start, status, node, and stop commands above are the required checks. The later sessions reuse the same cluster; a clean stop is run after the Kubernetes labs are finished.
+Run the version, start, status, node, and stop commands above in that order. The same cluster can be used for the later Kubernetes exercises, then stopped after the lab work is finished.
+
+## 4. Local cluster check
+
+The local Minikube cluster was started with the Docker driver in Ubuntu WSL. The control plane and node check returned:
+
+```text
+Kubernetes control plane is running at https://127.0.0.1:32771
+CoreDNS is running at https://127.0.0.1:32771/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+NAME       STATUS   ROLES           VERSION
+minikube   Ready    control-plane   v1.37.0
+```
+
+![Cluster health output](./screenshots/01-cluster-health.png)
