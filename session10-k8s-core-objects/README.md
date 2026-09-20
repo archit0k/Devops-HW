@@ -34,7 +34,6 @@ NAME        READY   STATUS    RESTARTS   IP           NODE
 nginx-pod   1/1     Running   0          10.244.0.3   minikube
 ```
 
-![Nginx Pod operation](./screenshots/02-nginx-pod-operations.png)
 
 The short-lived `hello-pod` was observed in `ContainerCreating` while the image/runtime setup was in progress. The intentionally invalid image manifest then produced the expected pull failure:
 
@@ -47,9 +46,7 @@ repository does not exist or may require authorization
 Error: ImagePullBackOff
 ```
 
-![Image pull failure](./screenshots/03-imagepullbackoff-error.png)
 
-![Container creation state](./screenshots/04-pod-lifecycle-stages.png)
 
 ## Controllers and self-healing
 

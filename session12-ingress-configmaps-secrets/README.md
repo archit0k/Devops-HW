@@ -44,7 +44,6 @@ NAME                     TYPE     DATA   AGE
 secret/yatri-db-secret   Opaque   3      2s
 ```
 
-![ConfigMap and Secret output](./screenshots/01-configmap-secret.png)
 
 ## Secret-management flow
 

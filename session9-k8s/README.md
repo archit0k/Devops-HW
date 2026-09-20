@@ -49,5 +49,3 @@ CoreDNS is running at https://127.0.0.1:32771/api/v1/namespaces/kube-system/serv
 NAME       STATUS   ROLES           VERSION
 minikube   Ready    control-plane   v1.37.0
 ```
-
-![Cluster health output](./screenshots/01-cluster-health.png)
