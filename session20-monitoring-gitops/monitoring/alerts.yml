@@ -1,0 +1,9 @@
+groups:
+  - name: homework
+    rules:
+      - alert: TargetDown
+        expr: up == 0
+        for: 10s
+        labels: {severity: warning}
+        annotations:
+          summary: A scrape target is unreachable

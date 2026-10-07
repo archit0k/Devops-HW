@@ -1,0 +1,9 @@
+{
+  "uid": "archit-homework20", "title": "Archit - Monitoring Lab (24BCS10194)", "schemaVersion": 41,
+  "refresh": "5s", "time": {"from": "now-15m", "to": "now"},
+  "panels": [
+    {"id": 1, "title": "Target health", "type": "stat", "gridPos": {"x":0,"y":0,"w":8,"h":6}, "datasource": {"uid":"prometheus","type":"prometheus"}, "targets":[{"expr":"up","refId":"A"}]},
+    {"id": 2, "title": "Process memory (bytes)", "type": "timeseries", "gridPos": {"x":8,"y":0,"w":8,"h":6}, "datasource": {"uid":"prometheus","type":"prometheus"}, "targets":[{"expr":"process_resident_memory_bytes","refId":"A"}], "fieldConfig":{"defaults":{"unit":"bytes"}}},
+    {"id": 3, "title": "Process CPU (cores)", "type": "timeseries", "gridPos": {"x":16,"y":0,"w":8,"h":6}, "datasource": {"uid":"prometheus","type":"prometheus"}, "targets":[{"expr":"rate(process_cpu_seconds_total[1m])","refId":"A"}]}
+  ]
+}

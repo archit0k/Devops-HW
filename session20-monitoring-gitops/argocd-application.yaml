@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homework20
+  namespace: argocd
+  finalizers: [resources-finalizer.argocd.argoproj.io]
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/archit0k/Devops-HW.git
+    targetRevision: main
+    path: session20-monitoring-gitops/app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homework20
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]

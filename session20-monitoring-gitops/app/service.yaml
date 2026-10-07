@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: homework20-web
+  namespace: homework20
+spec:
+  selector: {app: homework20-web}
+  ports: [{port: 80, targetPort: 80}]

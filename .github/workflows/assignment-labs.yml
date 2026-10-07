@@ -1,0 +1,48 @@
+name: Assignment lab checks
+on:
+  workflow_dispatch:
+    inputs:
+      lab:
+        description: Assignment lab
+        required: true
+        type: choice
+        options: ['20', '10', '11', '12', '13', 'docker']
+permissions:
+  contents: read
+jobs:
+  lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Create a real disposable cluster
+        if: inputs.lab != 'docker'
+        run: |
+          curl -fsSL --retry 3 -o /tmp/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64
+          curl -fsSL --retry 3 -o /tmp/kind.sha256sum https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64.sha256sum
+          cd /tmp
+          echo "$(cut -d ' ' -f 1 kind.sha256sum)  kind" | sha256sum -c -
+          chmod +x kind
+          /tmp/kind create cluster --name assignment --image kindest/node:v1.35.8@sha256:07b2536e30b803ed61d1677a79df6115f798ce64c80f9e22f6ed45afd09323c0 --wait 120s
+          kubectl get nodes -o wide
+      - name: Run the assignment commands
+        env:
+          LAB: ${{ inputs.lab }}
+        run: |
+          mkdir -p lab-evidence
+          if [ "$LAB" = 20 ]; then
+            bash session20-monitoring-gitops/run-gitops.sh 2>&1 | tee lab-evidence/commands.txt
+          elif [ "$LAB" = docker ]; then
+            bash scripts/check-docker-labs.sh 2>&1 | tee lab-evidence/commands.txt
+          else
+            bash scripts/check-kubernetes-labs.sh "$LAB" 2>&1 | tee lab-evidence/commands.txt
+          fi
+      - name: Keep complete command output
+        if: always()
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: assignment-${{ inputs.lab }}-evidence
+          path: lab-evidence
+      - name: Remove this runner's cluster
+        if: always() && inputs.lab != 'docker'
+        run: /tmp/kind delete cluster --name assignment

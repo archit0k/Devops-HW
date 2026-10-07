@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homework20-web
+  namespace: homework20
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: homework20-web}
+  template:
+    metadata:
+      labels: {app: homework20-web}
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports: [{containerPort: 80}]
+          resources:
+            requests: {cpu: 20m, memory: 32Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+          readinessProbe:
+            httpGet: {path: /, port: 80}
