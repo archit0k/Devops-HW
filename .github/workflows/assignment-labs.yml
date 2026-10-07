@@ -6,7 +6,7 @@ on:
         description: Assignment lab
         required: true
         type: choice
-        options: ['20', '10', '11', '12', '13', '14', '15', 'docker']
+        options: ['20', '10', '11', '12', '13', '14', '15', 'docker', 'networking']
 permissions:
   contents: read
 jobs:
@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
       - name: Create a real disposable cluster
-        if: inputs.lab != 'docker'
+        if: inputs.lab != 'docker' && inputs.lab != 'networking'
         run: |
           curl -fsSL --retry 3 -o /tmp/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64
           curl -fsSL --retry 3 -o /tmp/kind.sha256sum https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64.sha256sum
@@ -35,6 +35,8 @@ jobs:
             bash session20-monitoring-gitops/run-gitops.sh 2>&1 | tee lab-evidence/commands.txt
           elif [ "$LAB" = docker ]; then
             bash scripts/check-docker-labs.sh 2>&1 | tee lab-evidence/commands.txt
+          elif [ "$LAB" = networking ]; then
+            bash scripts/check-networking.sh 2>&1 | tee lab-evidence/commands.txt
           elif [ "$LAB" = 14 ] || [ "$LAB" = 15 ]; then
             minikube() { shift; [[ "$1" = -- ]] && shift; kubectl "$@"; }
             export -f minikube
@@ -53,5 +55,5 @@ jobs:
           name: assignment-${{ inputs.lab }}-evidence
           path: lab-evidence
       - name: Remove this runner's cluster
-        if: always() && inputs.lab != 'docker'
+        if: always() && inputs.lab != 'docker' && inputs.lab != 'networking'
         run: /tmp/kind delete cluster --name assignment
