@@ -1,0 +1,49 @@
+name: studyslot
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: studyslot
+      POSTGRES_USER: studyslot
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a local password in .env}
+    volumes:
+      - bookings-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U studyslot -d studyslot"]
+      interval: 5s
+      retries: 20
+    networks: [private]
+  migrate:
+    build: ./backend
+    image: studyslot-backend:local
+    environment:
+      DATABASE_URL: postgresql+psycopg://studyslot:${POSTGRES_PASSWORD}@postgres:5432/studyslot
+    command: [alembic, upgrade, head]
+    depends_on:
+      postgres: {condition: service_healthy}
+    networks: [private]
+  backend:
+    build: ./backend
+    image: studyslot-backend:local
+    environment:
+      DATABASE_URL: postgresql+psycopg://studyslot:${POSTGRES_PASSWORD}@postgres:5432/studyslot
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready')"]
+      interval: 10s
+      retries: 10
+    ports: ["127.0.0.1:8000:8000"]
+    networks: [private, web]
+  frontend:
+    build: ./frontend
+    image: studyslot-frontend:local
+    depends_on:
+      backend: {condition: service_healthy}
+    ports: ["3000:8080"]
+    networks: [web]
+volumes:
+  bookings-data:
+networks:
+  private:
+  web:

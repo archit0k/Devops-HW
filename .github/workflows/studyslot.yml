@@ -1,0 +1,124 @@
+name: StudySlot checks and deployment
+on:
+  push:
+    branches: [main]
+    paths: ['session21-final-project/**', '.github/workflows/studyslot.yml']
+  pull_request:
+    paths: ['session21-final-project/**', '.github/workflows/studyslot.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+concurrency:
+  group: studyslot-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: session21-final-project/backend
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.14'
+      - run: pip install -r requirements-dev.txt
+      - name: API tests (isolated test database)
+        run: pytest -v --junitxml=test-results.xml
+      - name: Code quality and SAST
+        run: |
+          ruff check app tests alembic
+          bandit -r app -ll
+      - name: Python dependency audit
+        run: pip-audit -r requirements.txt
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: studyslot-tests
+          path: session21-final-project/backend/test-results.xml
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: session21-final-project/frontend
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '24'
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npm run build
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: studyslot-frontend
+          path: session21-final-project/frontend/dist
+  secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Scan Git history for secrets
+        run: |
+          curl -fsSL --retry 3 -o /tmp/gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          curl -fsSL --retry 3 -o /tmp/checksums.txt https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_checksums.txt
+          cd /tmp
+          grep ' gitleaks_8.30.1_linux_x64.tar.gz$' checksums.txt | sed 's/gitleaks_8.30.1_linux_x64.tar.gz/gitleaks.tar.gz/' | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          cd "$GITHUB_WORKSPACE"
+          /tmp/gitleaks git --redact --verbose --report-format json --report-path gitleaks-report.json
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: studyslot-secret-scan
+          path: gitleaks-report.json
+  images:
+    needs: [test, frontend, secrets]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install verified Trivy release
+        run: |
+          curl -fsSL --retry 3 -o /tmp/trivy.tar.gz https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_Linux-64bit.tar.gz
+          curl -fsSL --retry 3 -o /tmp/trivy-checksums.txt https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_checksums.txt
+          cd /tmp
+          grep ' trivy_0.75.0_Linux-64bit.tar.gz$' trivy-checksums.txt | sed 's/trivy_0.75.0_Linux-64bit.tar.gz/trivy.tar.gz/' | sha256sum -c -
+          tar -xzf trivy.tar.gz trivy
+      - name: Build both non-root images
+        run: |
+          docker build --pull -t studyslot-backend:${GITHUB_SHA} session21-final-project/backend
+          docker build --pull -t studyslot-frontend:${GITHUB_SHA} session21-final-project/frontend
+      - name: HIGH and CRITICAL security gate (both images)
+        run: |
+          mkdir -p scan-results
+          /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format table --output scan-results/backend.txt studyslot-backend:${GITHUB_SHA}
+          cat scan-results/backend.txt
+          /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format table --output scan-results/frontend.txt studyslot-frontend:${GITHUB_SHA}
+          cat scan-results/frontend.txt
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: studyslot-image-scans
+          path: scan-results
+      - name: Publish SHA-tagged images only after all gates pass
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "${GITHUB_ACTOR}" --password-stdin
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          for app in backend frontend; do
+            image="ghcr.io/${owner}/studyslot-${app}:${GITHUB_SHA}"
+            docker tag "studyslot-${app}:${GITHUB_SHA}" "$image"
+            docker push "$image"
+          done

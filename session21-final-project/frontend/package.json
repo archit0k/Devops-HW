@@ -1,0 +1,9 @@
+{
+  "name": "studyslot-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {"dev": "vite --host", "build": "vite build"},
+  "dependencies": {"react": "19.3.0", "react-dom": "19.3.0"},
+  "devDependencies": {"vite": "8.3.3", "@vitejs/plugin-react": "6.1.2"}
+}
