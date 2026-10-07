@@ -1,10 +1,11 @@
-FROM python:3.14-slim-trixie
+FROM python:3.14-alpine
 WORKDIR /app
-RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* \
-    && groupadd --gid 10001 studyslot && useradd --uid 10001 --gid studyslot --create-home studyslot
+RUN apk upgrade --no-cache \
+    && addgroup -g 10001 studyslot && adduser -D -u 10001 -G studyslot studyslot
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt \
+    && pip uninstall -y pip setuptools wheel
 COPY --chown=studyslot:studyslot app ./app
 COPY --chown=studyslot:studyslot alembic ./alembic
 COPY --chown=studyslot:studyslot alembic.ini ./

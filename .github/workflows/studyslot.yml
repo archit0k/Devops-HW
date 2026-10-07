@@ -101,10 +101,12 @@ jobs:
       - name: HIGH and CRITICAL security gate (both images)
         run: |
           mkdir -p scan-results
-          /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format table --output scan-results/backend.txt studyslot-backend:${GITHUB_SHA}
+          scan_status=0
+          /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format table --output scan-results/backend.txt studyslot-backend:${GITHUB_SHA} || scan_status=1
           cat scan-results/backend.txt
-          /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format table --output scan-results/frontend.txt studyslot-frontend:${GITHUB_SHA}
+          /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format table --output scan-results/frontend.txt studyslot-frontend:${GITHUB_SHA} || scan_status=1
           cat scan-results/frontend.txt
+          exit "$scan_status"
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
