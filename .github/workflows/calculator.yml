@@ -1,0 +1,39 @@
+name: Calculator homework
+on:
+  push:
+    branches: [main]
+    paths: ['session16-github-actions/**', '.github/workflows/calculator.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with: {python-version: '3.14'}
+      - run: pip install pytest==9.1.1
+      - run: cd session16-github-actions && pytest -v
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with: {python-version: '3.14'}
+      - run: cd session16-github-actions && bash build.sh
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: calculator-build
+          path: session16-github-actions/build
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Check that credential files are not tracked
+        run: |
+          if git ls-files session16-github-actions | grep -E '(^|/)(\.env[^/]*|[^/]+\.(pem|key))$'; then
+            echo 'A credential file is tracked'; exit 1
+          fi
+          echo 'No .env, .pem or .key files are tracked in the calculator exercise'
