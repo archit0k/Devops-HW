@@ -1,6 +1,5 @@
 def add(a, b):
-    # Deliberate bug for the first failing CI run; corrected in the next exercise commit.
-    return a + b + 1
+    return a + b
 
 
 def subtract(a, b):

@@ -19,3 +19,4 @@ terraform.tfvars
 *.key
 kubeconfig*
 private-evidence/
+session16-github-actions/build/
