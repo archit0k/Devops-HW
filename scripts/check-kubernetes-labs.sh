@@ -91,7 +91,8 @@ case "$lab" in
   client nslookup web-service-clusterip.default.svc.cluster.local
   kubectl apply -f 02-nodeport/
   kubectl rollout status deployment/web-app-nodeport --timeout=180s
-  docker exec assignment-control-plane curl -fsS http://localhost:30080
+  node_ip=$(kubectl get node assignment-control-plane -o jsonpath='{.status.addresses[?(@.type=="InternalIP")].address}')
+  curl --retry 5 --retry-connrefused --retry-delay 2 -fsS "http://$node_ip:30080"
   kubectl apply -f 03-loadbalancer/
   kubectl rollout status deployment/web-app-loadbalancer --timeout=180s
   kubectl get svc web-service-loadbalancer
@@ -111,7 +112,7 @@ case "$lab" in
 12)
   cd session12-ingress-configmaps-secrets
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.2/deploy/static/provider/kind/deploy.yaml
-  kubectl -n ingress-nginx patch deployment ingress-nginx-controller --type=json -p='[{"op":"remove","path":"/spec/template/spec/nodeSelector/ingress-ready"}]'
+  kubectl label node assignment-control-plane ingress-ready=true --overwrite
   kubectl -n ingress-nginx rollout status deployment/ingress-nginx-controller --timeout=240s
   kubectl apply -f 04-full-demo/configmap.yaml
   bash 02-secret/create-secret.sh

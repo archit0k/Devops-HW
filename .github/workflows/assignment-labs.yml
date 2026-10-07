@@ -6,7 +6,7 @@ on:
         description: Assignment lab
         required: true
         type: choice
-        options: ['20', '10', '11', '12', '13', 'docker']
+        options: ['20', '10', '11', '12', '13', '14', '15', 'docker']
 permissions:
   contents: read
 jobs:
@@ -29,11 +29,20 @@ jobs:
         env:
           LAB: ${{ inputs.lab }}
         run: |
+          set -euo pipefail
           mkdir -p lab-evidence
           if [ "$LAB" = 20 ]; then
             bash session20-monitoring-gitops/run-gitops.sh 2>&1 | tee lab-evidence/commands.txt
           elif [ "$LAB" = docker ]; then
             bash scripts/check-docker-labs.sh 2>&1 | tee lab-evidence/commands.txt
+          elif [ "$LAB" = 14 ] || [ "$LAB" = 15 ]; then
+            minikube() { shift; [[ "$1" = -- ]] && shift; kubectl "$@"; }
+            export -f minikube
+            if [ "$LAB" = 14 ]; then
+              bash session14-kubernetes-troubleshooting/run-lab.sh 2>&1 | tee lab-evidence/commands.txt
+            else
+              bash session15-helm/run-lab.sh 2>&1 | tee lab-evidence/commands.txt
+            fi
           else
             bash scripts/check-kubernetes-labs.sh "$LAB" 2>&1 | tee lab-evidence/commands.txt
           fi
