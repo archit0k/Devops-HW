@@ -2,7 +2,8 @@ FROM python:3.14-alpine
 WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 COPY requirements.txt .
-RUN apk upgrade --no-cache && pip install --no-cache-dir -r requirements.txt && adduser -D -u 10001 appuser
+RUN apk upgrade --no-cache && pip install --no-cache-dir -r requirements.txt \
+    && python -m pip uninstall -y pip && adduser -D -u 10001 appuser
 COPY alembic.ini ./
 COPY alembic ./alembic
 COPY app ./app
