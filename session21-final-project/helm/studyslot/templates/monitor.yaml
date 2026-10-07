@@ -1,0 +1,13 @@
+{{- if .Values.monitoring.serviceMonitor }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: studyslot
+  labels:
+    release: {{ .Values.monitoring.release }}
+spec:
+  selector:
+    matchLabels: {app: studyslot-backend}
+  endpoints:
+    - {port: http, path: /metrics, interval: 15s}
+{{- end }}

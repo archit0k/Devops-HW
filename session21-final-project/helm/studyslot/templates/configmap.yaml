@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: studyslot-config
+data:
+  APP_NAME: StudySlot
+  DB_HOST: postgres
+  DB_NAME: studyslot
+  DB_USER: studyslot

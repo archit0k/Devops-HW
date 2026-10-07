@@ -22,7 +22,7 @@ kubectl get configmap yatri-app-config
 
 echo ""
 echo "[INFO] Step 3: Applying Secret (sensitive database credentials)..."
-kubectl apply -f "${DEMO_DIR}/secret.yaml"
+bash "${DEMO_DIR}/../02-secret/create-secret.sh"
 kubectl get secret yatri-db-secret
 
 echo ""

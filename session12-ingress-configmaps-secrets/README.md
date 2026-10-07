@@ -5,14 +5,14 @@ Roll number: 24BCS10194
 
 ## Configuration and secrets
 
-`01-configmap/app-config.yaml` holds non-sensitive values. `02-secret/db-secret.yaml` holds Base64-encoded credentials. Base64 is transport encoding, not encryption; Kubernetes RBAC and an external secret manager protect access in production.
+`01-configmap/app-config.yaml` holds non-sensitive values. The Secret YAML files are empty templates; `02-secret/create-secret.sh` creates disposable lab values without saving the password to Git. Kubernetes stores the resulting `data` as Base64. Base64 is encoding, not encryption; RBAC, encryption at rest and an external secret manager protect access in production.
 
 ```bash
 kubectl apply -f 01-configmap/app-config.yaml
 kubectl get configmap
-kubectl apply -f 02-secret/db-secret.yaml
+bash 02-secret/create-secret.sh
 kubectl get secret
-kubectl get secret yatri-db-secret -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 --decode
+kubectl exec deploy/yatri-backend -- sh -c 'test -n "$POSTGRES_PASSWORD" && echo "password injected (not printed)"'
 ```
 
 Use `echo -n` before `base64`; plain `echo` appends a newline and changes the decoded password. Updating a ConfigMap does not restart Pods that read it through environment variables, so a rollout restart is needed for those Pods to receive new values.
@@ -24,7 +24,8 @@ An Ingress is a routing resource; an Ingress controller is the running software 
 ```bash
 minikube addons enable ingress
 kubectl get pods -n ingress-nginx
-kubectl apply -f 04-full-demo/configmap.yaml -f 04-full-demo/secret.yaml
+kubectl apply -f 04-full-demo/configmap.yaml
+bash 02-secret/create-secret.sh
 kubectl apply -f 04-full-demo/backend.yaml -f 04-full-demo/frontend.yaml
 kubectl apply -f 04-full-demo/ingress.yaml
 kubectl get ingress

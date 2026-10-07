@@ -2,6 +2,8 @@
 
 The pipeline blocks image publication when tests, SAST, dependency checks, secret scanning or either image scan fails. There is no `continue-on-error` and no CVE allowlist.
 
+The first full-history scan found four references to the instructor's literal demo password in the old Session 12 commit, not AWS/GitHub credentials. Current Secret templates are empty and the helper generates a disposable runtime password. `.gitleaksignore` records only the four **exact historical fingerprints**; it does not exclude directories, rules, new commits or real credentials. Published history is left unchanged.
+
 - Ruff checks obvious code mistakes. Bandit is the Python SAST check.
 - `pip-audit` checks the resolved Python dependencies; `npm audit` checks frontend dependencies.
 - Gitleaks scans the whole Git history with redacted output. Credentials belong in ignored local files or Kubernetes Secrets, never the repository.

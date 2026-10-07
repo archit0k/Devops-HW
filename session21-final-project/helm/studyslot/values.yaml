@@ -1,0 +1,31 @@
+replicaCount: 2
+backend:
+  repository: ghcr.io/archit0k/studyslot-backend
+frontend:
+  repository: ghcr.io/archit0k/studyslot-frontend
+imageTag: ''
+imagePullSecrets: []
+database:
+  image: postgres:17-alpine
+  existingSecret: studyslot-database
+  storage: 2Gi
+  storageClass: ''
+ingress:
+  enabled: true
+  className: nginx
+  host: studyslot.local
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  cpuTarget: 60
+resources:
+  backend:
+    requests: {cpu: 100m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 256Mi}
+  frontend:
+    requests: {cpu: 50m, memory: 32Mi}
+    limits: {cpu: 200m, memory: 96Mi}
+monitoring:
+  serviceMonitor: false
+  release: monitoring
