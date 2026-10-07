@@ -4,7 +4,7 @@ metadata:
   name: homework20-web
   namespace: homework20
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels: {app: homework20-web}
   template:

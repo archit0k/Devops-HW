@@ -98,7 +98,7 @@ case "$lab" in
   client wget -qO- http://web-service-loadbalancer
   # The LoadBalancer's external implementation is checked separately on Minikube with tunnel.
   kubectl apply -f 04-externalname/
-  client nslookup external-db
+  client nslookup external-database-service
   kubectl apply -f 05-headless/
   kubectl rollout status statefulset/web-stateful --timeout=180s
   client nslookup web-service-headless.default.svc.cluster.local
