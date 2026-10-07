@@ -2,9 +2,9 @@ name: StudySlot checks and deployment
 on:
   push:
     branches: [main]
-    paths: ['session21-final-project/**', '.github/workflows/studyslot.yml']
+    paths: ['project/**', '.github/workflows/studyslot.yml']
   pull_request:
-    paths: ['session21-final-project/**', '.github/workflows/studyslot.yml']
+    paths: ['project/**', '.github/workflows/studyslot.yml']
   workflow_dispatch:
 
 permissions:
@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 15
     defaults:
       run:
-        working-directory: session21-final-project/backend
+        working-directory: project/backend
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-python@v7.0.0
@@ -38,13 +38,13 @@ jobs:
         if: always()
         with:
           name: studyslot-tests
-          path: session21-final-project/backend/test-results.xml
+          path: project/backend/test-results.xml
   frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
       run:
-        working-directory: session21-final-project/frontend
+        working-directory: project/frontend
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.0.0
@@ -56,7 +56,7 @@ jobs:
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: studyslot-frontend
-          path: session21-final-project/frontend/dist
+          path: project/frontend/dist
   secrets:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -96,8 +96,8 @@ jobs:
           tar -xzf trivy.tar.gz trivy
       - name: Build both non-root images
         run: |
-          docker build --pull -t studyslot-backend:${GITHUB_SHA} session21-final-project/backend
-          docker build --pull -t studyslot-frontend:${GITHUB_SHA} session21-final-project/frontend
+          docker build --pull -t studyslot-backend:${GITHUB_SHA} project/backend
+          docker build --pull -t studyslot-frontend:${GITHUB_SHA} project/frontend
       - name: HIGH and CRITICAL security gate (both images)
         run: |
           mkdir -p scan-results
@@ -113,7 +113,7 @@ jobs:
           name: studyslot-image-scans
           path: scan-results
       - name: Compose integration and non-root check
-        working-directory: session21-final-project
+        working-directory: project
         run: |
           export POSTGRES_PASSWORD="$(openssl rand -hex 16)"
           trap 'docker compose down -v' EXIT
@@ -162,7 +162,7 @@ jobs:
       - name: Deploy the tested SHA to EKS
         run: |
           aws eks update-kubeconfig --name archit-studyslot --region us-east-1
-          helm upgrade --install studyslot session21-final-project/helm/studyslot -n studyslot \
+          helm upgrade --install studyslot project/helm/studyslot -n studyslot \
             --set imageTag="${GITHUB_SHA}" --set database.storageClass=studyslot-gp3 \
             --set ingress.host=studyslot.127.0.0.1.sslip.io --set monitoring.serviceMonitor=true \
             --wait --timeout 10m

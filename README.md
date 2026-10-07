@@ -26,13 +26,13 @@ Each assignment is kept in its own folder. Commands, implementation files, Docke
 | 18 | [Terraform and IaC](session18-terraform/README.md) | S3 lifecycle and AWS service notes |
 | 19 | [Cloud and Terraform](session19-cloud-terraform/README.md) | VPC, subnet, Security Group, EC2 and S3 |
 | 20 | [Monitoring, Observability and GitOps](session20-monitoring-gitops/README.md) | Prometheus, Grafana and Argo CD |
-| 21 | [Final project — StudySlot](session21-final-project/README.md) | Original booking app and the full DevOps stack |
+| 21 | [TaskBoard walkthrough and troubleshooting](session21-final-project/README.md) | Instructor's application, commands and results |
 
 ## Verification
 
 The labs use Docker Engine in Ubuntu WSL; Docker Desktop is not needed. Local Kubernetes commands use `minikube kubectl --` to match the cluster's version. Each assignment now has a README with commands and verification records. Live checks have been run; final screenshot/link cleanup is still in progress.
 
-The final project is paused until the assignments due today are finished. StudySlot's existing code and passing checks are preserved; no project EKS cluster is running. Assignment verification records are linked from the individual READMEs.
+The separate [StudySlot project](project/README.md) is paused. Its code and existing checks are preserved in `project/`; it is not the Session 21 assignment. Assignment verification records are linked from the individual READMEs.
 
 ## Course and submission
 

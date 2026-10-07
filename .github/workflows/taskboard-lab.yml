@@ -1,0 +1,67 @@
+name: TaskBoard session 21 lab
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with: {python-version: '3.14'}
+      - uses: actions/setup-node@v7.0.0
+        with: {node-version: '22'}
+      - name: Pytest and frontend build
+        run: |
+          set -euo pipefail
+          cd session21-final-project/taskboard/backend
+          pip install -r requirements.txt
+          pytest -q
+          cd ../frontend
+          npm ci
+          npm run build
+  images:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Build, run and exercise TaskBoard
+        run: |
+          set -euo pipefail
+          mkdir -p lab-evidence
+          bash session21-final-project/run-compose.sh 2>&1 | tee lab-evidence/compose.txt
+          docker tag taskboard-lab-backend "ghcr.io/archit0k/taskboard-backend:${GITHUB_SHA}"
+          docker tag taskboard-lab-frontend "ghcr.io/archit0k/taskboard-frontend:${GITHUB_SHA}"
+      - name: Verify and install Trivy
+        run: |
+          curl -fsSL --retry 3 -o /tmp/trivy.tar.gz https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_Linux-64bit.tar.gz
+          curl -fsSL --retry 3 -o /tmp/trivy-checksums.txt https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_checksums.txt
+          cd /tmp
+          grep ' trivy_0.75.0_Linux-64bit.tar.gz$' trivy-checksums.txt | sed 's/trivy_0.75.0_Linux-64bit.tar.gz/trivy.tar.gz/' | sha256sum -c -
+          tar -xzf trivy.tar.gz trivy
+      - name: Scan both images
+        run: |
+          scan_status=0
+          for app in backend frontend; do
+            /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 --format table --output "lab-evidence/${app}-scan.txt" "ghcr.io/archit0k/taskboard-${app}:${GITHUB_SHA}" || scan_status=1
+            cat "lab-evidence/${app}-scan.txt"
+          done
+          exit "$scan_status"
+      - name: Publish tested SHA
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          docker push "ghcr.io/archit0k/taskboard-backend:${GITHUB_SHA}"
+          docker push "ghcr.io/archit0k/taskboard-frontend:${GITHUB_SHA}"
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: taskboard-lab-evidence
+          path: lab-evidence

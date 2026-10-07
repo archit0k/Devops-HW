@@ -1,0 +1,366 @@
++ compose up -d
++ docker compose -p homework8 -f /tmp/tmp.xxPg3hNzwI/docker-compose.yml up -d
+ frontend Pulling 
+ backend Pulling 
+ database Pulling 
+ f18232174bc9 Pulling fs layer 
+ 61ca4f733c80 Pulling fs layer 
+ b464cfdf2a63 Pulling fs layer 
+ d7e507024086 Pulling fs layer 
+ 81bd8ed7ec67 Pulling fs layer 
+ 197eb75867ef Pulling fs layer 
+ 34a64644b756 Pulling fs layer 
+ 39c2ddfd6010 Pulling fs layer 
+ 61ca4f733c80 Waiting 
+ b464cfdf2a63 Waiting 
+ d7e507024086 Waiting 
+ 81bd8ed7ec67 Waiting 
+ 197eb75867ef Waiting 
+ f18232174bc9 Waiting 
+ 34a64644b756 Waiting 
+ 39c2ddfd6010 Waiting 
+ 0da02031b810 Pulling fs layer 
+ e49eff447cf4 Pulling fs layer 
+ b23c4a59849a Pulling fs layer 
+ 442cf3908783 Pulling fs layer 
+ 9056f6ecb394 Pulling fs layer 
+ ff557ec8ac73 Pulling fs layer 
+ 1c8d0b814939 Pulling fs layer 
+ 3a129719b3ee Pulling fs layer 
+ ea066d40f8be Pulling fs layer 
+ 1be21a6c94a6 Pulling fs layer 
+ 442cf3908783 Waiting 
+ 9056f6ecb394 Waiting 
+ ff557ec8ac73 Waiting 
+ 3a129719b3ee Waiting 
+ ea066d40f8be Waiting 
+ 1be21a6c94a6 Waiting 
+ 1c8d0b814939 Waiting 
+ e49eff447cf4 Downloading [==================================================>]     884B/884B
+ e49eff447cf4 Verifying Checksum 
+ e49eff447cf4 Download complete 
+ b23c4a59849a Downloading [=>                                                 ]  15.79kB/783.6kB
+ 0da02031b810 Downloading [>                                                  ]  490.9kB/47.94MB
+ b23c4a59849a Downloading [==================================================>]  783.6kB/783.6kB
+ b23c4a59849a Verifying Checksum 
+ b23c4a59849a Download complete 
+ 0da02031b810 Downloading [=================================>                 ]  32.44MB/47.94MB
+ 0da02031b810 Verifying Checksum 
+ 0da02031b810 Download complete 
+ 0da02031b810 Extracting [>                                                  ]  491.5kB/47.94MB
+ 9056f6ecb394 Downloading [==================================================>]  2.608kB/2.608kB
+ 9056f6ecb394 Verifying Checksum 
+ 9056f6ecb394 Download complete 
+ 442cf3908783 Downloading [>                                                  ]  64.94kB/6.198MB
+ 442cf3908783 Verifying Checksum 
+ 442cf3908783 Download complete 
+ 16333ee0c00f Pulling fs layer 
+ 16333ee0c00f Waiting 
+ 0da02031b810 Extracting [==>                                                ]  1.966MB/47.94MB
+ ff557ec8ac73 Downloading [==================================================>]     332B/332B
+ ff557ec8ac73 Verifying Checksum 
+ ff557ec8ac73 Download complete 
+ 1c8d0b814939 Downloading [>                                                  ]  523.7kB/51.63MB
+ 3a129719b3ee Downloading [==================================================>]     321B/321B
+ 3a129719b3ee Verifying Checksum 
+ 3a129719b3ee Download complete 
+ 0da02031b810 Extracting [=======>                                           ]  7.373MB/47.94MB
+ 1c8d0b814939 Downloading [=============================>                     ]  30.41MB/51.63MB
+ ea066d40f8be Downloading [>                                                  ]  526.9kB/132.4MB
+ 0da02031b810 Extracting [============>                                      ]   11.8MB/47.94MB
+ 1c8d0b814939 Verifying Checksum 
+ 1c8d0b814939 Download complete 
+ 1be21a6c94a6 Downloading [=================================>                 ]  3.501kB/5.23kB
+ 1be21a6c94a6 Download complete 
+ ea066d40f8be Downloading [==>                                                ]  6.315MB/132.4MB
+ 0da02031b810 Extracting [====================>                              ]  19.66MB/47.94MB
+ ea066d40f8be Downloading [====>                                              ]   12.1MB/132.4MB
+ 0da02031b810 Extracting [============================>                      ]  27.03MB/47.94MB
+ f18232174bc9 Downloading [>                                                  ]  48.51kB/3.642MB
+ f18232174bc9 Verifying Checksum 
+ f18232174bc9 Download complete 
+ f18232174bc9 Extracting [>                                                  ]  65.54kB/3.642MB
+ ea066d40f8be Downloading [===============>                                   ]  41.48MB/132.4MB
+ 61ca4f733c80 Downloading [>                                                  ]   32.1kB/1.791MB
+ 61ca4f733c80 Downloading [==================================================>]  1.791MB/1.791MB
+ 61ca4f733c80 Verifying Checksum 
+ 61ca4f733c80 Download complete 
+ 0da02031b810 Extracting [================================>                  ]  31.46MB/47.94MB
+ f18232174bc9 Extracting [===================>                               ]  1.442MB/3.642MB
+ f18232174bc9 Extracting [==================================================>]  3.642MB/3.642MB
+ f18232174bc9 Extracting [==================================================>]  3.642MB/3.642MB
+ ea066d40f8be Downloading [==========================>                        ]  69.28MB/132.4MB
+ f18232174bc9 Pull complete 
+ 61ca4f733c80 Extracting [>                                                  ]  32.77kB/1.791MB
+ 0da02031b810 Extracting [==================================>                ]  33.42MB/47.94MB
+ b464cfdf2a63 Downloading [==================================================>]     629B/629B
+ b464cfdf2a63 Verifying Checksum 
+ b464cfdf2a63 Download complete 
+ 61ca4f733c80 Extracting [==================================================>]  1.791MB/1.791MB
+ ea066d40f8be Downloading [=====================================>             ]  98.17MB/132.4MB
+ 61ca4f733c80 Extracting [==================================================>]  1.791MB/1.791MB
+ d7e507024086 Downloading [==================================================>]     955B/955B
+ d7e507024086 Verifying Checksum 
+ d7e507024086 Download complete 
+ 0da02031b810 Extracting [===========================================>       ]  41.29MB/47.94MB
+ ea066d40f8be Downloading [================================================>  ]  127.5MB/132.4MB
+ ea066d40f8be Verifying Checksum 
+ ea066d40f8be Download complete 
+ 0da02031b810 Extracting [============================================>      ]  42.76MB/47.94MB
+ 81bd8ed7ec67 Downloading [==================================================>]     402B/402B
+ 81bd8ed7ec67 Verifying Checksum 
+ 81bd8ed7ec67 Download complete 
+ 197eb75867ef Downloading [==================================================>]  1.209kB/1.209kB
+ 197eb75867ef Verifying Checksum 
+ 197eb75867ef Download complete 
+ 34a64644b756 Downloading [==================================================>]  1.397kB/1.397kB
+ 34a64644b756 Verifying Checksum 
+ 34a64644b756 Download complete 
+ 39c2ddfd6010 Downloading [>                                                  ]  163.2kB/15.52MB
+ 16333ee0c00f Downloading [>                                                  ]  48.55kB/3.626MB
+ 39c2ddfd6010 Verifying Checksum 
+ 39c2ddfd6010 Download complete 
+ 16333ee0c00f Downloading [==================================================>]  3.626MB/3.626MB
+ 16333ee0c00f Verifying Checksum 
+ 16333ee0c00f Download complete 
+ 16333ee0c00f Extracting [>                                                  ]  65.54kB/3.626MB
+ 16333ee0c00f Extracting [===================>                               ]  1.442MB/3.626MB
+ 16333ee0c00f Extracting [==================================================>]  3.626MB/3.626MB
+ 0da02031b810 Extracting [==============================================>    ]  44.73MB/47.94MB
+ 16333ee0c00f Pull complete 
+ backend Pulled 
+ 0da02031b810 Extracting [===============================================>   ]  45.22MB/47.94MB
+ 0da02031b810 Extracting [==================================================>]  47.94MB/47.94MB
+ 0da02031b810 Pull complete 
+ e49eff447cf4 Extracting [==================================================>]     884B/884B
+ e49eff447cf4 Extracting [==================================================>]     884B/884B
+ 61ca4f733c80 Pull complete 
+ e49eff447cf4 Pull complete 
+ b464cfdf2a63 Extracting [==================================================>]     629B/629B
+ b464cfdf2a63 Extracting [==================================================>]     629B/629B
+ b23c4a59849a Extracting [==>                                                ]  32.77kB/783.6kB
+ b464cfdf2a63 Pull complete 
+ d7e507024086 Extracting [==================================================>]     955B/955B
+ d7e507024086 Extracting [==================================================>]     955B/955B
+ b23c4a59849a Extracting [==================================================>]  783.6kB/783.6kB
+ b23c4a59849a Extracting [==================================================>]  783.6kB/783.6kB
+ d7e507024086 Pull complete 
+ 81bd8ed7ec67 Extracting [==================================================>]     402B/402B
+ 81bd8ed7ec67 Extracting [==================================================>]     402B/402B
+ b23c4a59849a Pull complete 
+ 442cf3908783 Extracting [>                                                  ]  65.54kB/6.198MB
+ 81bd8ed7ec67 Pull complete 
+ 197eb75867ef Extracting [==================================================>]  1.209kB/1.209kB
+ 197eb75867ef Extracting [==================================================>]  1.209kB/1.209kB
+ 197eb75867ef Pull complete 
+ 34a64644b756 Extracting [==================================================>]  1.397kB/1.397kB
+ 34a64644b756 Extracting [==================================================>]  1.397kB/1.397kB
+ 34a64644b756 Pull complete 
+ 39c2ddfd6010 Extracting [>                                                  ]  163.8kB/15.52MB
+ 442cf3908783 Extracting [================>                                  ]  2.032MB/6.198MB
+ 39c2ddfd6010 Extracting [=>                                                 ]  491.5kB/15.52MB
+ 442cf3908783 Extracting [=========================>                         ]  3.211MB/6.198MB
+ 39c2ddfd6010 Extracting [========================>                          ]    7.7MB/15.52MB
+ 442cf3908783 Extracting [==================================================>]  6.198MB/6.198MB
+ 442cf3908783 Pull complete 
+ 9056f6ecb394 Extracting [==================================================>]  2.608kB/2.608kB
+ 9056f6ecb394 Extracting [==================================================>]  2.608kB/2.608kB
+ 9056f6ecb394 Pull complete 
+ ff557ec8ac73 Extracting [==================================================>]     332B/332B
+ ff557ec8ac73 Extracting [==================================================>]     332B/332B
+ ff557ec8ac73 Pull complete 
+ 1c8d0b814939 Extracting [>                                                  ]  524.3kB/51.63MB
+ 39c2ddfd6010 Extracting [==========================================>        ]  13.11MB/15.52MB
+ 1c8d0b814939 Extracting [======>                                            ]  6.816MB/51.63MB
+ 39c2ddfd6010 Extracting [==================================================>]  15.52MB/15.52MB
+ 39c2ddfd6010 Pull complete 
+ frontend Pulled 
+ 1c8d0b814939 Extracting [=========>                                         ]  9.437MB/51.63MB
+ 1c8d0b814939 Extracting [=================>                                 ]  17.83MB/51.63MB
+ 1c8d0b814939 Extracting [=======================>                           ]  24.64MB/51.63MB
+ 1c8d0b814939 Extracting [=================================>                 ]  34.08MB/51.63MB
+ 1c8d0b814939 Extracting [=======================================>           ]  40.89MB/51.63MB
+ 1c8d0b814939 Extracting [==============================================>    ]  48.23MB/51.63MB
+ 1c8d0b814939 Extracting [==================================================>]  51.63MB/51.63MB
+ 1c8d0b814939 Pull complete 
+ 3a129719b3ee Extracting [==================================================>]     321B/321B
+ 3a129719b3ee Extracting [==================================================>]     321B/321B
+ 3a129719b3ee Pull complete 
+ ea066d40f8be Extracting [>                                                  ]  557.1kB/132.4MB
+ ea066d40f8be Extracting [===>                                               ]  8.913MB/132.4MB
+ ea066d40f8be Extracting [====>                                              ]  12.81MB/132.4MB
+ ea066d40f8be Extracting [=======>                                           ]  20.05MB/132.4MB
+ ea066d40f8be Extracting [========>                                          ]  21.73MB/132.4MB
+ ea066d40f8be Extracting [=========>                                         ]  26.18MB/132.4MB
+ ea066d40f8be Extracting [===========>                                       ]  30.08MB/132.4MB
+ ea066d40f8be Extracting [============>                                      ]  33.42MB/132.4MB
+ ea066d40f8be Extracting [=============>                                     ]  34.54MB/132.4MB
+ ea066d40f8be Extracting [=============>                                     ]  35.09MB/132.4MB
+ ea066d40f8be Extracting [=============>                                     ]  35.65MB/132.4MB
+ ea066d40f8be Extracting [=============>                                     ]  36.21MB/132.4MB
+ ea066d40f8be Extracting [=============>                                     ]  36.77MB/132.4MB
+ ea066d40f8be Extracting [==============>                                    ]  37.32MB/132.4MB
+ ea066d40f8be Extracting [==============>                                    ]  37.88MB/132.4MB
+ ea066d40f8be Extracting [==============>                                    ]  38.44MB/132.4MB
+ ea066d40f8be Extracting [==============>                                    ]  39.55MB/132.4MB
+ ea066d40f8be Extracting [===============>                                   ]  40.11MB/132.4MB
+ ea066d40f8be Extracting [===============>                                   ]  40.67MB/132.4MB
+ ea066d40f8be Extracting [===============>                                   ]  41.22MB/132.4MB
+ ea066d40f8be Extracting [===============>                                   ]  41.78MB/132.4MB
+ ea066d40f8be Extracting [===============>                                   ]  42.34MB/132.4MB
+ ea066d40f8be Extracting [================>                                  ]  42.89MB/132.4MB
+ ea066d40f8be Extracting [================>                                  ]  43.45MB/132.4MB
+ ea066d40f8be Extracting [================>                                  ]  44.01MB/132.4MB
+ ea066d40f8be Extracting [================>                                  ]  44.56MB/132.4MB
+ ea066d40f8be Extracting [=================>                                 ]  45.12MB/132.4MB
+ ea066d40f8be Extracting [=================>                                 ]  45.68MB/132.4MB
+ ea066d40f8be Extracting [=================>                                 ]  46.24MB/132.4MB
+ ea066d40f8be Extracting [=================>                                 ]  46.79MB/132.4MB
+ ea066d40f8be Extracting [=================>                                 ]  47.35MB/132.4MB
+ ea066d40f8be Extracting [==================>                                ]  47.91MB/132.4MB
+ ea066d40f8be Extracting [==================>                                ]  48.46MB/132.4MB
+ ea066d40f8be Extracting [==================>                                ]  49.02MB/132.4MB
+ ea066d40f8be Extracting [===================>                               ]  51.25MB/132.4MB
+ ea066d40f8be Extracting [===================>                               ]  51.81MB/132.4MB
+ ea066d40f8be Extracting [====================>                              ]  53.48MB/132.4MB
+ ea066d40f8be Extracting [======================>                            ]  60.16MB/132.4MB
+ ea066d40f8be Extracting [=========================>                         ]  68.52MB/132.4MB
+ ea066d40f8be Extracting [=============================>                     ]  76.87MB/132.4MB
+ ea066d40f8be Extracting [================================>                  ]  85.23MB/132.4MB
+ ea066d40f8be Extracting [===================================>               ]  94.14MB/132.4MB
+ ea066d40f8be Extracting [======================================>            ]  102.5MB/132.4MB
+ ea066d40f8be Extracting [==========================================>        ]  113.1MB/132.4MB
+ ea066d40f8be Extracting [===============================================>   ]  125.3MB/132.4MB
+ ea066d40f8be Extracting [=================================================> ]  131.5MB/132.4MB
+ ea066d40f8be Extracting [==================================================>]  132.4MB/132.4MB
+ ea066d40f8be Pull complete 
+ 1be21a6c94a6 Extracting [==================================================>]   5.23kB/5.23kB
+ 1be21a6c94a6 Extracting [==================================================>]   5.23kB/5.23kB
+ 1be21a6c94a6 Pull complete 
+ database Pulled 
+ Network homework8_frontend-network  Creating
+ Network homework8_frontend-network  Created
+ Network homework8_backend-network  Creating
+ Network homework8_backend-network  Created
+ Network homework8_database-network  Creating
+ Network homework8_database-network  Created
+ Volume "homework8_mysql-data"  Creating
+ Volume "homework8_mysql-data"  Created
+ Container homework-backend  Creating
+ Container homework-database  Creating
+ Container homework-frontend  Creating
+ Container homework-backend  Created
+ Container homework-frontend  Created
+ Container homework-database  Created
+ Container homework-backend  Starting
+ Container homework-database  Starting
+ Container homework-frontend  Starting
+ Container homework-database  Started
+ Container homework-backend  Started
+ Container homework-frontend  Started
+++ seq 1 60
++ for attempt in $(seq 1 60)
++ docker exec homework-database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqladmin ping -uroot --silent'
++ [[ 1 -lt 60 ]]
++ sleep 2
++ for attempt in $(seq 1 60)
++ docker exec homework-database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqladmin ping -uroot --silent'
++ [[ 2 -lt 60 ]]
++ sleep 2
++ for attempt in $(seq 1 60)
++ docker exec homework-database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqladmin ping -uroot --silent'
++ break
++ compose ps
++ docker compose -p homework8 -f /tmp/tmp.xxPg3hNzwI/docker-compose.yml ps
+NAME                IMAGE               COMMAND                  SERVICE    CREATED         STATUS         PORTS
+homework-backend    alpine:3.21         "sh -c 'while true; …"   backend    6 seconds ago   Up 5 seconds   
+homework-database   mysql:8.4           "docker-entrypoint.s…"   database   6 seconds ago   Up 5 seconds   3306/tcp, 33060/tcp
+homework-frontend   nginx:1.27-alpine   "/docker-entrypoint.…"   frontend   6 seconds ago   Up 5 seconds   0.0.0.0:8090->80/tcp, [::]:8090->80/tcp
++ docker network ls
+NETWORK ID     NAME                         DRIVER    SCOPE
+cb738e910485   bridge                       bridge    local
+1937da9e8768   homework8_backend-network    bridge    local
+4057ca4ff910   homework8_database-network   bridge    local
+d8a81d043ebf   homework8_frontend-network   bridge    local
+1a1d025fb495   host                         host      local
+970808d014ab   none                         null      local
++ docker inspect homework-backend --format '{{json .NetworkSettings.Networks}}'
+{"homework8_backend-network":{"IPAMConfig":null,"Links":null,"Aliases":["homework-backend","backend"],"MacAddress":"3e:33:a2:a4:fa:a7","DriverOpts":null,"GwPriority":0,"NetworkID":"1937da9e8768f58a3770e8df01ae7d559796e78548e9ee9d5ea29a02fce731d6","EndpointID":"9b0bd821fe98ae8ee1bcefd1814521f4a68634519ff6a097031d80b8e19b719a","Gateway":"172.19.0.1","IPAddress":"172.19.0.3","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["homework-backend","backend","f5b816875d6e"]},"homework8_frontend-network":{"IPAMConfig":null,"Links":null,"Aliases":["homework-backend","backend"],"MacAddress":"e2:77:8e:6c:f7:4b","DriverOpts":null,"GwPriority":0,"NetworkID":"d8a81d043ebfc1e6a3a3deb03b93d107dcaf056368d9ffa0c4c43850bf1da1b6","EndpointID":"04fc5b8d50b3b5456fef8a6b9d327729070a419038bd4ebb33bb4624aa1ac87f","Gateway":"172.18.0.1","IPAddress":"172.18.0.3","IPPrefixLen":16,"IPv6Gateway":"","GlobalIPv6Address":"","GlobalIPv6PrefixLen":0,"DNSNames":["homework-backend","backend","f5b816875d6e"]}}
++ docker exec homework-backend ping -c 2 homework-frontend
+PING homework-frontend (172.18.0.2): 56 data bytes
+64 bytes from 172.18.0.2: seq=0 ttl=64 time=0.074 ms
+64 bytes from 172.18.0.2: seq=1 ttl=64 time=0.085 ms
+
+--- homework-frontend ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.074/0.079/0.085 ms
++ docker exec homework-backend ping -c 2 homework-database
+PING homework-database (172.19.0.2): 56 data bytes
+64 bytes from 172.19.0.2: seq=0 ttl=64 time=0.090 ms
+64 bytes from 172.19.0.2: seq=1 ttl=64 time=0.076 ms
+
+--- homework-database ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.076/0.083/0.090 ms
++ docker exec homework-backend nc -z -w 5 homework-database 3306
++ docker exec homework-frontend getent hosts homework-database
++ echo 'Isolation verified: frontend has no database-network DNS entry'
+Isolation verified: frontend has no database-network DNS entry
++ curl --retry 5 --retry-connrefused --retry-delay 2 -fsS http://localhost:8090
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Docker bind mount</title></head>
+<body><h1>Hello students</h1><p>This file is bind-mounted into Nginx.</p></body></html>
+++ docker inspect homework-frontend --format '{{.State.StartedAt}}'
++ started=2026-10-07T18:07:57.792421271Z
++ sed -i 's/Hello students/Hello students - Archit Kulkarni - 24BCS10194/' /tmp/tmp.xxPg3hNzwI/frontend/index.html
++ docker exec homework-frontend cat /usr/share/nginx/html/index.html
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Docker bind mount</title></head>
+<body><h1>Hello students - Archit Kulkarni - 24BCS10194</h1><p>This file is bind-mounted into Nginx.</p></body></html>
++ curl -fsS http://localhost:8090
++ grep 'Archit Kulkarni'
+<body><h1>Hello students - Archit Kulkarni - 24BCS10194</h1><p>This file is bind-mounted into Nginx.</p></body></html>
+++ docker inspect homework-frontend --format '{{.State.StartedAt}}'
++ test 2026-10-07T18:07:57.792421271Z = 2026-10-07T18:07:57.792421271Z
++ echo 'Bind mount updated without a container restart'
+Bind mount updated without a container restart
++ sudo apt-get update -qq
++ sudo apt-get install -y apache2
+Reading package lists...
+Building dependency tree...
+Reading state information...
+apache2 is already the newest version (2.4.58-1ubuntu8.15).
+0 upgraded, 0 newly installed, 0 to remove and 11 not upgraded.
++ sudo service apache2 start
++ curl -fsS http://localhost:80
++ grep 'Apache2 Ubuntu Default Page'
+    <title>Apache2 Ubuntu Default Page: It works</title>
++ docker run --rm --network host alpine:3.21 wget -qO- http://127.0.0.1:80
++ grep 'Apache2 Ubuntu Default Page'
+    <title>Apache2 Ubuntu Default Page: It works</title>
++ echo 'Host-network container reached Apache installed on the Linux host'
+Host-network container reached Apache installed on the Linux host
++ cleanup
++ compose down -v
++ docker compose -p homework8 -f /tmp/tmp.xxPg3hNzwI/docker-compose.yml down -v
+ Container homework-backend  Stopping
+ Container homework-database  Stopping
+ Container homework-frontend  Stopping
+ Container homework-frontend  Stopped
+ Container homework-frontend  Removing
+ Container homework-frontend  Removed
+ Container homework-database  Stopped
+ Container homework-database  Removing
+ Container homework-database  Removed
+ Container homework-backend  Stopped
+ Container homework-backend  Removing
+ Container homework-backend  Removed
+ Network homework8_backend-network  Removing
+ Volume homework8_mysql-data  Removing
+ Network homework8_database-network  Removing
+ Network homework8_frontend-network  Removing
+ Volume homework8_mysql-data  Removed
+ Network homework8_backend-network  Removed
+ Network homework8_database-network  Removed
+ Network homework8_frontend-network  Removed
++ sudo service apache2 stop
