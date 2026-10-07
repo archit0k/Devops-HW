@@ -99,7 +99,7 @@ case "$lab" in
   client wget -qO- http://web-service-loadbalancer
   # The LoadBalancer's external implementation is checked separately on Minikube with tunnel.
   kubectl apply -f 04-externalname/
-  client nslookup external-database-service
+  client nslookup external-database-service.default.svc.cluster.local
   kubectl apply -f 05-headless/
   kubectl rollout status statefulset/web-stateful --timeout=180s
   client nslookup web-service-headless.default.svc.cluster.local
@@ -123,7 +123,11 @@ case "$lab" in
   kubectl get configmap,secret,ingress,deploy,svc,pods
   kubectl exec deployment/yatri-backend -- sh -c 'test -n "$POSTGRES_PASSWORD" && echo "Secret injected; value not printed"'
   controller=$(kubectl -n ingress-nginx get svc ingress-nginx-controller -o jsonpath='{.spec.clusterIP}')
-  client wget -qO- --header='Host: yatri.local' "http://$controller/"
+  for attempt in $(seq 1 30); do
+    if client wget -qO- --header='Host: yatri.local' "http://$controller/"; then break; fi
+    [[ "$attempt" -lt 30 ]] || exit 1
+    sleep 2
+  done
   client wget -qO- --header='Host: yatri.local' "http://$controller/api/"
   kubectl patch svc yatri-backend-service -p '{"spec":{"selector":{"app":"wrong-app"}}}'
   sleep 3
