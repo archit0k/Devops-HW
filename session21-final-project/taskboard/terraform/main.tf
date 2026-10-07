@@ -62,19 +62,29 @@ resource "aws_eks_addon" "ebs_csi" {
   addon_name                  = "aws-ebs-csi-driver"
   service_account_role_arn    = aws_iam_role.ebs_csi.arn
   resolve_conflicts_on_create = "OVERWRITE"
-  depends_on                  = [aws_iam_role_policy_attachment.ebs_csi]
+  depends_on                  = [module.eks, aws_iam_role_policy_attachment.ebs_csi]
 }
 
 data "aws_caller_identity" "current" {}
+
+# A temporary mirror lets the EKS node role pull the tested CI images without
+# giving GitHub any AWS credentials or expanding the local GitHub sign-in.
+resource "aws_ecr_repository" "lab" {
+  for_each     = toset(["backend", "frontend"])
+  name         = "archit-taskboard-lab/${each.key}"
+  force_delete = true
+  image_scanning_configuration { scan_on_push = true }
+  tags = { Owner = "Archit-Kulkarni", Roll = "24BCS10194", Project = "taskboard-lab21" }
+}
 
 resource "aws_iam_role" "lab_access" {
   name = "archit-taskboard-lab-access"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root" }
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
       Condition = { ArnEquals = { "aws:PrincipalArn" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root" } }
     }]
   })
@@ -83,7 +93,7 @@ resource "aws_iam_role" "lab_access" {
 resource "aws_iam_role_policy" "describe_cluster" {
   role = aws_iam_role.lab_access.id
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version   = "2012-10-17"
     Statement = [{ Effect = "Allow", Action = ["eks:DescribeCluster"], Resource = module.eks.cluster_arn }]
   })
 }

@@ -13,6 +13,11 @@ jobs:
         with: {python-version: '3.14'}
       - uses: actions/setup-node@v7.0.0
         with: {node-version: '22'}
+      - name: Direct backend and migrations
+        run: |
+          set -euo pipefail
+          mkdir -p lab-evidence
+          bash session21-final-project/run-backend.sh 2>&1 | tee lab-evidence/direct-backend.txt
       - name: Pytest and frontend build
         run: |
           set -euo pipefail
@@ -22,6 +27,11 @@ jobs:
           cd ../frontend
           npm ci
           npm run build
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: taskboard-direct-evidence
+          path: lab-evidence
   images:
     needs: test
     runs-on: ubuntu-latest
@@ -60,6 +70,14 @@ jobs:
           echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
           docker push "ghcr.io/archit0k/taskboard-backend:${GITHUB_SHA}"
           docker push "ghcr.io/archit0k/taskboard-frontend:${GITHUB_SHA}"
+      - name: Export the tested images for the local and AWS lab
+        run: |
+          docker save "ghcr.io/archit0k/taskboard-backend:${GITHUB_SHA}" "ghcr.io/archit0k/taskboard-frontend:${GITHUB_SHA}" | gzip > taskboard-images.tar.gz
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: taskboard-tested-images
+          path: taskboard-images.tar.gz
+          retention-days: 3
       - uses: actions/upload-artifact@v7.0.1
         if: always()
         with:
