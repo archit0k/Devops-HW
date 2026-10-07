@@ -1,0 +1,659 @@
++ docker compose up --build -d
+ postgres Pulling 
+ e2de96513ba9 Already exists 
+ 1b7f9cd581ee Pulling fs layer 
+ 210b280f9556 Pulling fs layer 
+ 81717818649a Pulling fs layer 
+ 3ae6141cfd99 Pulling fs layer 
+ 25b77f59fd95 Pulling fs layer 
+ 6c25da34e03f Pulling fs layer 
+ a88782f92806 Pulling fs layer 
+ d8d21be4bf02 Pulling fs layer 
+ 6117bd39f23f Pulling fs layer 
+ 509688edf37b Pulling fs layer 
+ 3ae6141cfd99 Waiting 
+ 25b77f59fd95 Waiting 
+ 6c25da34e03f Waiting 
+ a88782f92806 Waiting 
+ d8d21be4bf02 Waiting 
+ 6117bd39f23f Waiting 
+ 509688edf37b Waiting 
+ 1b7f9cd581ee Downloading [==================================================>]     969B/969B
+ 1b7f9cd581ee Verifying Checksum 
+ 1b7f9cd581ee Download complete 
+ 1b7f9cd581ee Extracting [==================================================>]     969B/969B
+ 1b7f9cd581ee Extracting [==================================================>]     969B/969B
+ 210b280f9556 Downloading [>                                                  ]  15.79kB/901.4kB
+ 81717818649a Downloading [==================================================>]     172B/172B
+ 81717818649a Verifying Checksum 
+ 81717818649a Download complete 
+ 210b280f9556 Verifying Checksum 
+ 210b280f9556 Download complete 
+ 3ae6141cfd99 Downloading [==================================================>]     116B/116B
+ 3ae6141cfd99 Verifying Checksum 
+ 3ae6141cfd99 Download complete 
+ 25b77f59fd95 Downloading [>                                                  ]  531.2kB/111.3MB
+ 6c25da34e03f Downloading [==================>                                ]    3.5kB/9.669kB
+ 6c25da34e03f Downloading [==================================================>]  9.669kB/9.669kB
+ 6c25da34e03f Verifying Checksum 
+ 6c25da34e03f Download complete 
+ 25b77f59fd95 Downloading [===========>                                       ]  25.02MB/111.3MB
+ a88782f92806 Downloading [==================================================>]     128B/128B
+ a88782f92806 Verifying Checksum 
+ a88782f92806 Download complete 
+ 25b77f59fd95 Downloading [=================================>                 ]  73.85MB/111.3MB
+ d8d21be4bf02 Downloading [==================================================>]     169B/169B
+ 25b77f59fd95 Verifying Checksum 
+ 25b77f59fd95 Download complete 
+ 6117bd39f23f Downloading [============================>                      ]    3.5kB/6.111kB
+ 6117bd39f23f Downloading [==================================================>]  6.111kB/6.111kB
+ 6117bd39f23f Verifying Checksum 
+ 6117bd39f23f Download complete 
+ 509688edf37b Downloading [==================================================>]     185B/185B
+ 509688edf37b Verifying Checksum 
+ 509688edf37b Download complete 
+ 1b7f9cd581ee Pull complete 
+ 210b280f9556 Extracting [=>                                                 ]  32.77kB/901.4kB
+ 210b280f9556 Extracting [==================================================>]  901.4kB/901.4kB
+ 210b280f9556 Extracting [==================================================>]  901.4kB/901.4kB
+ 210b280f9556 Pull complete 
+ 81717818649a Extracting [==================================================>]     172B/172B
+ 81717818649a Extracting [==================================================>]     172B/172B
+ 81717818649a Pull complete 
+ 3ae6141cfd99 Extracting [==================================================>]     116B/116B
+ 3ae6141cfd99 Extracting [==================================================>]     116B/116B
+ 3ae6141cfd99 Pull complete 
+ 25b77f59fd95 Extracting [>                                                  ]  557.1kB/111.3MB
+ 25b77f59fd95 Extracting [====>                                              ]  10.03MB/111.3MB
+ 25b77f59fd95 Extracting [==========>                                        ]  22.84MB/111.3MB
+ 25b77f59fd95 Extracting [================>                                  ]  35.65MB/111.3MB
+ 25b77f59fd95 Extracting [=====================>                             ]  48.46MB/111.3MB
+ 25b77f59fd95 Extracting [==========================>                        ]  58.49MB/111.3MB
+ 25b77f59fd95 Extracting [===============================>                   ]  70.19MB/111.3MB
+ 25b77f59fd95 Extracting [====================================>              ]  81.33MB/111.3MB
+ 25b77f59fd95 Extracting [======================================>            ]  84.67MB/111.3MB
+ 25b77f59fd95 Extracting [=========================================>         ]  91.91MB/111.3MB
+ 25b77f59fd95 Extracting [============================================>      ]  98.04MB/111.3MB
+ 25b77f59fd95 Extracting [==================================================>]  111.3MB/111.3MB
+ 25b77f59fd95 Pull complete 
+ 6c25da34e03f Extracting [==================================================>]  9.669kB/9.669kB
+ 6c25da34e03f Extracting [==================================================>]  9.669kB/9.669kB
+ 6c25da34e03f Pull complete 
+ a88782f92806 Extracting [==================================================>]     128B/128B
+ a88782f92806 Extracting [==================================================>]     128B/128B
+ a88782f92806 Pull complete 
+ d8d21be4bf02 Extracting [==================================================>]     169B/169B
+ d8d21be4bf02 Extracting [==================================================>]     169B/169B
+ d8d21be4bf02 Pull complete 
+ 6117bd39f23f Extracting [==================================================>]  6.111kB/6.111kB
+ 6117bd39f23f Extracting [==================================================>]  6.111kB/6.111kB
+ 6117bd39f23f Pull complete 
+ 509688edf37b Extracting [==================================================>]     185B/185B
+ 509688edf37b Extracting [==================================================>]     185B/185B
+ 509688edf37b Pull complete 
+ postgres Pulled 
+#1 [internal] load local bake definitions
+#1 reading from stdin 858B done
+#1 DONE 0.0s
+
+#2 [frontend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 300B 0.0s done
+#2 DONE 0.0s
+
+#3 [backend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 430B 0.0s done
+#3 DONE 0.0s
+
+#4 [backend internal] load metadata for docker.io/library/python:3.14-alpine
+#4 ...
+
+#5 [auth] library/node:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [auth] library/python:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#7 [auth] library/nginx:pull token for registry-1.docker.io
+#7 DONE 0.0s
+
+#8 [frontend internal] load metadata for docker.io/library/node:22-alpine
+#8 DONE 0.8s
+
+#9 [frontend internal] load metadata for docker.io/library/nginx:stable-alpine
+#9 DONE 0.9s
+
+#4 [backend internal] load metadata for docker.io/library/python:3.14-alpine
+#4 DONE 0.9s
+
+#10 [backend internal] load .dockerignore
+#10 transferring context: 95B done
+#10 DONE 0.0s
+
+#11 [frontend internal] load .dockerignore
+#11 transferring context: 63B done
+#11 DONE 0.0s
+
+#12 [frontend internal] load build context
+#12 transferring context: 40.29kB done
+#12 DONE 0.0s
+
+#13 [backend internal] load build context
+#13 transferring context: 16.97kB done
+#13 DONE 0.0s
+
+#14 [backend 1/7] FROM docker.io/library/python:3.14-alpine@sha256:f6a589d43c42b9e7f7dc67a12d37132491f362859a5d750607710cc56da3bc72
+#14 resolve docker.io/library/python:3.14-alpine@sha256:f6a589d43c42b9e7f7dc67a12d37132491f362859a5d750607710cc56da3bc72 done
+#14 sha256:2a22c5887fa227de1798e9b92a3692c3bb96fa108c1164afe00a928c35a0986c 0B / 16.11MB 0.1s
+#14 sha256:d486488257d0aa8b040529bcab1337e849158dafb6f28c6d79df56cce8042b48 249B / 249B 0.1s done
+#14 sha256:f6a589d43c42b9e7f7dc67a12d37132491f362859a5d750607710cc56da3bc72 10.29kB / 10.29kB done
+#14 sha256:7f2ec713f0436c59df2362d973b6a05af9e87ba78f0e94f5245c302984a7a1fd 1.73kB / 1.73kB done
+#14 sha256:5e80f9e3093db9368ad22eb337d242e243ee41e2e09146f56df7a129e2e6cef4 4.71kB / 4.71kB done
+#14 sha256:48f6a258842734fe23e0e4c69db9996cbaefd41c1cde2372b95449f9fc5601eb 0B / 416.27kB 0.1s
+#14 sha256:2a22c5887fa227de1798e9b92a3692c3bb96fa108c1164afe00a928c35a0986c 16.11MB / 16.11MB 0.3s
+#14 extracting sha256:48f6a258842734fe23e0e4c69db9996cbaefd41c1cde2372b95449f9fc5601eb
+#14 sha256:2a22c5887fa227de1798e9b92a3692c3bb96fa108c1164afe00a928c35a0986c 16.11MB / 16.11MB 0.4s done
+#14 sha256:48f6a258842734fe23e0e4c69db9996cbaefd41c1cde2372b95449f9fc5601eb 416.27kB / 416.27kB 0.3s done
+#14 extracting sha256:48f6a258842734fe23e0e4c69db9996cbaefd41c1cde2372b95449f9fc5601eb 0.1s done
+#14 extracting sha256:2a22c5887fa227de1798e9b92a3692c3bb96fa108c1164afe00a928c35a0986c
+#14 extracting sha256:2a22c5887fa227de1798e9b92a3692c3bb96fa108c1164afe00a928c35a0986c 0.8s done
+#14 extracting sha256:d486488257d0aa8b040529bcab1337e849158dafb6f28c6d79df56cce8042b48
+#14 extracting sha256:d486488257d0aa8b040529bcab1337e849158dafb6f28c6d79df56cce8042b48 done
+#14 DONE 2.8s
+
+#15 [frontend stage-1 1/4] FROM docker.io/library/nginx:stable-alpine@sha256:0985e772fb9f729e6fa0980da05fca5d9c468e870eed43071545afa9d2e27d94
+#15 resolve docker.io/library/nginx:stable-alpine@sha256:0985e772fb9f729e6fa0980da05fca5d9c468e870eed43071545afa9d2e27d94 done
+#15 sha256:8f84ed99befc3891b8f329c5c202785278a2cfb7c25107d57fb2a134a3117433 2.49kB / 2.49kB done
+#15 sha256:0985e772fb9f729e6fa0980da05fca5d9c468e870eed43071545afa9d2e27d94 10.32kB / 10.32kB done
+#15 sha256:43d9d8c1f8968f09df8c1aa6c136ecc617e62d64fe4c0b24c97de4eb210bd973 12.30kB / 12.30kB done
+#15 sha256:e3320d02d5786716dcc40d9f6267baec5d3d2c46945082958050c3ac5ea23751 1.88MB / 1.88MB 0.2s done
+#15 extracting sha256:e3320d02d5786716dcc40d9f6267baec5d3d2c46945082958050c3ac5ea23751 0.0s done
+#15 sha256:3d85d110b167fae23d8eb3a7060cd079682b682b04d295fc7bbdf454c9e722c8 626B / 626B 0.4s done
+#15 sha256:22e5a8a110ec69c6af30325ccfe8bb0bfb94e5783117808061bae5115e1e3dcb 963B / 963B 0.5s done
+#15 sha256:6b4dfb2e8f8a72d7ae1380b667f50faccdc19147869b2afa09aeddfdea59ce64 403B / 403B 0.5s done
+#15 sha256:703c5424632fab32aa3327bebe6e5202ac53a93740062efb830f8188e580b9db 1.21kB / 1.21kB 0.6s done
+#15 extracting sha256:3d85d110b167fae23d8eb3a7060cd079682b682b04d295fc7bbdf454c9e722c8 done
+#15 extracting sha256:22e5a8a110ec69c6af30325ccfe8bb0bfb94e5783117808061bae5115e1e3dcb done
+#15 sha256:b335b7ac3a400afa780d0d89e0b778ee19dc3e3df95bed4b274a763af2264fd7 1.40kB / 1.40kB 0.7s done
+#15 extracting sha256:6b4dfb2e8f8a72d7ae1380b667f50faccdc19147869b2afa09aeddfdea59ce64 done
+#15 extracting sha256:703c5424632fab32aa3327bebe6e5202ac53a93740062efb830f8188e580b9db done
+#15 sha256:b27cf3f7c39dd0da0aa52a285f0c0cce938ac61472babfea353b1daa83586c49 20.34MB / 20.34MB 0.8s done
+#15 extracting sha256:b335b7ac3a400afa780d0d89e0b778ee19dc3e3df95bed4b274a763af2264fd7 done
+#15 extracting sha256:b27cf3f7c39dd0da0aa52a285f0c0cce938ac61472babfea353b1daa83586c49 0.5s done
+#15 DONE 2.9s
+
+#16 [backend 2/7] WORKDIR /app
+#16 DONE 0.1s
+
+#17 [backend 3/7] COPY requirements.txt .
+#17 DONE 0.0s
+
+#18 [frontend stage-1 2/4] RUN apk upgrade --no-cache
+#18 ...
+
+#19 [frontend build 1/6] FROM docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#19 resolve docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402 done
+#19 sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402 6.41kB / 6.41kB done
+#19 sha256:2c752226d477b4a886378baa95b9af252be59301b725fdb0b7e15208131505a8 1.72kB / 1.72kB done
+#19 sha256:7c3b093add7c43400ee83b815ab2cda98794a10045bcf76ce9bb2f89b97cbc5c 6.48kB / 6.48kB done
+#19 sha256:f7f2d304681aaa935c9cfd180850cf616ae843efce7682873d6521ded7268937 55.59MB / 55.59MB 1.2s done
+#19 sha256:e554276b05e6306c5ad33cd85bfa7f0693083e21f6114db5abf60a20fb413039 1.26MB / 1.26MB 0.9s done
+#19 sha256:d39db1cf9caa4f49c5a2e67111fbe6e0d5eea8ede550cb82f3dc2b79712688d6 447B / 447B 1.2s done
+#19 extracting sha256:f7f2d304681aaa935c9cfd180850cf616ae843efce7682873d6521ded7268937 1.3s done
+#19 extracting sha256:e554276b05e6306c5ad33cd85bfa7f0693083e21f6114db5abf60a20fb413039 0.0s done
+#19 extracting sha256:d39db1cf9caa4f49c5a2e67111fbe6e0d5eea8ede550cb82f3dc2b79712688d6 done
+#19 DONE 2.9s
+
+#20 [frontend build 2/6] WORKDIR /app
+#20 DONE 0.0s
+
+#21 [frontend build 3/6] COPY package*.json ./
+#21 DONE 0.0s
+
+#22 [frontend build 4/6] RUN npm ci
+#22 1.229 
+#22 1.229 added 21 packages, and audited 22 packages in 1s
+#22 1.229 
+#22 1.229 9 packages are looking for funding
+#22 1.229   run `npm fund` for details
+#22 1.230 
+#22 1.230 found 0 vulnerabilities
+#22 1.231 npm notice
+#22 1.231 npm notice New major version of npm available! 10.9.9 -> 12.2.0
+#22 1.231 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#22 1.231 npm notice To update run: npm install -g npm@12.2.0
+#22 1.231 npm notice
+#22 ...
+
+#18 [frontend stage-1 2/4] RUN apk upgrade --no-cache
+#18 0.732 (1/8) Upgrading libcrypto3 (3.5.8-r0 -> 3.5.9-r0)
+#18 0.811 (2/8) Upgrading libssl3 (3.5.8-r0 -> 3.5.9-r0)
+#18 0.828 (3/8) Upgrading zlib (1.3.2-r0 -> 1.3.2-r1)
+#18 0.835 (4/8) Upgrading nghttp2-libs (1.69.0-r0 -> 1.70.0-r0)
+#18 0.843 (5/8) Upgrading pcre2 (10.48-r0 -> 10.49-r0)
+#18 0.857 (6/8) Upgrading libexpat (2.8.4-r0 -> 2.8.5-r0)
+#18 0.866 (7/8) Upgrading libpng (1.6.58-r1 -> 1.6.59-r0)
+#18 0.875 (8/8) Upgrading tzdata (2026d-r0 -> 2026e-r0)
+#18 0.963 Executing ca-certificates-20260909-r0.trigger
+#18 0.995 OK: 59.1 MiB in 71 packages
+#18 DONE 1.7s
+
+#22 [frontend build 4/6] RUN npm ci
+#22 DONE 1.6s
+
+#23 [frontend build 5/6] COPY . .
+#23 DONE 0.0s
+
+#24 [frontend build 6/6] RUN npm run build
+#24 0.174 
+#24 0.174 > taskboard-frontend@1.0.0 build
+#24 0.174 > vite build
+#24 0.174 
+#24 0.373 vite v8.3.3 building client environment for production...
+#24 0.382 transforming...
+#24 0.427 ✓ 15 modules transformed.
+#24 0.443 rendering chunks...
+#24 0.468 computing gzip size...
+#24 0.471 dist/index.html                   0.34 kB │ gzip:  0.25 kB
+#24 0.471 dist/assets/index-DkMuKOF6.css    6.40 kB │ gzip:  2.04 kB
+#24 0.471 dist/assets/index-BhFpkPY_.js   227.22 kB │ gzip: 70.89 kB
+#24 0.471 
+#24 0.472 ✓ built in 97ms
+#24 DONE 0.5s
+
+#25 [backend 4/7] RUN apk upgrade --no-cache && pip install --no-cache-dir -r requirements.txt && adduser -D -u 10001 appuser
+#25 0.530 (1/2) Upgrading zlib (1.3.2-r0 -> 1.3.2-r1)
+#25 0.538 (2/2) Upgrading tzdata (2026d-r0 -> 2026e-r0)
+#25 0.606 OK: 12.1 MiB in 30 packages
+#25 ...
+
+#26 [frontend stage-1 3/4] COPY --from=build /app/dist /usr/share/nginx/html
+#26 DONE 0.0s
+
+#27 [frontend stage-1 4/4] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#27 DONE 0.0s
+
+#25 [backend 4/7] RUN apk upgrade --no-cache && pip install --no-cache-dir -r requirements.txt && adduser -D -u 10001 appuser
+#25 2.297 Collecting fastapi==0.142.2 (from -r requirements.txt (line 1))
+#25 2.350   Downloading fastapi-0.142.2-py3-none-any.whl.metadata (27 kB)
+#25 ...
+
+#28 [frontend] exporting to image
+#28 exporting layers 0.2s done
+#28 writing image sha256:9e42744fb173c981150cacbb5aa236c0a95fd394b2802bd5a6c307dddf086faf done
+#28 naming to docker.io/library/taskboard-lab-frontend done
+#28 DONE 0.2s
+
+#29 [frontend] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#25 [backend 4/7] RUN apk upgrade --no-cache && pip install --no-cache-dir -r requirements.txt && adduser -D -u 10001 appuser
+#25 2.379 Collecting uvicorn==0.54.0 (from uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 2.390   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#25 2.579 Collecting sqlalchemy==2.1.3 (from -r requirements.txt (line 3))
+#25 2.589   Downloading sqlalchemy-2.1.3-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (9.7 kB)
+#25 2.604 Collecting psycopg==3.3.6 (from psycopg[binary]==3.3.6->-r requirements.txt (line 4))
+#25 2.610   Downloading psycopg-3.3.6-py3-none-any.whl.metadata (4.4 kB)
+#25 2.623 Collecting pydantic-settings<3,>=2.7.1 (from -r requirements.txt (line 5))
+#25 2.630   Downloading pydantic_settings-2.15.0-py3-none-any.whl.metadata (3.9 kB)
+#25 2.643 Collecting prometheus-fastapi-instrumentator<8,>=7.0.2 (from -r requirements.txt (line 6))
+#25 2.653   Downloading prometheus_fastapi_instrumentator-7.1.0-py3-none-any.whl.metadata (13 kB)
+#25 2.668 Collecting alembic==1.20.0 (from -r requirements.txt (line 7))
+#25 2.674   Downloading alembic-1.20.0-py3-none-any.whl.metadata (7.3 kB)
+#25 2.697 Collecting pytest<10,>=8.3.4 (from -r requirements.txt (line 8))
+#25 2.704   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+#25 2.716 Collecting httpx<1,>=0.28.1 (from -r requirements.txt (line 9))
+#25 2.723   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#25 2.740 Collecting starlette>=0.46.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#25 2.747   Downloading starlette-1.7.0-py3-none-any.whl.metadata (6.6 kB)
+#25 2.810 Collecting pydantic>=2.9.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#25 2.818   Downloading pydantic-2.13.5-py3-none-any.whl.metadata (110 kB)
+#25 2.844 Collecting typing-extensions>=4.8.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#25 2.851   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#25 2.860 Collecting typing-inspection>=0.4.2 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#25 2.867   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#25 2.876 Collecting annotated-doc>=0.0.2 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#25 2.882   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#25 2.896 Collecting opentelemetry-api>=1.44.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#25 2.903   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+#25 2.916 Collecting click>=7.0 (from uvicorn==0.54.0->uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 2.922   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#25 2.932 Collecting h11>=0.8 (from uvicorn==0.54.0->uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 2.938   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#25 2.953 Collecting Mako (from alembic==1.20.0->-r requirements.txt (line 7))
+#25 2.959   Downloading mako-1.4.3-py3-none-any.whl.metadata (2.9 kB)
+#25 3.051 Collecting psycopg-binary==3.3.6 (from psycopg[binary]==3.3.6->-r requirements.txt (line 4))
+#25 3.059   Downloading psycopg_binary-3.3.6-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (2.7 kB)
+#25 3.079 Collecting httptools>=0.8.0 (from uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 3.088   Downloading httptools-0.8.0-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (3.5 kB)
+#25 3.100 Collecting python-dotenv>=0.13 (from uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 3.106   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+#25 3.131 Collecting pyyaml>=5.1 (from uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 3.138   Downloading pyyaml-6.0.3-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (2.4 kB)
+#25 3.163 Collecting uvloop>=0.15.1 (from uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 3.170   Downloading uvloop-0.23.0-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (5.1 kB)
+#25 3.216 Collecting watchfiles>=0.20 (from uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 3.225   Downloading watchfiles-1.3.0-cp310-abi3-musllinux_1_1_x86_64.whl.metadata (4.9 kB)
+#25 3.295 Collecting websockets>=13.0 (from uvicorn[standard]==0.54.0->-r requirements.txt (line 2))
+#25 3.303   Downloading websockets-17.2-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (6.3 kB)
+#25 3.318 Collecting prometheus-client<1.0.0,>=0.8.0 (from prometheus-fastapi-instrumentator<8,>=7.0.2->-r requirements.txt (line 6))
+#25 3.324   Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)
+#25 3.327 Collecting starlette>=0.46.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#25 3.335   Downloading starlette-0.52.1-py3-none-any.whl.metadata (6.3 kB)
+#25 3.346 Collecting iniconfig>=1.0.1 (from pytest<10,>=8.3.4->-r requirements.txt (line 8))
+#25 3.353   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#25 3.366 Collecting packaging>=22 (from pytest<10,>=8.3.4->-r requirements.txt (line 8))
+#25 3.372   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#25 3.382 Collecting pluggy<2,>=1.5 (from pytest<10,>=8.3.4->-r requirements.txt (line 8))
+#25 3.389   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+#25 3.402 Collecting pygments>=2.7.2 (from pytest<10,>=8.3.4->-r requirements.txt (line 8))
+#25 3.408   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#25 3.425 Collecting anyio (from httpx<1,>=0.28.1->-r requirements.txt (line 9))
+#25 3.431   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#25 3.447 Collecting certifi (from httpx<1,>=0.28.1->-r requirements.txt (line 9))
+#25 3.455   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+#25 3.466 Collecting httpcore==1.* (from httpx<1,>=0.28.1->-r requirements.txt (line 9))
+#25 3.473   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#25 3.485 Collecting idna (from httpx<1,>=0.28.1->-r requirements.txt (line 9))
+#25 3.492   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#25 3.507 Collecting annotated-types>=0.6.0 (from pydantic>=2.9.0->fastapi==0.142.2->-r requirements.txt (line 1))
+#25 3.514   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#25 3.935 Collecting pydantic-core==2.46.5 (from pydantic>=2.9.0->fastapi==0.142.2->-r requirements.txt (line 1))
+#25 3.942   Downloading pydantic_core-2.46.5-cp314-cp314-musllinux_1_1_x86_64.whl.metadata (6.6 kB)
+#25 3.980 Collecting MarkupSafe>=2.0 (from Mako->alembic==1.20.0->-r requirements.txt (line 7))
+#25 3.987   Downloading markupsafe-3.0.4-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (2.7 kB)
+#25 3.996 Downloading fastapi-0.142.2-py3-none-any.whl (144 kB)
+#25 4.008 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#25 4.018 Downloading sqlalchemy-2.1.3-cp314-cp314-musllinux_1_2_x86_64.whl (4.6 MB)
+#25 4.057    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.6/4.6 MB 132.1 MB/s  0:00:00
+#25 4.065 Downloading psycopg-3.3.6-py3-none-any.whl (215 kB)
+#25 4.072 Downloading alembic-1.20.0-py3-none-any.whl (268 kB)
+#25 4.081 Downloading psycopg_binary-3.3.6-cp314-cp314-musllinux_1_2_x86_64.whl (4.3 MB)
+#25 4.099    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 249.0 MB/s  0:00:00
+#25 4.106 Downloading pydantic_settings-2.15.0-py3-none-any.whl (69 kB)
+#25 4.113 Downloading prometheus_fastapi_instrumentator-7.1.0-py3-none-any.whl (19 kB)
+#25 4.120 Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#25 4.127 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#25 4.134 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#25 4.141 Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+#25 4.148 Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+#25 4.155 Downloading starlette-0.52.1-py3-none-any.whl (74 kB)
+#25 4.162 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#25 4.168 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#25 4.175 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#25 4.182 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#25 4.191 Downloading httptools-0.8.0-cp314-cp314-musllinux_1_2_x86_64.whl (466 kB)
+#25 4.198 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#25 4.204 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#25 4.211 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+#25 4.217 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#25 4.224 Downloading pydantic-2.13.5-py3-none-any.whl (472 kB)
+#25 4.235 Downloading pydantic_core-2.46.5-cp314-cp314-musllinux_1_1_x86_64.whl (2.3 MB)
+#25 4.242    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.3/2.3 MB 360.4 MB/s  0:00:00
+#25 4.249 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#25 4.255 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#25 4.258    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 912.7 MB/s  0:00:00
+#25 4.265 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+#25 4.272 Downloading pyyaml-6.0.3-cp314-cp314-musllinux_1_2_x86_64.whl (789 kB)
+#25 4.275    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 789.2/789.2 kB 357.0 MB/s  0:00:00
+#25 4.282 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#25 4.288 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#25 4.298 Downloading uvloop-0.23.0-cp314-cp314-musllinux_1_2_x86_64.whl (4.3 MB)
+#25 4.316    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 246.1 MB/s  0:00:00
+#25 4.325 Downloading watchfiles-1.3.0-cp310-abi3-musllinux_1_1_x86_64.whl (661 kB)
+#25 4.327    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 661.7/661.7 kB 876.1 MB/s  0:00:00
+#25 4.335 Downloading websockets-17.2-cp314-cp314-musllinux_1_2_x86_64.whl (225 kB)
+#25 4.342 Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#25 4.349 Downloading mako-1.4.3-py3-none-any.whl (80 kB)
+#25 4.355 Downloading markupsafe-3.0.4-cp314-cp314-musllinux_1_2_x86_64.whl (23 kB)
+#25 4.553 Installing collected packages: websockets, uvloop, typing-extensions, pyyaml, python-dotenv, pygments, psycopg-binary, psycopg, prometheus-client, pluggy, packaging, MarkupSafe, iniconfig, idna, httptools, h11, click, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, sqlalchemy, pytest, pydantic-core, opentelemetry-api, Mako, httpcore, anyio, watchfiles, starlette, pydantic, httpx, alembic, pydantic-settings, prometheus-fastapi-instrumentator, fastapi
+#25 8.831 
+#25 8.834 Successfully installed Mako-1.4.3 MarkupSafe-3.0.4 alembic-1.20.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 certifi-2026.7.22 click-8.5.0 fastapi-0.142.2 h11-0.16.0 httpcore-1.0.9 httptools-0.8.0 httpx-0.28.1 idna-3.20 iniconfig-2.3.1 opentelemetry-api-1.45.1 packaging-26.3 pluggy-1.6.0 prometheus-client-0.26.0 prometheus-fastapi-instrumentator-7.1.0 psycopg-3.3.6 psycopg-binary-3.3.6 pydantic-2.13.5 pydantic-core-2.46.5 pydantic-settings-2.15.0 pygments-2.21.0 pytest-9.1.1 python-dotenv-1.2.4 pyyaml-6.0.3 sqlalchemy-2.1.3 starlette-0.52.1 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-17.2
+#25 8.834 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#25 DONE 9.6s
+
+#30 [backend 5/7] COPY alembic.ini ./
+#30 DONE 0.0s
+
+#31 [backend 6/7] COPY alembic ./alembic
+#31 DONE 0.0s
+
+#32 [backend 7/7] COPY app ./app
+#32 DONE 0.0s
+
+#33 [backend] exporting to image
+#33 exporting layers
+#33 exporting layers 0.6s done
+#33 writing image sha256:2390acfef2240aa013663aefc7c6c523eccb977c3c38601d30dce2213a8c0092 done
+#33 naming to docker.io/library/taskboard-lab-backend done
+#33 DONE 0.6s
+
+#34 [backend] resolving provenance for metadata file
+#34 DONE 0.0s
+ backend  Built
+ frontend  Built
+ Network taskboard-lab_default  Creating
+ Network taskboard-lab_default  Created
+ Volume "taskboard-lab_postgres-data"  Creating
+ Volume "taskboard-lab_postgres-data"  Created
+ Container taskboard-lab-postgres-1  Creating
+ Container taskboard-lab-postgres-1  Created
+ Container taskboard-lab-backend-1  Creating
+ Container taskboard-lab-backend-1  Created
+ Container taskboard-lab-frontend-1  Creating
+ Container taskboard-lab-frontend-1  Created
+ Container taskboard-lab-postgres-1  Starting
+ Container taskboard-lab-postgres-1  Started
+ Container taskboard-lab-postgres-1  Waiting
+ Container taskboard-lab-postgres-1  Healthy
+ Container taskboard-lab-backend-1  Starting
+ Container taskboard-lab-backend-1  Started
+ Container taskboard-lab-frontend-1  Starting
+ Container taskboard-lab-frontend-1  Started
++ docker compose ps -a
+NAME                       IMAGE                    COMMAND                  SERVICE    CREATED         STATUS                   PORTS
+taskboard-lab-backend-1    taskboard-lab-backend    "sh -c 'alembic upgr…"   backend    4 seconds ago   Up Less than a second    127.0.0.1:8000->8000/tcp
+taskboard-lab-frontend-1   taskboard-lab-frontend   "/docker-entrypoint.…"   frontend   4 seconds ago   Up Less than a second    127.0.0.1:3000->80/tcp
+taskboard-lab-postgres-1   postgres:16-alpine       "docker-entrypoint.s…"   postgres   4 seconds ago   Up 3 seconds (healthy)   127.0.0.1:15432->5432/tcp
+++ seq 1 60
++ for attempt in $(seq 1 60)
++ curl -fsS http://localhost:8000/ready
+curl: (56) Recv failure: Connection reset by peer
++ [[ 1 -lt 60 ]]
++ sleep 2
++ for attempt in $(seq 1 60)
++ curl -fsS http://localhost:8000/ready
+curl: (56) Recv failure: Connection reset by peer
++ [[ 2 -lt 60 ]]
++ sleep 2
++ for attempt in $(seq 1 60)
++ curl -fsS http://localhost:8000/ready
+{"status":"READY"}+ break
++ curl -fsS http://localhost:8000/health
+{"status":"UP"}+ curl -fsS http://localhost:8000/docs
++ grep -m 1 swagger-ui
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
++ curl -fsS http://localhost:8000/metrics
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 497.0
+python_gc_objects_collected_total{generation="1"} 12.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 90.0
+python_gc_collections_total{generation="1"} 8.0
+python_gc_collections_total{generation="2"} 0.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="14",patchlevel="8",version="3.14.8"} 1.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.46296832e+08
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 9.8553856e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.79139858685e+09
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 1.11
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 16.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 65536.0
+# HELP http_requests_total Total number of requests by method, status and handler.
+# TYPE http_requests_total counter
+http_requests_total{handler="/ready",method="GET",status="2xx"} 1.0
+http_requests_total{handler="/health",method="GET",status="2xx"} 1.0
+http_requests_total{handler="/docs",method="GET",status="2xx"} 1.0
+# HELP http_requests_created Total number of requests by method, status and handler.
+# TYPE http_requests_created gauge
+http_requests_created{handler="/ready",method="GET",status="2xx"} 1.7913985920515769e+09
+http_requests_created{handler="/health",method="GET",status="2xx"} 1.7913985920562155e+09
+http_requests_created{handler="/docs",method="GET",status="2xx"} 1.791398592060435e+09
+# HELP http_request_size_bytes Content length of incoming requests by handler. Only value of header is respected. Otherwise ignored. No percentile calculated. 
+# TYPE http_request_size_bytes summary
+http_request_size_bytes_count{handler="/ready"} 1.0
+http_request_size_bytes_sum{handler="/ready"} 0.0
+http_request_size_bytes_count{handler="/health"} 1.0
+http_request_size_bytes_sum{handler="/health"} 0.0
+http_request_size_bytes_count{handler="/docs"} 1.0
+http_request_size_bytes_sum{handler="/docs"} 0.0
+# HELP http_request_size_bytes_created Content length of incoming requests by handler. Only value of header is respected. Otherwise ignored. No percentile calculated. 
+# TYPE http_request_size_bytes_created gauge
+http_request_size_bytes_created{handler="/ready"} 1.7913985920516024e+09
+http_request_size_bytes_created{handler="/health"} 1.7913985920562298e+09
+http_request_size_bytes_created{handler="/docs"} 1.791398592060448e+09
+# HELP http_response_size_bytes Content length of outgoing responses by handler. Only value of header is respected. Otherwise ignored. No percentile calculated. 
+# TYPE http_response_size_bytes summary
+http_response_size_bytes_count{handler="/ready"} 1.0
+http_response_size_bytes_sum{handler="/ready"} 18.0
+http_response_size_bytes_count{handler="/health"} 1.0
+http_response_size_bytes_sum{handler="/health"} 15.0
+http_response_size_bytes_count{handler="/docs"} 1.0
+http_response_size_bytes_sum{handler="/docs"} 1012.0
+# HELP http_response_size_bytes_created Content length of outgoing responses by handler. Only value of header is respected. Otherwise ignored. No percentile calculated. 
+# TYPE http_response_size_bytes_created gauge
+http_response_size_bytes_created{handler="/ready"} 1.7913985920516267e+09
+http_response_size_bytes_created{handler="/health"} 1.7913985920562472e+09
+http_response_size_bytes_created{handler="/docs"} 1.791398592060464e+09
+# HELP http_request_duration_highr_seconds Latency with many buckets but no API specific labels. Made for more accurate percentile calculations. 
+# TYPE http_request_duration_highr_seconds histogram
+http_request_duration_highr_seconds_bucket{le="0.01"} 2.0
+http_request_duration_highr_seconds_bucket{le="0.025"} 3.0
+http_request_duration_highr_seconds_bucket{le="0.05"} 3.0
+http_request_duration_highr_seconds_bucket{le="0.075"} 3.0
+http_request_duration_highr_seconds_bucket{le="0.1"} 3.0
+http_request_duration_highr_seconds_bucket{le="0.25"} 3.0
+http_request_duration_highr_seconds_bucket{le="0.5"} 3.0
+http_request_duration_highr_seconds_bucket{le="0.75"} 3.0
+http_request_duration_highr_seconds_bucket{le="1.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="1.5"} 3.0
+http_request_duration_highr_seconds_bucket{le="2.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="2.5"} 3.0
+http_request_duration_highr_seconds_bucket{le="3.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="3.5"} 3.0
+http_request_duration_highr_seconds_bucket{le="4.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="4.5"} 3.0
+http_request_duration_highr_seconds_bucket{le="5.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="7.5"} 3.0
+http_request_duration_highr_seconds_bucket{le="10.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="30.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="60.0"} 3.0
+http_request_duration_highr_seconds_bucket{le="+Inf"} 3.0
+http_request_duration_highr_seconds_count 3.0
+http_request_duration_highr_seconds_sum 0.014392173999993929
+# HELP http_request_duration_highr_seconds_created Latency with many buckets but no API specific labels. Made for more accurate percentile calculations. 
+# TYPE http_request_duration_highr_seconds_created gauge
+http_request_duration_highr_seconds_created 1.7913985900164592e+09
+# HELP http_request_duration_seconds Latency with only few buckets by handler. Made to be only used if aggregation by handler is important. 
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds_bucket{handler="/ready",le="0.1",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/ready",le="0.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/ready",le="1.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/ready",le="+Inf",method="GET"} 1.0
+http_request_duration_seconds_count{handler="/ready",method="GET"} 1.0
+http_request_duration_seconds_sum{handler="/ready",method="GET"} 0.013732378000000267
+http_request_duration_seconds_bucket{handler="/health",le="0.1",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/health",le="0.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/health",le="1.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/health",le="+Inf",method="GET"} 1.0
+http_request_duration_seconds_count{handler="/health",method="GET"} 1.0
+http_request_duration_seconds_sum{handler="/health",method="GET"} 0.00044365299999782337
+http_request_duration_seconds_bucket{handler="/docs",le="0.1",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/docs",le="0.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/docs",le="1.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{handler="/docs",le="+Inf",method="GET"} 1.0
+http_request_duration_seconds_count{handler="/docs",method="GET"} 1.0
+http_request_duration_seconds_sum{handler="/docs",method="GET"} 0.00021614299999583864
+# HELP http_request_duration_seconds_created Latency with only few buckets by handler. Made to be only used if aggregation by handler is important. 
+# TYPE http_request_duration_seconds_created gauge
+http_request_duration_seconds_created{handler="/ready",method="GET"} 1.7913985920516577e+09
+http_request_duration_seconds_created{handler="/health",method="GET"} 1.7913985920562673e+09
+http_request_duration_seconds_created{handler="/docs",method="GET"} 1.791398592060482e+09
++ curl --retry 10 --retry-connrefused --retry-delay 2 -fsS http://localhost:3000/
++ grep '<title>TaskBoard</title>'
+<!doctype html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>TaskBoard</title>  <script type="module" crossorigin src="/assets/index-BhFpkPY_.js"></script>
+++ curl -fsS -H 'Content-Type: application/json' -d '{"title":"Archit DevOps lab","assignee":"Archit Kulkarni","priority":"HIGH"}' http://localhost:3000/api/tasks
++ created='{"title":"Archit DevOps lab","description":"","priority":"HIGH","status":"TODO","assignee":"Archit Kulkarni","id":1,"created_at":"2026-10-07T18:43:12.076290Z"}'
++ echo '{"title":"Archit DevOps lab","description":"","priority":"HIGH","status":"TODO","assignee":"Archit Kulkarni","id":1,"created_at":"2026-10-07T18:43:12.076290Z"}'
+{"title":"Archit DevOps lab","description":"","priority":"HIGH","status":"TODO","assignee":"Archit Kulkarni","id":1,"created_at":"2026-10-07T18:43:12.076290Z"}
+++ python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])'
++ id=1
++ curl -fsS http://localhost:8000/api/tasks/1
+{"title":"Archit DevOps lab","description":"","priority":"HIGH","status":"TODO","assignee":"Archit Kulkarni","id":1,"created_at":"2026-10-07T18:43:12.076290Z"}+ curl -fsS -X PUT -H 'Content-Type: application/json' -d '{"status":"DONE"}' http://localhost:8000/api/tasks/1
+{"title":"Archit DevOps lab","description":"","priority":"HIGH","status":"DONE","assignee":"Archit Kulkarni","id":1,"created_at":"2026-10-07T18:43:12.076290Z"}+ docker compose exec -T postgres psql -U taskboard -d taskboard -c 'SELECT id,title,status,assignee FROM tasks;'
+ id |       title       | status |    assignee     
+----+-------------------+--------+-----------------
+  1 | Archit DevOps lab | DONE   | Archit Kulkarni
+(1 row)
+
++ curl -fsS -X DELETE http://localhost:8000/api/tasks/1
+++ curl -s -o /dev/null -w '%{http_code}' http://localhost:8000/api/tasks/1
++ test 404 = 404
++ docker images --format '{{.Repository}}:{{.Tag}} {{.Size}}'
++ grep taskboard
+taskboard-lab-backend:latest 156MB
+taskboard-lab-frontend:latest 70.8MB
++ docker compose exec -T backend id
+uid=10001(appuser) gid=10001(appuser) groups=10001(appuser)
++ docker compose logs --tail=20 backend
+backend-1  | INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+backend-1  | INFO  [alembic.runtime.migration] Will assume transactional DDL.
+backend-1  | INFO  [alembic.runtime.migration] Running upgrade  -> 0001_create_tasks
+backend-1  | INFO:     Started server process [1]
+backend-1  | INFO:     Waiting for application startup.
+backend-1  | INFO:     Application startup complete.
+backend-1  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+backend-1  | INFO:     172.18.0.1:44994 - "GET /ready HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:45000 - "GET /health HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:45010 - "GET /docs HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:45024 - "GET /metrics HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.4:38404 - "POST /api/tasks HTTP/1.1" 201 Created
+backend-1  | INFO:     172.18.0.1:45030 - "GET /api/tasks/1 HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:45046 - "PUT /api/tasks/1 HTTP/1.1" 200 OK
+backend-1  | INFO:     172.18.0.1:45050 - "DELETE /api/tasks/1 HTTP/1.1" 204 No Content
+backend-1  | INFO:     172.18.0.1:45062 - "GET /api/tasks/1 HTTP/1.1" 404 Not Found
++ docker compose down
+ Container taskboard-lab-frontend-1  Stopping
+ Container taskboard-lab-frontend-1  Stopped
+ Container taskboard-lab-frontend-1  Removing
+ Container taskboard-lab-frontend-1  Removed
+ Container taskboard-lab-backend-1  Stopping
+ Container taskboard-lab-backend-1  Stopped
+ Container taskboard-lab-backend-1  Removing
+ Container taskboard-lab-backend-1  Removed
+ Container taskboard-lab-postgres-1  Stopping
+ Container taskboard-lab-postgres-1  Stopped
+ Container taskboard-lab-postgres-1  Removing
+ Container taskboard-lab-postgres-1  Removed
+ Network taskboard-lab_default  Removing
+ Network taskboard-lab_default  Removed

@@ -14,9 +14,20 @@ command = args.command[1:] if args.command[:1] == ["--"] else args.command
 if not command:
     parser.error("a command is required")
 started = datetime.datetime.now(datetime.UTC).isoformat()
-result = subprocess.run(command, cwd=args.cwd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-record = f"Recorded: {started}\nCommand: {shlex.join(command)}\n\n{result.stdout}\nExit code: {result.returncode}\n"
 args.output.parent.mkdir(parents=True, exist_ok=True)
-args.output.write_text(record, encoding="utf-8")
-print(record)
-raise SystemExit(result.returncode)
+with args.output.open("w", encoding="utf-8") as output:
+    header = f"Recorded: {started}\nCommand: {shlex.join(command)}\n\n"
+    output.write(header)
+    output.flush()
+    print(header, end="", flush=True)
+    with subprocess.Popen(command, cwd=args.cwd, text=True, stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT, bufsize=1) as process:
+        for line in process.stdout:
+            output.write(line)
+            output.flush()
+            print(line, end="", flush=True)
+        code = process.wait()
+    footer = f"\nExit code: {code}\n"
+    output.write(footer)
+    print(footer, end="", flush=True)
+raise SystemExit(code)

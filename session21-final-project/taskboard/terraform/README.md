@@ -12,6 +12,9 @@ terraform fmt -recursive
 terraform validate
 terraform plan
 terraform apply
-aws eks update-kubeconfig --region ap-south-1 --name taskboard-eks
+aws eks update-kubeconfig --profile devops-homework --region ap-south-1 \
+  --name taskboard-eks --role-arn "$(terraform output -raw kubectl_role_arn)"
 terraform destroy
 ```
+
+The dedicated lab role is used for Kubernetes access; AWS root is not an EKS access-entry principal. Generated state, saved plans and kubeconfig stay out of Git. Do not apply this folder while the homework is paused.

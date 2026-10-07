@@ -1,0 +1,6 @@
+Recorded: 2026-10-07T19:22:24.049928+00:00
+Command: wsl.exe -d Ubuntu -u root -- /root/.local/bin/aws kms describe-key --profile devops-homework --region ap-south-1 --key-id 4246a34c-a098-49ca-96ee-359466c37808 --query KeyMetadata.KeyState --output text
+
+PendingDeletion
+
+Exit code: 0
