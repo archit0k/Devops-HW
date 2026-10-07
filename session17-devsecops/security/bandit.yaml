@@ -1,0 +1,2 @@
+# No tests or runtime secrets are bundled into the image.
+exclude_dirs: [tests, .venv]
