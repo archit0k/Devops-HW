@@ -1,0 +1,10 @@
+Recorded: 2026-10-07T16:44:56.081767+00:00
+Command: docker compose -f session21-final-project/docker-compose.yml ps -a
+
+NAME                   IMAGE                      COMMAND                  SERVICE    CREATED         STATUS                     PORTS
+studyslot-backend-1    studyslot-backend:local    "uvicorn app.main:ap…"   backend    8 minutes ago   Up 8 minutes (healthy)     127.0.0.1:8000->8000/tcp
+studyslot-frontend-1   studyslot-frontend:local   "/docker-entrypoint.…"   frontend   8 minutes ago   Up 8 minutes               80/tcp, 0.0.0.0:3000->8080/tcp, [::]:3000->8080/tcp
+studyslot-migrate-1    studyslot-backend:local    "alembic upgrade head"   migrate    8 minutes ago   Exited (0) 8 minutes ago   
+studyslot-postgres-1   postgres:17-alpine         "docker-entrypoint.s…"   postgres   8 minutes ago   Up 8 minutes (healthy)     5432/tcp
+
+Exit code: 0

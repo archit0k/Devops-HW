@@ -1,0 +1,105 @@
+Recorded: 2026-10-07T17:48:56.995819+00:00
+Command: terraform -chdir=session19-cloud-terraform plan -out=lab.tfplan -input=false -no-color
+
+data.aws_availability_zones.available: Reading...
+data.aws_ssm_parameter.ami: Reading...
+aws_vpc.homework: Refreshing state... [id=vpc-00cf8c8d690b92acf]
+aws_s3_bucket.homework: Refreshing state... [id=archit-24bcs10194-devops-hw19-20261007]
+data.aws_ssm_parameter.ami: Read complete after 2s [id=/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64]
+data.aws_availability_zones.available: Read complete after 6s [id=us-east-1]
+aws_internet_gateway.homework: Refreshing state... [id=igw-097576906d41e323e]
+aws_subnet.public: Refreshing state... [id=subnet-095fea060897c4fa4]
+aws_security_group.web: Refreshing state... [id=sg-0a5f2f2fac362c8ac]
+aws_route_table.public: Refreshing state... [id=rtb-0aed96afba77d684a]
+aws_route_table_association.public: Refreshing state... [id=rtbassoc-014ea3a7197393021]
+aws_instance.web: Refreshing state... [id=i-05bb24c08a3b1aa70]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # aws_s3_bucket.homework is tainted, so must be replaced
+-/+ resource "aws_s3_bucket" "homework" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      ~ arn                         = "arn:aws:s3:::archit-24bcs10194-devops-hw19-20261007" -> (known after apply)
+      ~ bucket_domain_name          = "archit-24bcs10194-devops-hw19-20261007.s3.amazonaws.com" -> (known after apply)
+      ~ bucket_namespace            = "global" -> (known after apply)
+      + bucket_prefix               = (known after apply)
+      ~ bucket_region               = "us-east-1" -> (known after apply)
+      ~ bucket_regional_domain_name = "archit-24bcs10194-devops-hw19-20261007.s3.us-east-1.amazonaws.com" -> (known after apply)
+      ~ hosted_zone_id              = "Z3AQBSTGFYJSTF" -> (known after apply)
+      ~ id                          = "archit-24bcs10194-devops-hw19-20261007" -> (known after apply)
+      ~ object_lock_enabled         = false -> (known after apply)
+      + policy                      = (known after apply)
+      ~ request_payer               = "BucketOwner" -> (known after apply)
+      - tags                        = {} -> null
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+        # (4 unchanged attributes hidden)
+
+      ~ cors_rule (known after apply)
+
+      ~ grant (known after apply)
+      - grant {
+          - id          = "6eada8133a35354e7866798d70df6269af3c334d1716560b849cde50898cd195" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      ~ lifecycle_rule (known after apply)
+
+      ~ logging (known after apply)
+
+      ~ object_lock_configuration (known after apply)
+
+      ~ replication_configuration (known after apply)
+
+      ~ server_side_encryption_configuration (known after apply)
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      ~ versioning (known after apply)
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+
+      ~ website (known after apply)
+    }
+
+  # aws_s3_bucket_public_access_block.homework will be created
+  + resource "aws_s3_bucket_public_access_block" "homework" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + region                  = "us-east-1"
+      + restrict_public_buckets = true
+    }
+
+Plan: 2 to add, 0 to change, 1 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: lab.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "lab.tfplan"
+
+Exit code: 0

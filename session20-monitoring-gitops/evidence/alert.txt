@@ -1,0 +1,96 @@
+Recorded: 2026-10-07T18:07:55.976725+00:00
+Command: bash session20-monitoring-gitops/check-alert.sh
+
++ compose restart prometheus
++ docker compose -f compose.yaml restart prometheus
+ Container monitoring-prometheus-1  Restarting
+ Container monitoring-prometheus-1  Started
++ sleep 15
++ curl -fsS 'http://localhost:9090/api/v1/query?query=up'
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"up","instance":"prometheus:9090","job":"prometheus"},"value":[1791396494.443,"1"]},{"metric":{"__name__":"up","instance":"grafana:3000","job":"grafana"},"value":[1791396494.443,"1"]}]}}+ compose stop grafana
++ docker compose -f compose.yaml stop grafana
+ Container monitoring-grafana-1  Stopping
+ Container monitoring-grafana-1  Stopped
+++ seq 1 30
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[]}}'
++ echo '{"status":"success","data":{"alerts":[]}}'
+{"status":"success","data":{"alerts":[]}}
++ grep -q '"state":"firing"'
++ [[ 1 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[]}}'
++ echo '{"status":"success","data":{"alerts":[]}}'
+{"status":"success","data":{"alerts":[]}}
++ grep -q '"state":"firing"'
++ [[ 2 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[]}}'
++ echo '{"status":"success","data":{"alerts":[]}}'
+{"status":"success","data":{"alerts":[]}}
++ grep -q '"state":"firing"'
++ [[ 3 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
++ echo '{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
+{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}
++ grep -q '"state":"firing"'
++ [[ 4 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
++ echo '{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
+{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}
++ grep -q '"state":"firing"'
++ [[ 5 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
++ echo '{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
+{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}
++ grep -q '"state":"firing"'
++ [[ 6 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
++ echo '{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
+{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}
++ grep -q '"state":"firing"'
++ [[ 7 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
++ echo '{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
+{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"pending","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}
++ grep -q '"state":"firing"'
++ [[ 8 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
+++ curl -fsS http://localhost:9090/api/v1/alerts
++ alerts='{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"firing","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
++ echo '{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"firing","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}'
+{"status":"success","data":{"alerts":[{"labels":{"alertname":"TargetDown","instance":"grafana:3000","job":"grafana","severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"state":"firing","activeAt":"2026-10-07T18:08:21.455244941Z","value":"0e+00"}]}}
++ grep -q '"state":"firing"'
++ break
++ compose start grafana
++ docker compose -f compose.yaml start grafana
+ Container monitoring-grafana-1  Starting
+ Container monitoring-grafana-1  Started
++ sleep 15
++ curl -fsS 'http://localhost:9090/api/v1/query?query=up'
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"up","instance":"prometheus:9090","job":"prometheus"},"value":[1791396528.961,"1"]},{"metric":{"__name__":"up","instance":"grafana:3000","job":"grafana"},"value":[1791396528.961,"1"]}]}}+ curl -fsS http://localhost:9090/api/v1/alerts
+{"status":"success","data":{"alerts":[]}}+ compose start grafana
++ docker compose -f compose.yaml start grafana
+
+Exit code: 0

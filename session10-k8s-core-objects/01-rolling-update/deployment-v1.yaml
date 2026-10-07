@@ -8,7 +8,7 @@ spec:
   replicas: 4
   # RollingUpdate: Kubernetes replaces old pods one-by-one while keeping the service up.
   # maxSurge: 1     -> Allows 1 extra pod above the desired count during the update.
-  # maxUnavailable: 0 -> Zero pods can be unavailable at any point. Zero downtime guaranteed.
+  # maxUnavailable: 0 keeps the desired number available during a healthy rollout.
   strategy:
     type: RollingUpdate
     rollingUpdate:

@@ -1,0 +1,102 @@
+Recorded: 2026-10-07T17:40:06.138484+00:00
+Command: python scripts/check-git.py
+
+git init -b main
+Initialized empty Git repository in C:/Users/archi/AppData/Local/Temp/archit-git-lab-l3jjcf7l/.git/
+
+git config user.name Archit
+
+git config user.email architkulkarni0@gmail.com
+
+git add notes.txt
+
+git commit -m Start notes
+[main (root-commit) 0b06358] Start notes
+ 1 file changed, 1 insertion(+)
+ create mode 100644 notes.txt
+
+git commit -m Unstaged change
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   notes.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+git commit -am Update tracked notes
+[main 967ce60] Update tracked notes
+ 1 file changed, 1 insertion(+)
+
+git commit -am Try new file without add
+On branch main
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	new.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+git add new.txt
+
+git commit -m Add new notes
+[main 3566239] Add new notes
+ 1 file changed, 1 insertion(+)
+ create mode 100644 new.txt
+
+git switch -c practice
+Switched to a new branch 'practice'
+
+git add branch-1.txt
+
+git commit -m Add branch note 1
+[practice 6977a0a] Add branch note 1
+ 1 file changed, 1 insertion(+)
+ create mode 100644 branch-1.txt
+
+git add branch-2.txt
+
+git commit -m Add branch note 2
+[practice 7a8cf08] Add branch note 2
+ 1 file changed, 1 insertion(+)
+ create mode 100644 branch-2.txt
+
+git rev-parse HEAD
+7a8cf0898e1e23b341f0a64f43369359991fe507
+
+git add branch-3.txt
+
+git commit -m Add branch note 3
+[practice 055019a] Add branch note 3
+ 1 file changed, 1 insertion(+)
+ create mode 100644 branch-3.txt
+
+git log --oneline --all --graph
+* 055019a Add branch note 3
+* 7a8cf08 Add branch note 2
+* 6977a0a Add branch note 1
+* 3566239 Add new notes
+* 967ce60 Update tracked notes
+* 0b06358 Start notes
+
+git switch main
+Switched to branch 'main'
+
+git cherry-pick 7a8cf0898e1e23b341f0a64f43369359991fe507
+[main a8b4494] Add branch note 2
+ Date: Wed Oct 7 23:10:09 2026 +0530
+ 1 file changed, 1 insertion(+)
+ create mode 100644 branch-2.txt
+
+git log --oneline --all --graph --decorate
+* a8b4494 (HEAD -> main) Add branch note 2
+| * 055019a (practice) Add branch note 3
+| * 7a8cf08 Add branch note 2
+| * 6977a0a Add branch note 1
+|/  
+* 3566239 Add new notes
+* 967ce60 Update tracked notes
+* 0b06358 Start notes
+
+Only branch note 2 transferred to main. All checks passed.
+
+Exit code: 0

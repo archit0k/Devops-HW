@@ -1,0 +1,28 @@
++ kubectl run lab-client --image=busybox:1.36 --restart=Never -- sleep 7200
+pod/lab-client created
++ kubectl wait --for=condition=Ready pod/lab-client --timeout=120s
+pod/lab-client condition met
++ case "$lab" in
++ cd session12-ingress-configmaps-secrets
++ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.2/deploy/static/provider/kind/deploy.yaml
+namespace/ingress-nginx created
+serviceaccount/ingress-nginx created
+serviceaccount/ingress-nginx-admission created
+role.rbac.authorization.k8s.io/ingress-nginx created
+role.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx-admission created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+configmap/ingress-nginx-controller created
+service/ingress-nginx-controller created
+service/ingress-nginx-controller-admission created
+deployment.apps/ingress-nginx-controller created
+job.batch/ingress-nginx-admission-create created
+job.batch/ingress-nginx-admission-patch created
+ingressclass.networking.k8s.io/nginx created
+validatingwebhookconfiguration.admissionregistration.k8s.io/ingress-nginx-admission created
++ kubectl -n ingress-nginx patch deployment ingress-nginx-controller --type=json '-p=[{"op":"remove","path":"/spec/template/spec/nodeSelector/ingress-ready"}]'
+The request is invalid: the server rejected our request due to an error in our request

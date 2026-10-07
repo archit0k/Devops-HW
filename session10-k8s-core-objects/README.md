@@ -77,3 +77,9 @@ kubectl rollout undo deployment/app-rolling
 `containerPort` describes an application port in a Pod; Service `targetPort` is the backend port; Service `port` is the virtual in-cluster port; `nodePort` is the externally reachable high port on every node. Labels are object metadata; selectors are matching queries used by Services and controllers.
 
 For a three-replica Deployment, `maxSurge: 1` permits a fourth Pod during the update, while `maxUnavailable: 0` keeps all three requested endpoints available. Requests reserve scheduler capacity; limits cap runtime consumption. Memory units are binary for `Mi`/`Gi` and decimal for `M`/`G`.
+
+## Executed lab
+
+The [command record](evidence/commands.txt) covers all twelve lifecycle cases, completed-job logs, shutdown handling, ReplicaSet replacement, DaemonSet placement, MySQL StatefulSet/PVCs, and all four deployment strategies. The [Linux runner](https://github.com/archit0k/Devops-HW/actions/runs/37658242308) used a real disposable Kubernetes cluster.
+
+Rolling update includes an actual rollback; blue-green includes HTTP checks before/after switching the Service selector; canary starts with nine stable and one canary Pod, samples sixty requests, then scales to five each. Replica ratios approximate traffic share, not an exact percentage guarantee. Recreate records the old/new Pods and events. Likewise `maxUnavailable: 0` is a rollout policy, not proof of zero downtime under every possible failure.

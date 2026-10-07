@@ -1,0 +1,22 @@
+Recorded: 2026-10-07T17:49:35.541654+00:00
+Command: terraform -chdir=session19-cloud-terraform apply -input=false -no-color lab.tfplan
+
+aws_s3_bucket.homework: Destroying... [id=archit-24bcs10194-devops-hw19-20261007]
+aws_s3_bucket.homework: Still destroying... [id=archit-24bcs10194-devops-hw19-20261007, 00m10s elapsed]
+aws_s3_bucket.homework: Destruction complete after 16s
+aws_s3_bucket.homework: Creating...
+aws_s3_bucket.homework: Creation complete after 9s [id=archit-24bcs10194-devops-hw19-20261007]
+aws_s3_bucket_public_access_block.homework: Creating...
+aws_s3_bucket_public_access_block.homework: Creation complete after 1s [id=archit-24bcs10194-devops-hw19-20261007]
+
+Apply complete! Resources: 2 added, 0 changed, 1 destroyed.
+
+Outputs:
+
+bucket_name = "archit-24bcs10194-devops-hw19-20261007"
+instance_id = "i-05bb24c08a3b1aa70"
+subnet_id = "subnet-095fea060897c4fa4"
+vpc_id = "vpc-00cf8c8d690b92acf"
+web_url = "http://100.26.1.121"
+
+Exit code: 0

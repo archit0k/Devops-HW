@@ -35,4 +35,10 @@ Copy `.env.example` to ignored `.env` and set a local password. Then run `docker
 
 ## Verification status
 
-Implementation and live verification are in progress. Evidence will be linked here only after the corresponding test, workflow, deployment or cleanup has actually run. The instructor's [rubric](https://github.com/Nency-Ravaliya/devops-heros/blob/main/session21-python/GRADING.md) is the checklist, not a claim that every item is already complete.
+This project is paused while the assignments due today are submitted. It is not a completed final-project submission. The API, frontend, containers, CI/security checks and infrastructure files are present; the final AWS/Kubernetes/GitOps deployment and remaining project evidence are still pending.
+
+Recorded checks include [API tests](evidence/pytest.txt), [Compose health/status](evidence/compose-status.txt) and the [passing CI run](https://github.com/archit0k/Devops-HW/actions/runs/37654467610). These are historical checks, not a claim that a project EKS cluster is running.
+
+![Local Compose application](evidence/compose-app.jpg)
+
+The instructor's [rubric](https://github.com/Nency-Ravaliya/devops-heros/blob/main/session21-python/GRADING.md) is the checklist for the remaining work.

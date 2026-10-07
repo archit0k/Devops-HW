@@ -1,0 +1,173 @@
++ kubectl run lab-client --image=busybox:1.36 --restart=Never -- sleep 7200
+pod/lab-client created
++ kubectl wait --for=condition=Ready pod/lab-client --timeout=120s
+pod/lab-client condition met
++ case "$lab" in
++ cd session12-ingress-configmaps-secrets
++ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.13.2/deploy/static/provider/kind/deploy.yaml
+namespace/ingress-nginx created
+serviceaccount/ingress-nginx created
+serviceaccount/ingress-nginx-admission created
+role.rbac.authorization.k8s.io/ingress-nginx created
+role.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx-admission created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+configmap/ingress-nginx-controller created
+service/ingress-nginx-controller created
+service/ingress-nginx-controller-admission created
+deployment.apps/ingress-nginx-controller created
+job.batch/ingress-nginx-admission-create created
+job.batch/ingress-nginx-admission-patch created
+ingressclass.networking.k8s.io/nginx created
+validatingwebhookconfiguration.admissionregistration.k8s.io/ingress-nginx-admission created
++ kubectl label node assignment-control-plane ingress-ready=true --overwrite
+node/assignment-control-plane labeled
++ kubectl -n ingress-nginx rollout status deployment/ingress-nginx-controller --timeout=240s
+Waiting for deployment "ingress-nginx-controller" rollout to finish: 0 of 1 updated replicas are available...
+deployment "ingress-nginx-controller" successfully rolled out
++ kubectl apply -f 04-full-demo/configmap.yaml
+configmap/yatri-app-config created
++ bash 02-secret/create-secret.sh
+secret/yatri-db-secret created
+NAME              TYPE     DATA   AGE
+yatri-db-secret   Opaque   3      0s
++ kubectl apply -f 04-full-demo/backend.yaml -f 04-full-demo/frontend.yaml
+deployment.apps/yatri-backend created
+service/yatri-backend-service created
+deployment.apps/yatri-frontend created
+service/yatri-frontend-service created
++ kubectl rollout status deployment/yatri-backend --timeout=180s
+Waiting for deployment "yatri-backend" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "yatri-backend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-backend" successfully rolled out
++ kubectl rollout status deployment/yatri-frontend --timeout=180s
+Waiting for deployment "yatri-frontend" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "yatri-frontend" rollout to finish: 1 of 2 updated replicas are available...
+deployment "yatri-frontend" successfully rolled out
++ kubectl apply -f 04-full-demo/ingress.yaml
+ingress.networking.k8s.io/yatri-ingress created
++ kubectl get configmap,secret,ingress,deploy,svc,pods
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      38s
+configmap/yatri-app-config   5      6s
+
+NAME                     TYPE     DATA   AGE
+secret/yatri-db-secret   Opaque   3      6s
+
+NAME                                      CLASS   HOSTS         ADDRESS   PORTS   AGE
+ingress.networking.k8s.io/yatri-ingress   nginx   yatri.local             80      0s
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/yatri-backend    2/2     2            2           5s
+deployment.apps/yatri-frontend   2/2     2            2           5s
+
+NAME                             TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes               ClusterIP   10.96.0.1      <none>        443/TCP   44s
+service/yatri-backend-service    ClusterIP   10.96.75.90    <none>        80/TCP    5s
+service/yatri-frontend-service   ClusterIP   10.96.57.111   <none>        80/TCP    5s
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/lab-client                        1/1     Running   0          25s
+pod/yatri-backend-6d997d7c4-98c2m     1/1     Running   0          5s
+pod/yatri-backend-6d997d7c4-j2kml     1/1     Running   0          5s
+pod/yatri-frontend-798f9b58cb-5gk9g   1/1     Running   0          5s
+pod/yatri-frontend-798f9b58cb-9rcjb   1/1     Running   0          5s
++ kubectl exec deployment/yatri-backend -- sh -c 'test -n "$POSTGRES_PASSWORD" && echo "Secret injected; value not printed"'
+Secret injected; value not printed
+++ kubectl -n ingress-nginx get svc ingress-nginx-controller -o 'jsonpath={.spec.clusterIP}'
++ controller=10.96.73.154
+++ seq 1 30
++ for attempt in $(seq 1 30)
++ client wget -qO- '--header=Host: yatri.local' http://10.96.73.154/
++ kubectl exec lab-client -- wget -qO- '--header=Host: yatri.local' http://10.96.73.154/
+wget: server returned error: HTTP/1.1 404 Not Found
+command terminated with exit code 1
++ [[ 1 -lt 30 ]]
++ sleep 2
++ for attempt in $(seq 1 30)
++ client wget -qO- '--header=Host: yatri.local' http://10.96.73.154/
++ kubectl exec lab-client -- wget -qO- '--header=Host: yatri.local' http://10.96.73.154/
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ break
++ client wget -qO- '--header=Host: yatri.local' http://10.96.73.154/api/
++ kubectl exec lab-client -- wget -qO- '--header=Host: yatri.local' http://10.96.73.154/api/
+Yatri Backend API
+=================
+ENVIRONMENT     : production
+LOG_LEVEL       : INFO
+DEFAULT_CURRENCY: INR
+POSTGRES_USER   : classroom
+POSTGRES_DB     : demo
++ kubectl patch svc yatri-backend-service -p '{"spec":{"selector":{"app":"wrong-app"}}}'
+service/yatri-backend-service patched
++ sleep 3
++ kubectl get endpointslice -l kubernetes.io/service-name=yatri-backend-service
+NAME                          ADDRESSTYPE   PORTS     ENDPOINTS   AGE
+yatri-backend-service-km8sf   IPv4          <unset>   <unset>     11s
++ client wget -S -O- '--header=Host: yatri.local' http://10.96.73.154/api/
++ kubectl exec lab-client -- wget -S -O- '--header=Host: yatri.local' http://10.96.73.154/api/
+Connecting to 10.96.73.154 (10.96.73.154:80)
+  HTTP/1.1 503 Service Temporarily Unavailable
+wget: server returned error: HTTP/1.1 503 Service Temporarily Unavailable
+command terminated with exit code 1
++ true
++ kubectl patch svc yatri-backend-service -p '{"spec":{"selector":{"app":"yatri-backend"}}}'
+service/yatri-backend-service patched
++ sleep 3
++ client wget -qO- '--header=Host: yatri.local' http://10.96.73.154/api/
++ kubectl exec lab-client -- wget -qO- '--header=Host: yatri.local' http://10.96.73.154/api/
+Yatri Backend API
+=================
+ENVIRONMENT     : production
+LOG_LEVEL       : INFO
+DEFAULT_CURRENCY: INR
+POSTGRES_USER   : classroom
+POSTGRES_DB     : demo
++ kubectl patch configmap yatri-app-config -p '{"data":{"LOG_LEVEL":"DEBUG"}}'
+configmap/yatri-app-config patched
++ kubectl rollout restart deployment/yatri-backend
+deployment.apps/yatri-backend restarted
++ kubectl rollout status deployment/yatri-backend --timeout=120s
+Waiting for deployment "yatri-backend" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "yatri-backend" rollout to finish: 1 out of 2 new replicas have been updated...
+Waiting for deployment "yatri-backend" rollout to finish: 2 old replicas are pending termination...
+Waiting for deployment "yatri-backend" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "yatri-backend" rollout to finish: 1 old replicas are pending termination...
+deployment "yatri-backend" successfully rolled out
++ kubectl exec deployment/yatri-backend -- printenv LOG_LEVEL
+DEBUG
++ kubectl delete -f 04-full-demo/ingress.yaml -f 04-full-demo/backend.yaml -f 04-full-demo/frontend.yaml -f 04-full-demo/configmap.yaml
+ingress.networking.k8s.io "yatri-ingress" deleted from default namespace
+deployment.apps "yatri-backend" deleted from default namespace
+service "yatri-backend-service" deleted from default namespace
+deployment.apps "yatri-frontend" deleted from default namespace
+service "yatri-frontend-service" deleted from default namespace
+configmap "yatri-app-config" deleted from default namespace
++ kubectl delete secret yatri-db-secret
+secret "yatri-db-secret" deleted from default namespace

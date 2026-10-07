@@ -1,0 +1,164 @@
++ kubectl run lab-client --image=busybox:1.36 --restart=Never -- sleep 7200
+pod/lab-client created
++ kubectl wait --for=condition=Ready pod/lab-client --timeout=120s
+pod/lab-client condition met
++ case "$lab" in
++ cd session13-kubernetes-storage-and-scaling
++ kubectl apply -f 01-volumes/
+pod/emptydir-demo created
+pod/hostpath-demo created
++ kubectl wait --for=condition=Ready pod/emptydir-demo pod/hostpath-demo --timeout=180s
+pod/emptydir-demo condition met
+pod/hostpath-demo condition met
++ kubectl exec emptydir-demo -- sh -c 'echo Archit-24BCS10194 > /data/student.txt; cat /data/student.txt'
+Archit-24BCS10194
++ kubectl exec hostpath-demo -- sh -c 'echo Archit-24BCS10194 > /data/student.txt; cat /data/student.txt'
+Archit-24BCS10194
++ kubectl delete pod hostpath-demo
+pod "hostpath-demo" deleted from default namespace
++ kubectl apply -f 01-volumes/hostpath-pod.yaml
+pod/hostpath-demo created
++ kubectl wait --for=condition=Ready pod/hostpath-demo --timeout=120s
+pod/hostpath-demo condition met
++ kubectl exec hostpath-demo -- cat /data/student.txt
+Archit-24BCS10194
++ kubectl delete pod emptydir-demo
+pod "emptydir-demo" deleted from default namespace
++ kubectl apply -f 01-volumes/emptydir-pod.yaml
+pod/emptydir-demo created
++ kubectl wait --for=condition=Ready pod/emptydir-demo --timeout=120s
+pod/emptydir-demo condition met
++ kubectl exec emptydir-demo -- sh -c 'test ! -e /data/student.txt && echo "emptyDir reset after Pod replacement"'
+emptyDir reset after Pod replacement
++ kubectl apply -f 02-persistent-storage/pv.yaml -f 02-persistent-storage/pvc.yaml -f 02-persistent-storage/pod.yaml
+persistentvolume/student-pv created
+persistentvolumeclaim/student-pvc created
+pod/storage-demo created
++ kubectl wait --for=condition=Ready pod/storage-demo --timeout=180s
+pod/storage-demo condition met
++ kubectl get pv,pvc
+NAME                          CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+persistentvolume/student-pv   1Gi        RWO            Retain           Bound    default/student-pvc                  <unset>                          2s
+
+NAME                                STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/student-pvc   Bound    student-pv   1Gi        RWO                           <unset>                 2s
++ kubectl exec storage-demo -- sh -c 'echo Archit-24BCS10194 > /data/student.txt'
++ kubectl delete pod storage-demo
+pod "storage-demo" deleted from default namespace
++ kubectl apply -f 02-persistent-storage/pod.yaml
+pod/storage-demo created
++ kubectl wait --for=condition=Ready pod/storage-demo --timeout=120s
+pod/storage-demo condition met
++ kubectl exec storage-demo -- cat /data/student.txt
+Archit-24BCS10194
++ kubectl apply -f 03-storageclass/pvc.yaml
+persistentvolumeclaim/dynamic-pvc created
++ kubectl run dynamic-client --image=nginx:1.27 --restart=Never '--overrides={"spec":{"containers":[{"name":"dynamic-client","image":"nginx:1.27","volumeMounts":[{"name":"data","mountPath":"/data"}]}],"volumes":[{"name":"data","persistentVolumeClaim":{"claimName":"dynamic-pvc"}}]}}'
+pod/dynamic-client created
++ kubectl wait --for=condition=Ready pod/dynamic-client --timeout=180s
+pod/dynamic-client condition met
++ kubectl get storageclass,pv,pvc
+NAME                                             PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+storageclass.storage.k8s.io/standard (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  43s
+
+NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
+persistentvolume/pvc-1ec78c20-9537-41ed-a107-b9a7f650aab2   500Mi      RWO            Delete           Bound    default/dynamic-pvc   standard       <unset>                          2s
+persistentvolume/student-pv                                 1Gi        RWO            Retain           Bound    default/student-pvc                  <unset>                          9s
+
+NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/dynamic-pvc   Bound    pvc-1ec78c20-9537-41ed-a107-b9a7f650aab2   500Mi      RWO            standard       <unset>                 4s
+persistentvolumeclaim/student-pvc   Bound    student-pv                                 1Gi        RWO                           <unset>                 9s
++ kubectl apply -f 05-probes/
+pod/liveness-demo created
+pod/readiness-demo created
+pod/startup-demo created
++ kubectl get pods
+NAME             READY   STATUS              RESTARTS   AGE
+dynamic-client   1/1     Running             0          4s
+emptydir-demo    1/1     Running             0          10s
+hostpath-demo    1/1     Running             0          12s
+lab-client       1/1     Running             0          23s
+liveness-demo    0/1     ContainerCreating   0          0s
+readiness-demo   0/1     ContainerCreating   0          0s
+startup-demo     0/1     ContainerCreating   0          0s
+storage-demo     1/1     Running             0          5s
++ kubectl apply -f mini-project/namespace.yaml
+namespace/production-webapp created
++ kubectl apply -f mini-project/pvc.yaml -f mini-project/deployment.yaml -f mini-project/service.yaml -f mini-project/hpa.yaml
+persistentvolumeclaim/web-data created
+deployment.apps/web-app created
+service/web-service created
+horizontalpodautoscaler.autoscaling/web-app-hpa created
++ kubectl -n production-webapp rollout status deployment/web-app --timeout=180s
+Waiting for deployment "web-app" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web-app" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app" successfully rolled out
++ kubectl -n production-webapp exec deployment/web-app -- sh -c 'echo "Student: Archit Kulkarni - 24BCS10194" > /data/student.txt'
+++ kubectl -n production-webapp get pod -l app=web-app -o 'jsonpath={.items[0].metadata.name}'
++ old=web-app-bc8dfb4db-59w9r
++ kubectl -n production-webapp delete pod web-app-bc8dfb4db-59w9r
+pod "web-app-bc8dfb4db-59w9r" deleted from production-webapp namespace
++ kubectl -n production-webapp rollout status deployment/web-app --timeout=120s
+Waiting for deployment "web-app" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app" successfully rolled out
++ kubectl -n production-webapp exec deployment/web-app -- cat /data/student.txt
+Student: Archit Kulkarni - 24BCS10194
++ kubectl -n production-webapp get pods,pvc,hpa
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/web-app-bc8dfb4db-c2pbw   1/1     Running   0          9s
+pod/web-app-bc8dfb4db-sgf8c   1/1     Running   0          21s
+
+NAME                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/web-data   Bound    pvc-c563f044-24f6-4d84-b5af-5f6c88262b29   500Mi      RWO            standard       <unset>                 21s
+
+NAME                                              REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          21s
++ kubectl -n production-webapp describe deployment web-app
+Name:               web-app
+Namespace:          production-webapp
+CreationTimestamp:  Wed, 07 Oct 2026 17:21:21 +0000
+Labels:             app=web-app
+Annotations:        deployment.kubernetes.io/revision: 1
+Selector:           app=web-app
+Replicas:           2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:       Recreate
+MinReadySeconds:    0
+Pod Template:
+  Labels:  app=web-app
+  Containers:
+   nginx:
+    Image:      nginx:1.27
+    Port:       80/TCP
+    Host Port:  0/TCP
+    Limits:
+      cpu:     200m
+      memory:  128Mi
+    Requests:
+      cpu:        100m
+      memory:     64Mi
+    Liveness:     http-get http://:80/ delay=5s timeout=2s period=5s successThreshold=1 failureThreshold=3
+    Readiness:    http-get http://:80/ delay=5s timeout=2s period=5s successThreshold=1 failureThreshold=2
+    Startup:      http-get http://:80/ delay=0s timeout=1s period=2s successThreshold=1 failureThreshold=30
+    Environment:  <none>
+    Mounts:
+      /data from persistent-storage (rw)
+  Volumes:
+   persistent-storage:
+    Type:          PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:     web-data
+    ReadOnly:      false
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   web-app-bc8dfb4db (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  21s   deployment-controller  Scaled up replica set web-app-bc8dfb4db from 0 to 2
++ echo 'CPU load and HPA metrics are checked separately on Minikube with metrics-server.'
+CPU load and HPA metrics are checked separately on Minikube with metrics-server.

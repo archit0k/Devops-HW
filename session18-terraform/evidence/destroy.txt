@@ -1,0 +1,112 @@
+Recorded: 2026-10-07T18:08:39.564774+00:00
+Command: terraform -chdir=session18-terraform/terraform-s3-demo destroy -auto-approve -input=false -no-color
+
+aws_s3_bucket.homework: Refreshing state... [id=archit-24bcs10194-devops-hw18-20261007]
+aws_s3_bucket_public_access_block.homework: Refreshing state... [id=archit-24bcs10194-devops-hw18-20261007]
+aws_s3_bucket_server_side_encryption_configuration.homework: Refreshing state... [id=archit-24bcs10194-devops-hw18-20261007]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_s3_bucket.homework will be destroyed
+  - resource "aws_s3_bucket" "homework" {
+      - arn                         = "arn:aws:s3:::archit-24bcs10194-devops-hw18-20261007" -> null
+      - bucket                      = "archit-24bcs10194-devops-hw18-20261007" -> null
+      - bucket_domain_name          = "archit-24bcs10194-devops-hw18-20261007.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "us-east-1" -> null
+      - bucket_regional_domain_name = "archit-24bcs10194-devops-hw18-20261007.s3.us-east-1.amazonaws.com" -> null
+      - force_destroy               = false -> null
+      - hosted_zone_id              = "Z3AQBSTGFYJSTF" -> null
+      - id                          = "archit-24bcs10194-devops-hw18-20261007" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "us-east-1" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework18"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - tags_all                    = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework18"
+          - "Roll"    = "24BCS10194"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "6eada8133a35354e7866798d70df6269af3c334d1716560b849cde50898cd195" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket_public_access_block.homework will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "homework" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "archit-24bcs10194-devops-hw18-20261007" -> null
+      - id                      = "archit-24bcs10194-devops-hw18-20261007" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "us-east-1" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_s3_bucket_server_side_encryption_configuration.homework will be destroyed
+  - resource "aws_s3_bucket_server_side_encryption_configuration" "homework" {
+      - bucket                = "archit-24bcs10194-devops-hw18-20261007" -> null
+      - id                    = "archit-24bcs10194-devops-hw18-20261007" -> null
+      - region                = "us-east-1" -> null
+        # (1 unchanged attribute hidden)
+
+      - rule {
+          - blocked_encryption_types = [
+              - "SSE-C",
+            ] -> null
+          - bucket_key_enabled       = false -> null
+
+          - apply_server_side_encryption_by_default {
+              - sse_algorithm     = "AES256" -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+    }
+
+Plan: 0 to add, 0 to change, 3 to destroy.
+
+Changes to Outputs:
+  - bucket_arn    = "arn:aws:s3:::archit-24bcs10194-devops-hw18-20261007" -> null
+  - bucket_name   = "archit-24bcs10194-devops-hw18-20261007" -> null
+  - bucket_region = "us-east-1" -> null
+aws_s3_bucket_public_access_block.homework: Destroying... [id=archit-24bcs10194-devops-hw18-20261007]
+aws_s3_bucket_server_side_encryption_configuration.homework: Destroying... [id=archit-24bcs10194-devops-hw18-20261007]
+aws_s3_bucket_public_access_block.homework: Destruction complete after 9s
+aws_s3_bucket_server_side_encryption_configuration.homework: Destruction complete after 9s
+aws_s3_bucket.homework: Destroying... [id=archit-24bcs10194-devops-hw18-20261007]
+aws_s3_bucket.homework: Destruction complete after 1s
+
+Destroy complete! Resources: 3 destroyed.
+
+Exit code: 0

@@ -38,3 +38,7 @@ Process information was saved to: system-report/processes.log
 ```
 
 The full captured process list is committed at `system-report/processes.log`.
+
+## Recheck
+
+The script was run again in Ubuntu WSL with two inputs on 7 October. It printed date, hostname, user, disk and process information, created the requested directory/file, and saved 133 lines of process output. The [complete execution](../01-linux-fundamentals/evidence/foundations.txt) also includes the Linux and networking command practice.

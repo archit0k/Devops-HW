@@ -1,0 +1,31 @@
+Recorded: 2026-10-07T18:06:54.751793+00:00
+Command: terraform -chdir=session18-terraform/terraform-s3-demo apply -input=false -no-color lab.tfplan
+
+aws_s3_bucket.homework: Creating...
+aws_s3_bucket.homework: Still creating... [00m10s elapsed]
+aws_s3_bucket.homework: Still creating... [00m20s elapsed]
+aws_s3_bucket.homework: Still creating... [00m30s elapsed]
+aws_s3_bucket.homework: Still creating... [00m40s elapsed]
+aws_s3_bucket.homework: Creation complete after 46s [id=archit-24bcs10194-devops-hw18-20261007]
+aws_s3_bucket_public_access_block.homework: Creating...
+aws_s3_bucket_server_side_encryption_configuration.homework: Creating...
+aws_s3_bucket_public_access_block.homework: Still creating... [00m10s elapsed]
+aws_s3_bucket_server_side_encryption_configuration.homework: Still creating... [00m10s elapsed]
+aws_s3_bucket_server_side_encryption_configuration.homework: Still creating... [00m20s elapsed]
+aws_s3_bucket_public_access_block.homework: Still creating... [00m20s elapsed]
+aws_s3_bucket_public_access_block.homework: Still creating... [00m30s elapsed]
+aws_s3_bucket_server_side_encryption_configuration.homework: Still creating... [00m30s elapsed]
+aws_s3_bucket_public_access_block.homework: Still creating... [00m40s elapsed]
+aws_s3_bucket_server_side_encryption_configuration.homework: Still creating... [00m40s elapsed]
+aws_s3_bucket_public_access_block.homework: Creation complete after 48s [id=archit-24bcs10194-devops-hw18-20261007]
+aws_s3_bucket_server_side_encryption_configuration.homework: Creation complete after 48s [id=archit-24bcs10194-devops-hw18-20261007]
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+bucket_arn = "arn:aws:s3:::archit-24bcs10194-devops-hw18-20261007"
+bucket_name = "archit-24bcs10194-devops-hw18-20261007"
+bucket_region = "us-east-1"
+
+Exit code: 0

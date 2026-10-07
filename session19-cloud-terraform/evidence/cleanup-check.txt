@@ -1,0 +1,20 @@
+Recorded: 2026-10-07T18:14:27.388201+00:00
+Command: bash scripts/check-cloud-cleanup.sh
+
++ terraform -chdir=session18-terraform/terraform-s3-demo state list
++ terraform -chdir=session19-cloud-terraform state list
++ /root/.local/bin/aws ec2 describe-instances --profile devops-homework --region us-east-1 --filters Name=tag:Project,Values=devops-homework19 --query 'Reservations[].Instances[].{Id:InstanceId,State:State.Name}' --output json
+[
+    {
+        "Id": "i-05bb24c08a3b1aa70",
+        "State": "terminated"
+    }
+]
++ /root/.local/bin/aws ec2 describe-vpcs --profile devops-homework --region us-east-1 --filters Name=tag:Project,Values=devops-homework19 --query 'Vpcs[].VpcId' --output json
+[]
++ /root/.local/bin/aws ec2 describe-volumes --profile devops-homework --region us-east-1 --filters Name=tag:Project,Values=devops-homework19 --query 'Volumes[].VolumeId' --output json
+[]
++ /root/.local/bin/aws s3api list-buckets --profile devops-homework --region us-east-1 --query 'Buckets[?starts_with(Name, `archit-24bcs10194-devops-hw`)].Name' --output json
+[]
+
+Exit code: 0

@@ -1,0 +1,28 @@
+Recorded: 2026-10-07T17:53:43.413109+00:00
+Command: bash -c 'docker compose -f "/mnt/c/Users/archi/Github Projects/Devops-HW/session20-monitoring-gitops/monitoring/compose.yaml" ps; curl -fsS "http://localhost:9090/api/v1/query?query=up"; curl -fsS "http://localhost:9090/api/v1/query?query=process_resident_memory_bytes"; curl -fsS "http://localhost:9090/api/v1/rules"; curl -fsS "http://localhost:3000/api/health"; docker compose -f "/mnt/c/Users/archi/Github Projects/Devops-HW/session20-monitoring-gitops/monitoring/compose.yaml" logs --tail=8'
+
+NAME                      IMAGE                    COMMAND                  SERVICE      CREATED          STATUS          PORTS
+monitoring-grafana-1      grafana/grafana:12.1.1   "/run.sh"                grafana      31 minutes ago   Up 15 minutes   127.0.0.1:3000->3000/tcp
+monitoring-prometheus-1   prom/prometheus:v3.5.0   "/bin/prometheus --c…"   prometheus   31 minutes ago   Up 16 minutes   127.0.0.1:9090->9090/tcp
+{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"up","instance":"prometheus:9090","job":"prometheus"},"value":[1791395624.942,"1"]}]}}{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"process_resident_memory_bytes","instance":"prometheus:9090","job":"prometheus"},"value":[1791395624.962,"98115584"]}]}}{"status":"success","data":{"groups":[{"name":"homework","file":"/etc/prometheus/alerts.yml","rules":[{"state":"inactive","name":"TargetDown","query":"up == 0","duration":10,"keepFiringFor":0,"labels":{"severity":"warning"},"annotations":{"summary":"A scrape target is unreachable"},"alerts":[],"health":"ok","evaluationTime":0.00028447,"lastEvaluation":"2026-10-07T17:53:41.457119426Z","type":"alerting"}],"interval":5,"limit":0,"evaluationTime":0.000322873,"lastEvaluation":"2026-10-07T17:53:41.45708462Z"}]}}{
+  "database": "ok",
+  "version": "12.1.1",
+  "commit": "df5de8219b41d1e639e003bf5f3a85913761d167"
+}prometheus-1  | time=2026-10-07T17:37:45.024Z level=INFO source=head.go:825 msg="WAL segment loaded" component=tsdb segment=1 maxSegment=1 duration=1.35796ms
+prometheus-1  | time=2026-10-07T17:37:45.024Z level=INFO source=head.go:862 msg="WAL replay completed" component=tsdb checkpoint_replay_duration=60.925µs wal_replay_duration=20.755586ms wbl_replay_duration=261ns chunk_snapshot_load_duration=0s mmap_chunk_replay_duration=216.021µs total_replay_duration=21.193348ms
+prometheus-1  | time=2026-10-07T17:37:45.029Z level=INFO source=main.go:1309 msg="filesystem information" fs_type=EXT4_SUPER_MAGIC
+prometheus-1  | time=2026-10-07T17:37:45.029Z level=INFO source=main.go:1312 msg="TSDB started"
+prometheus-1  | time=2026-10-07T17:37:45.029Z level=INFO source=main.go:1497 msg="Loading configuration file" filename=/etc/prometheus/prometheus.yml
+prometheus-1  | time=2026-10-07T17:37:45.037Z level=INFO source=main.go:1537 msg="Completed loading of configuration file" db_storage=1.583µs remote_storage=1.883µs web_handler=862ns query_engine=1.533µs scrape=905.436µs scrape_sd=61.887µs notify=1.904µs notify_sd=952ns rules=4.13459ms tracing=30.678µs filename=/etc/prometheus/prometheus.yml totalDuration=8.04466ms
+prometheus-1  | time=2026-10-07T17:37:45.037Z level=INFO source=main.go:1273 msg="Server is ready to receive web requests."
+prometheus-1  | time=2026-10-07T17:37:45.037Z level=INFO source=manager.go:176 msg="Starting rule manager..." component="rule manager"
+grafana-1     | logger=plugin.angulardetectorsprovider.dynamic t=2026-10-07T17:37:55.456735475Z level=info msg="Patterns update finished" duration=7.910584394s
+grafana-1     | logger=grafana.update.checker t=2026-10-07T17:37:55.456724199Z level=error msg="Update check failed" error="failed to get stable version from grafana.com: Get \"https://grafana.com/api/grafana/versions/stable\": dial tcp: lookup grafana.com on 127.0.0.11:53: server misbehaving" duration=8.007281387s
+grafana-1     | logger=plugin.backgroundinstaller t=2026-10-07T17:37:55.456725452Z level=error msg="Failed to get plugin info" pluginId=grafana-pyroscope-app error="Get \"https://grafana.com/api/plugins/grafana-pyroscope-app/versions\": dial tcp: lookup grafana.com on 127.0.0.11:53: server misbehaving"
+grafana-1     | logger=plugin.backgroundinstaller t=2026-10-07T17:38:04.397928033Z level=info msg="Installing plugin" pluginId=grafana-lokiexplore-app version=
+grafana-1     | logger=infra.usagestats t=2026-10-07T17:38:33.456813386Z level=info msg="Usage stats are ready to report"
+grafana-1     | logger=plugin.backgroundinstaller t=2026-10-07T17:38:36.724483371Z level=error msg="Failed to install plugin" pluginId=grafana-lokiexplore-app version= error="failed to download plugin archive: Get \"https://grafana.com/api/plugins/grafana-lokiexplore-app/versions/1.0.41/download\": dial tcp [2600:1901:0:b3ea::]:443: connect: network is unreachable"
+grafana-1     | logger=cleanup t=2026-10-07T17:47:47.536063581Z level=info msg="Completed cleanup jobs" duration=84.179789ms
+grafana-1     | logger=plugins.update.checker t=2026-10-07T17:48:03.998990582Z level=info msg="Update check succeeded" duration=8.541749258s
+
+Exit code: 0

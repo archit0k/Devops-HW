@@ -1,0 +1,154 @@
+Recorded: 2026-10-07T17:27:58.737390+00:00
+Command: bash '/mnt/c/Users/archi/Github Projects/Devops-HW/session9-k8s/run-basics.sh'
+
++ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
++ minikube kubectl -- get nodes -o wide
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                              CONTAINER-RUNTIME
+minikube   Ready    control-plane   17d   v1.37.0   192.168.49.2   <none>        Debian GNU/Linux 12 (bookworm)   6.18.33.1-microsoft-standard-WSL2 (amd64)   containerd://2.3.4
++ minikube kubectl -- cluster-info
+Kubernetes control plane is running at https://127.0.0.1:32771
+CoreDNS is running at https://127.0.0.1:32771/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
++ minikube kubectl -- -n kube-system get pods
+NAME                               READY   STATUS    RESTARTS       AGE
+coredns-559f6c778d-rf587           1/1     Running   5 (116m ago)   17d
+etcd-minikube                      1/1     Running   5 (116m ago)   17d
+kindnet-n7j5z                      1/1     Running   5 (116m ago)   17d
+kube-apiserver-minikube            1/1     Running   5 (116m ago)   17d
+kube-controller-manager-minikube   1/1     Running   6 (116m ago)   17d
+kube-proxy-m92wl                   1/1     Running   5 (116m ago)   17d
+kube-scheduler-minikube            1/1     Running   5 (116m ago)   17d
+metrics-server-768f9f6999-64cmn    1/1     Running   0              39m
+storage-provisioner                1/1     Running   8 (115m ago)   17d
++ minikube kubectl -- create namespace homework9
+namespace/homework9 created
++ k create deployment kubernetes-bootcamp --image=nginx:1.27
++ minikube kubectl -- -n homework9 create deployment kubernetes-bootcamp --image=nginx:1.27
+deployment.apps/kubernetes-bootcamp created
++ k rollout status deployment/kubernetes-bootcamp --timeout=120s
++ minikube kubectl -- -n homework9 rollout status deployment/kubernetes-bootcamp --timeout=120s
+deployment "kubernetes-bootcamp" successfully rolled out
++ k expose deployment kubernetes-bootcamp --type=NodePort --port=80
++ minikube kubectl -- -n homework9 expose deployment kubernetes-bootcamp --type=NodePort --port=80
+service/kubernetes-bootcamp exposed
++ k get deploy,pods,svc -o wide
++ minikube kubectl -- -n homework9 get deploy,pods,svc -o wide
+NAME                                  READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES       SELECTOR
+deployment.apps/kubernetes-bootcamp   1/1     1            1           4s    nginx        nginx:1.27   app=kubernetes-bootcamp
+
+NAME                                       READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/kubernetes-bootcamp-5959ff7698-m88qv   1/1     Running   0          4s    10.244.0.22   minikube   <none>           <none>
+
+NAME                          TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+service/kubernetes-bootcamp   NodePort   10.99.203.235   <none>        80:30238/TCP   1s    app=kubernetes-bootcamp
++ k scale deployment/kubernetes-bootcamp --replicas=4
++ minikube kubectl -- -n homework9 scale deployment/kubernetes-bootcamp --replicas=4
+deployment.apps/kubernetes-bootcamp scaled
++ k rollout status deployment/kubernetes-bootcamp --timeout=120s
++ minikube kubectl -- -n homework9 rollout status deployment/kubernetes-bootcamp --timeout=120s
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 of 4 updated replicas are available...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 of 4 updated replicas are available...
+deployment "kubernetes-bootcamp" successfully rolled out
++ k get pods
++ minikube kubectl -- -n homework9 get pods
+NAME                                   READY   STATUS    RESTARTS   AGE
+kubernetes-bootcamp-5959ff7698-cjsh7   1/1     Running   0          3s
+kubernetes-bootcamp-5959ff7698-m88qv   1/1     Running   0          9s
+kubernetes-bootcamp-5959ff7698-ngqxw   1/1     Running   0          3s
+kubernetes-bootcamp-5959ff7698-vt7mj   1/1     Running   0          3s
++ k set image deployment/kubernetes-bootcamp nginx=nginx:1.25
++ minikube kubectl -- -n homework9 set image deployment/kubernetes-bootcamp nginx=nginx:1.25
+deployment.apps/kubernetes-bootcamp image updated
++ k rollout status deployment/kubernetes-bootcamp --timeout=120s
++ minikube kubectl -- -n homework9 rollout status deployment/kubernetes-bootcamp --timeout=120s
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 of 4 updated replicas are available...
+deployment "kubernetes-bootcamp" successfully rolled out
++ k get pods -o wide
++ minikube kubectl -- -n homework9 get pods -o wide
+NAME                                  READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+kubernetes-bootcamp-97f979d88-9gg29   1/1     Running   0          4s    10.244.0.30   minikube   <none>           <none>
+kubernetes-bootcamp-97f979d88-ksrwv   1/1     Running   0          6s    10.244.0.28   minikube   <none>           <none>
+kubernetes-bootcamp-97f979d88-v8v2f   1/1     Running   0          6s    10.244.0.27   minikube   <none>           <none>
+kubernetes-bootcamp-97f979d88-wf99b   1/1     Running   0          4s    10.244.0.29   minikube   <none>           <none>
++ k rollout history deployment/kubernetes-bootcamp
++ minikube kubectl -- -n homework9 rollout history deployment/kubernetes-bootcamp
+deployment.apps/kubernetes-bootcamp 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
++ k rollout undo deployment/kubernetes-bootcamp
++ minikube kubectl -- -n homework9 rollout undo deployment/kubernetes-bootcamp
+deployment.apps/kubernetes-bootcamp rolled back
++ k rollout status deployment/kubernetes-bootcamp --timeout=120s
++ minikube kubectl -- -n homework9 rollout status deployment/kubernetes-bootcamp --timeout=120s
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kubernetes-bootcamp" rollout to finish: 1 old replicas are pending termination...
+deployment "kubernetes-bootcamp" successfully rolled out
++ k run client --image=busybox:1.36 --restart=Never -- wget -qO- http://kubernetes-bootcamp
++ minikube kubectl -- -n homework9 run client --image=busybox:1.36 --restart=Never -- wget -qO- http://kubernetes-bootcamp
+pod/client created
++ k wait '--for=jsonpath={.status.phase}=Succeeded' pod/client --timeout=120s
++ minikube kubectl -- -n homework9 wait '--for=jsonpath={.status.phase}=Succeeded' pod/client --timeout=120s
+pod/client condition met
++ k logs client
++ minikube kubectl -- -n homework9 logs client
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ minikube kubectl -- delete namespace homework9
+namespace "homework9" deleted
+
+Exit code: 0

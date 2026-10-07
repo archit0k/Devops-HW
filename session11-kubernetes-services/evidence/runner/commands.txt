@@ -1,0 +1,336 @@
++ kubectl run lab-client --image=busybox:1.36 --restart=Never -- sleep 7200
+pod/lab-client created
++ kubectl wait --for=condition=Ready pod/lab-client --timeout=120s
+pod/lab-client condition met
++ case "$lab" in
++ cd session11-kubernetes-services
++ kubectl apply -f 01-clusterip/
+deployment.apps/web-app-clusterip created
+pod/curl-client created
+service/web-service-clusterip created
++ kubectl rollout status deployment/web-app-clusterip --timeout=180s
+Waiting for deployment "web-app-clusterip" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "web-app-clusterip" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "web-app-clusterip" rollout to finish: 2 of 3 updated replicas are available...
+deployment "web-app-clusterip" successfully rolled out
++ client wget -qO- http://web-service-clusterip:8080
++ kubectl exec lab-client -- wget -qO- http://web-service-clusterip:8080
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ client nslookup web-service-clusterip.default.svc.cluster.local
++ kubectl exec lab-client -- nslookup web-service-clusterip.default.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+
+Name:	web-service-clusterip.default.svc.cluster.local
+Address: 10.96.49.98
+
++ kubectl apply -f 02-nodeport/
+deployment.apps/web-app-nodeport created
+service/web-service-nodeport created
++ kubectl rollout status deployment/web-app-nodeport --timeout=180s
+Waiting for deployment "web-app-nodeport" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web-app-nodeport" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app-nodeport" successfully rolled out
+++ kubectl get node assignment-control-plane -o 'jsonpath={.status.addresses[?(@.type=="InternalIP")].address}'
++ node_ip=172.18.0.2
++ curl --retry 5 --retry-connrefused --retry-delay 2 -fsS http://172.18.0.2:30080
+curl: (7) Failed to connect to 172.18.0.2 port 30080 after 0 ms: Couldn't connect to server
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ kubectl apply -f 03-loadbalancer/
+deployment.apps/web-app-loadbalancer created
+service/web-service-loadbalancer created
++ kubectl rollout status deployment/web-app-loadbalancer --timeout=180s
+Waiting for deployment "web-app-loadbalancer" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "web-app-loadbalancer" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "web-app-loadbalancer" rollout to finish: 2 of 3 updated replicas are available...
+deployment "web-app-loadbalancer" successfully rolled out
++ kubectl get svc web-service-loadbalancer
+NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+web-service-loadbalancer   LoadBalancer   10.96.221.169   <pending>     80:31555/TCP   2s
++ client wget -qO- http://web-service-loadbalancer
++ kubectl exec lab-client -- wget -qO- http://web-service-loadbalancer
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ kubectl apply -f 04-externalname/
+pod/dns-test-client created
+service/external-database-service created
++ client nslookup external-database-service.default.svc.cluster.local
++ kubectl exec lab-client -- nslookup external-database-service.default.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+external-database-service.default.svc.cluster.local	canonical name = example.com
+Name:	example.com
+Address: 2606:4700:10::6814:179a
+Name:	example.com
+Address: 2606:4700:10::ac42:93f3
+
+external-database-service.default.svc.cluster.local	canonical name = example.com
+Name:	example.com
+Address: 104.20.23.154
+Name:	example.com
+Address: 172.66.147.243
+
++ kubectl apply -f 05-headless/
+statefulset.apps/web-stateful created
+pod/headless-dns-client created
+service/web-service-headless created
++ kubectl rollout status statefulset/web-stateful --timeout=180s
+Waiting for 3 pods to be ready...
+Waiting for 2 pods to be ready...
+Waiting for 2 pods to be ready...
+Waiting for 1 pods to be ready...
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 3 new pods have been updated...
++ client nslookup web-service-headless.default.svc.cluster.local
++ kubectl exec lab-client -- nslookup web-service-headless.default.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web-service-headless.default.svc.cluster.local
+Address: 10.244.0.17
+Name:	web-service-headless.default.svc.cluster.local
+Address: 10.244.0.18
+Name:	web-service-headless.default.svc.cluster.local
+Address: 10.244.0.19
+
+
++ client nslookup web-stateful-0.web-service-headless.default.svc.cluster.local
++ kubectl exec lab-client -- nslookup web-stateful-0.web-service-headless.default.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web-stateful-0.web-service-headless.default.svc.cluster.local
+Address: 10.244.0.17
+
+
++ kubectl get pods,svc,endpointslice -o wide
+NAME                                        READY   STATUS    RESTARTS   AGE   IP            NODE                       NOMINATED NODE   READINESS GATES
+pod/curl-client                             1/1     Running   0          18s   10.244.0.6    assignment-control-plane   <none>           <none>
+pod/dns-test-client                         1/1     Running   0          4s    10.244.0.15   assignment-control-plane   <none>           <none>
+pod/headless-dns-client                     1/1     Running   0          4s    10.244.0.16   assignment-control-plane   <none>           <none>
+pod/lab-client                              1/1     Running   0          20s   10.244.0.5    assignment-control-plane   <none>           <none>
+pod/web-app-clusterip-84985946cb-7pfbc      1/1     Running   0          18s   10.244.0.9    assignment-control-plane   <none>           <none>
+pod/web-app-clusterip-84985946cb-hndwk      1/1     Running   0          18s   10.244.0.7    assignment-control-plane   <none>           <none>
+pod/web-app-clusterip-84985946cb-v8n96      1/1     Running   0          18s   10.244.0.8    assignment-control-plane   <none>           <none>
+pod/web-app-loadbalancer-5bc7776f58-qtg8j   1/1     Running   0          7s    10.244.0.12   assignment-control-plane   <none>           <none>
+pod/web-app-loadbalancer-5bc7776f58-snnz6   1/1     Running   0          7s    10.244.0.14   assignment-control-plane   <none>           <none>
+pod/web-app-loadbalancer-5bc7776f58-tt8nh   1/1     Running   0          7s    10.244.0.13   assignment-control-plane   <none>           <none>
+pod/web-app-nodeport-5fcd49f65f-22whj       1/1     Running   0          11s   10.244.0.11   assignment-control-plane   <none>           <none>
+pod/web-app-nodeport-5fcd49f65f-5fnqh       1/1     Running   0          11s   10.244.0.10   assignment-control-plane   <none>           <none>
+pod/web-stateful-0                          1/1     Running   0          3s    10.244.0.17   assignment-control-plane   <none>           <none>
+pod/web-stateful-1                          1/1     Running   0          2s    10.244.0.18   assignment-control-plane   <none>           <none>
+pod/web-stateful-2                          1/1     Running   0          1s    10.244.0.19   assignment-control-plane   <none>           <none>
+
+NAME                                TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+service/external-database-service   ExternalName   <none>          example.com   <none>         4s    <none>
+service/kubernetes                  ClusterIP      10.96.0.1       <none>        443/TCP        56s   <none>
+service/web-service-clusterip       ClusterIP      10.96.49.98     <none>        8080/TCP       18s   app=web-clusterip
+service/web-service-headless        ClusterIP      None            <none>        80/TCP         4s    app=web-headless
+service/web-service-loadbalancer    LoadBalancer   10.96.221.169   <pending>     80:31555/TCP   7s    app=web-loadbalancer
+service/web-service-nodeport        NodePort       10.96.177.145   <none>        80:30080/TCP   11s   app=web-nodeport
+
+NAME                                                            ADDRESSTYPE   PORTS   ENDPOINTS                             AGE
+endpointslice.discovery.k8s.io/kubernetes                       IPv4          6443    172.18.0.2                            56s
+endpointslice.discovery.k8s.io/web-service-clusterip-w2wjf      IPv4          80      10.244.0.9,10.244.0.7,10.244.0.8      18s
+endpointslice.discovery.k8s.io/web-service-headless-rp7nf       IPv4          80      10.244.0.17,10.244.0.18,10.244.0.19   3s
+endpointslice.discovery.k8s.io/web-service-loadbalancer-mc8d8   IPv4          80      10.244.0.14,10.244.0.13,10.244.0.12   7s
+endpointslice.discovery.k8s.io/web-service-nodeport-6bbts       IPv4          80      10.244.0.11,10.244.0.10               11s
++ kubectl -n kube-system get deployment coredns
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+coredns   2/2     2            2           55s
++ kubectl -n kube-system get configmap coredns -o yaml
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health {
+           lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf {
+           max_concurrent 1000
+        }
+        cache 30 {
+           disable success cluster.local
+           disable denial cluster.local
+        }
+        loop
+        reload
+        loadbalance
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2026-10-07T18:05:05Z"
+  name: coredns
+  namespace: kube-system
+  resourceVersion: "253"
+  uid: 37be7730-f97f-45c7-a389-f62d58fa5ba6
++ kubectl get events --sort-by=.metadata.creationTimestamp
+LAST SEEN   TYPE      REASON                    OBJECT                                       MESSAGE
+55s         Normal    NodeHasNoDiskPressure     node/assignment-control-plane                Node assignment-control-plane status is now: NodeHasNoDiskPressure
+55s         Normal    NodeHasSufficientPID      node/assignment-control-plane                Node assignment-control-plane status is now: NodeHasSufficientPID
+60s         Normal    NodeHasNoDiskPressure     node/assignment-control-plane                Node assignment-control-plane status is now: NodeHasNoDiskPressure
+60s         Normal    NodeHasSufficientPID      node/assignment-control-plane                Node assignment-control-plane status is now: NodeHasSufficientPID
+61s         Normal    NodeAllocatableEnforced   node/assignment-control-plane                Updated Node Allocatable limit across pods
+55s         Normal    Starting                  node/assignment-control-plane                Starting kubelet.
+55s         Normal    NodeAllocatableEnforced   node/assignment-control-plane                Updated Node Allocatable limit across pods
+55s         Normal    NodeHasSufficientMemory   node/assignment-control-plane                Node assignment-control-plane status is now: NodeHasSufficientMemory
+60s         Normal    NodeHasSufficientMemory   node/assignment-control-plane                Node assignment-control-plane status is now: NodeHasSufficientMemory
+61s         Normal    Starting                  node/assignment-control-plane                Starting kubelet.
+50s         Normal    RegisteredNode            node/assignment-control-plane                Node assignment-control-plane event: Registered Node assignment-control-plane in Controller
+48s         Normal    Starting                  node/assignment-control-plane                
+37s         Normal    NodeReady                 node/assignment-control-plane                Node assignment-control-plane status is now: NodeReady
+20s         Normal    Pulling                   pod/lab-client                               Pulling image "busybox:1.36"
+20s         Normal    Scheduled                 pod/lab-client                               Successfully assigned default/lab-client to assignment-control-plane
+19s         Normal    Started                   pod/lab-client                               Container started
+19s         Normal    Created                   pod/lab-client                               Container created
+19s         Normal    Pulled                    pod/lab-client                               Successfully pulled image "busybox:1.36" in 1.06s (1.06s including waiting). Image size: 2217006 bytes.
+18s         Normal    Scheduled                 pod/web-app-clusterip-84985946cb-hndwk       Successfully assigned default/web-app-clusterip-84985946cb-hndwk to assignment-control-plane
+18s         Normal    Scheduled                 pod/curl-client                              Successfully assigned default/curl-client to assignment-control-plane
+18s         Normal    SuccessfulCreate          replicaset/web-app-clusterip-84985946cb      Created pod: web-app-clusterip-84985946cb-7pfbc
+18s         Normal    SuccessfulCreate          replicaset/web-app-clusterip-84985946cb      Created pod: web-app-clusterip-84985946cb-hndwk
+18s         Normal    SuccessfulCreate          replicaset/web-app-clusterip-84985946cb      Created pod: web-app-clusterip-84985946cb-v8n96
+18s         Warning   FailedToCreateEndpoint    endpoints/web-service-clusterip              Failed to create endpoint for service default/web-service-clusterip: endpoints "web-service-clusterip" already exists
+18s         Normal    Scheduled                 pod/web-app-clusterip-84985946cb-v8n96       Successfully assigned default/web-app-clusterip-84985946cb-v8n96 to assignment-control-plane
+18s         Normal    ScalingReplicaSet         deployment/web-app-clusterip                 Scaled up replica set web-app-clusterip-84985946cb from 0 to 3
+18s         Normal    Scheduled                 pod/web-app-clusterip-84985946cb-7pfbc       Successfully assigned default/web-app-clusterip-84985946cb-7pfbc to assignment-control-plane
+17s         Normal    Pulling                   pod/web-app-clusterip-84985946cb-v8n96       Pulling image "nginx:1.25-alpine"
+17s         Normal    Pulling                   pod/curl-client                              Pulling image "curlimages/curl:8.5.0"
+17s         Normal    Pulling                   pod/web-app-clusterip-84985946cb-7pfbc       Pulling image "nginx:1.25-alpine"
+17s         Normal    Pulling                   pod/web-app-clusterip-84985946cb-hndwk       Pulling image "nginx:1.25-alpine"
+16s         Normal    Pulled                    pod/curl-client                              Successfully pulled image "curlimages/curl:8.5.0" in 1.149s (1.149s including waiting). Image size: 9681294 bytes.
+16s         Normal    Created                   pod/curl-client                              Container created
+16s         Normal    Started                   pod/curl-client                              Container started
+15s         Normal    Pulled                    pod/web-app-clusterip-84985946cb-7pfbc       Successfully pulled image "nginx:1.25-alpine" in 1.521s (2.477s including waiting). Image size: 20461242 bytes.
+15s         Normal    Started                   pod/web-app-clusterip-84985946cb-7pfbc       Container started
+15s         Normal    Created                   pod/web-app-clusterip-84985946cb-7pfbc       Container created
+14s         Normal    Created                   pod/web-app-clusterip-84985946cb-v8n96       Container created
+14s         Normal    Pulled                    pod/web-app-clusterip-84985946cb-hndwk       Successfully pulled image "nginx:1.25-alpine" in 267ms (2.744s including waiting). Image size: 20461242 bytes.
+14s         Normal    Created                   pod/web-app-clusterip-84985946cb-hndwk       Container created
+14s         Normal    Started                   pod/web-app-clusterip-84985946cb-hndwk       Container started
+14s         Normal    Pulled                    pod/web-app-clusterip-84985946cb-v8n96       Successfully pulled image "nginx:1.25-alpine" in 266ms (2.97s including waiting). Image size: 20461242 bytes.
+14s         Normal    Started                   pod/web-app-clusterip-84985946cb-v8n96       Container started
+11s         Normal    Scheduled                 pod/web-app-nodeport-5fcd49f65f-22whj        Successfully assigned default/web-app-nodeport-5fcd49f65f-22whj to assignment-control-plane
+11s         Normal    Scheduled                 pod/web-app-nodeport-5fcd49f65f-5fnqh        Successfully assigned default/web-app-nodeport-5fcd49f65f-5fnqh to assignment-control-plane
+11s         Normal    ScalingReplicaSet         deployment/web-app-nodeport                  Scaled up replica set web-app-nodeport-5fcd49f65f from 0 to 2
+11s         Normal    SuccessfulCreate          replicaset/web-app-nodeport-5fcd49f65f       Created pod: web-app-nodeport-5fcd49f65f-5fnqh
+11s         Normal    SuccessfulCreate          replicaset/web-app-nodeport-5fcd49f65f       Created pod: web-app-nodeport-5fcd49f65f-22whj
+10s         Normal    Created                   pod/web-app-nodeport-5fcd49f65f-22whj        Container created
+10s         Normal    Started                   pod/web-app-nodeport-5fcd49f65f-5fnqh        Container started
+10s         Normal    Created                   pod/web-app-nodeport-5fcd49f65f-5fnqh        Container created
+10s         Normal    Pulled                    pod/web-app-nodeport-5fcd49f65f-5fnqh        Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+10s         Normal    Started                   pod/web-app-nodeport-5fcd49f65f-22whj        Container started
+10s         Normal    Pulled                    pod/web-app-nodeport-5fcd49f65f-22whj        Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+7s          Normal    SuccessfulCreate          replicaset/web-app-loadbalancer-5bc7776f58   Created pod: web-app-loadbalancer-5bc7776f58-qtg8j
+7s          Normal    Scheduled                 pod/web-app-loadbalancer-5bc7776f58-qtg8j    Successfully assigned default/web-app-loadbalancer-5bc7776f58-qtg8j to assignment-control-plane
+7s          Normal    Scheduled                 pod/web-app-loadbalancer-5bc7776f58-snnz6    Successfully assigned default/web-app-loadbalancer-5bc7776f58-snnz6 to assignment-control-plane
+7s          Normal    ScalingReplicaSet         deployment/web-app-loadbalancer              Scaled up replica set web-app-loadbalancer-5bc7776f58 from 0 to 3
+7s          Normal    Scheduled                 pod/web-app-loadbalancer-5bc7776f58-tt8nh    Successfully assigned default/web-app-loadbalancer-5bc7776f58-tt8nh to assignment-control-plane
+7s          Normal    SuccessfulCreate          replicaset/web-app-loadbalancer-5bc7776f58   Created pod: web-app-loadbalancer-5bc7776f58-snnz6
+7s          Normal    SuccessfulCreate          replicaset/web-app-loadbalancer-5bc7776f58   Created pod: web-app-loadbalancer-5bc7776f58-tt8nh
+6s          Normal    Created                   pod/web-app-loadbalancer-5bc7776f58-tt8nh    Container created
+6s          Normal    Started                   pod/web-app-loadbalancer-5bc7776f58-qtg8j    Container started
+6s          Normal    Pulled                    pod/web-app-loadbalancer-5bc7776f58-tt8nh    Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+6s          Normal    Started                   pod/web-app-loadbalancer-5bc7776f58-snnz6    Container started
+6s          Normal    Started                   pod/web-app-loadbalancer-5bc7776f58-tt8nh    Container started
+6s          Normal    Created                   pod/web-app-loadbalancer-5bc7776f58-snnz6    Container created
+6s          Normal    Pulled                    pod/web-app-loadbalancer-5bc7776f58-qtg8j    Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+6s          Normal    Pulled                    pod/web-app-loadbalancer-5bc7776f58-snnz6    Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+6s          Normal    Created                   pod/web-app-loadbalancer-5bc7776f58-qtg8j    Container created
+4s          Normal    Scheduled                 pod/dns-test-client                          Successfully assigned default/dns-test-client to assignment-control-plane
+3s          Normal    Pulled                    pod/dns-test-client                          Container image "curlimages/curl:8.5.0" already present on machine and can be accessed by the pod
+3s          Normal    SuccessfulCreate          statefulset/web-stateful                     Create Pod web-stateful-0 in StatefulSet web-stateful successful
+3s          Normal    Pulled                    pod/headless-dns-client                      Container image "curlimages/curl:8.5.0" already present on machine and can be accessed by the pod
+3s          Normal    Started                   pod/dns-test-client                          Container started
+3s          Normal    Created                   pod/dns-test-client                          Container created
+3s          Normal    Created                   pod/headless-dns-client                      Container created
+3s          Normal    Started                   pod/headless-dns-client                      Container started
+3s          Normal    Scheduled                 pod/web-stateful-0                           Successfully assigned default/web-stateful-0 to assignment-control-plane
+3s          Normal    Pulled                    pod/web-stateful-0                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+3s          Normal    Created                   pod/web-stateful-0                           Container created
+3s          Normal    Started                   pod/web-stateful-0                           Container started
+3s          Normal    Scheduled                 pod/headless-dns-client                      Successfully assigned default/headless-dns-client to assignment-control-plane
+2s          Normal    Scheduled                 pod/web-stateful-1                           Successfully assigned default/web-stateful-1 to assignment-control-plane
+2s          Normal    SuccessfulCreate          statefulset/web-stateful                     Create Pod web-stateful-1 in StatefulSet web-stateful successful
+1s          Normal    Created                   pod/web-stateful-1                           Container created
+1s          Normal    Started                   pod/web-stateful-1                           Container started
+1s          Normal    Scheduled                 pod/web-stateful-2                           Successfully assigned default/web-stateful-2 to assignment-control-plane
+1s          Normal    Pulled                    pod/web-stateful-1                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+1s          Normal    SuccessfulCreate          statefulset/web-stateful                     Create Pod web-stateful-2 in StatefulSet web-stateful successful
+0s          Normal    Pulled                    pod/web-stateful-2                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+0s          Normal    Created                   pod/web-stateful-2                           Container created
+0s          Normal    Started                   pod/web-stateful-2                           Container started

@@ -1,0 +1,96 @@
+Recorded: 2026-10-07T17:52:39.683272+00:00
+Command: terraform -chdir=session18-terraform/terraform-s3-demo show -no-color
+
+# aws_s3_bucket.homework:
+resource "aws_s3_bucket" "homework" {
+    acceleration_status         = null
+    arn                         = "arn:aws:s3:::archit-24bcs10194-devops-hw18-20261007"
+    bucket                      = "archit-24bcs10194-devops-hw18-20261007"
+    bucket_domain_name          = "archit-24bcs10194-devops-hw18-20261007.s3.amazonaws.com"
+    bucket_namespace            = "global"
+    bucket_prefix               = null
+    bucket_region               = "us-east-1"
+    bucket_regional_domain_name = "archit-24bcs10194-devops-hw18-20261007.s3.us-east-1.amazonaws.com"
+    force_destroy               = false
+    hosted_zone_id              = "Z3AQBSTGFYJSTF"
+    id                          = "archit-24bcs10194-devops-hw18-20261007"
+    object_lock_enabled         = false
+    policy                      = null
+    region                      = "us-east-1"
+    request_payer               = "BucketOwner"
+    tags                        = {
+        "Owner"   = "Archit-Kulkarni"
+        "Project" = "devops-homework18"
+        "Roll"    = "24BCS10194"
+    }
+    tags_all                    = {
+        "Owner"   = "Archit-Kulkarni"
+        "Project" = "devops-homework18"
+        "Roll"    = "24BCS10194"
+    }
+
+    grant {
+        id          = "6eada8133a35354e7866798d70df6269af3c334d1716560b849cde50898cd195"
+        permissions = [
+            "FULL_CONTROL",
+        ]
+        type        = "CanonicalUser"
+        uri         = null
+    }
+
+    server_side_encryption_configuration {
+        rule {
+            bucket_key_enabled = false
+
+            apply_server_side_encryption_by_default {
+                kms_master_key_id = null
+                sse_algorithm     = "AES256"
+            }
+        }
+    }
+
+    versioning {
+        enabled    = false
+        mfa_delete = false
+    }
+}
+
+# aws_s3_bucket_public_access_block.homework:
+resource "aws_s3_bucket_public_access_block" "homework" {
+    block_public_acls       = true
+    block_public_policy     = true
+    bucket                  = "archit-24bcs10194-devops-hw18-20261007"
+    id                      = "archit-24bcs10194-devops-hw18-20261007"
+    ignore_public_acls      = true
+    region                  = "us-east-1"
+    restrict_public_buckets = true
+}
+
+# aws_s3_bucket_server_side_encryption_configuration.homework:
+resource "aws_s3_bucket_server_side_encryption_configuration" "homework" {
+    bucket                = "archit-24bcs10194-devops-hw18-20261007"
+    expected_bucket_owner = null
+    id                    = "archit-24bcs10194-devops-hw18-20261007"
+    region                = "us-east-1"
+
+    rule {
+        blocked_encryption_types = [
+            "SSE-C",
+        ]
+        bucket_key_enabled       = false
+
+        apply_server_side_encryption_by_default {
+            kms_master_key_id = null
+            sse_algorithm     = "AES256"
+        }
+    }
+}
+
+
+Outputs:
+
+bucket_arn = "arn:aws:s3:::archit-24bcs10194-devops-hw18-20261007"
+bucket_name = "archit-24bcs10194-devops-hw18-20261007"
+bucket_region = "us-east-1"
+
+Exit code: 0

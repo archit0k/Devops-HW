@@ -136,3 +136,35 @@ jobs:
             docker tag "studyslot-${app}:${GITHUB_SHA}" "$image"
             docker push "$image"
           done
+  deploy:
+    needs: images
+    if: github.ref == 'refs/heads/main' && vars.ENABLE_EKS_CD == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-1
+          role-session-name: StudySlot-GitHub-Actions
+      - name: Install verified Helm client
+        run: |
+          curl -fsSL --retry 3 -o /tmp/helm-v3.22.0-linux-amd64.tar.gz https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz
+          curl -fsSL --retry 3 -o /tmp/helm.sha256 https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz.sha256
+          cd /tmp
+          echo "$(cat helm.sha256)  helm-v3.22.0-linux-amd64.tar.gz" | sha256sum -c -
+          tar -xzf helm-v3.22.0-linux-amd64.tar.gz
+          sudo install linux-amd64/helm /usr/local/bin/helm
+      - name: Deploy the tested SHA to EKS
+        run: |
+          aws eks update-kubeconfig --name archit-studyslot --region us-east-1
+          helm upgrade --install studyslot session21-final-project/helm/studyslot -n studyslot \
+            --set imageTag="${GITHUB_SHA}" --set database.storageClass=studyslot-gp3 \
+            --set ingress.host=studyslot.127.0.0.1.sslip.io --set monitoring.serviceMonitor=true \
+            --wait --timeout 10m
+          kubectl get pods,svc,ingress,hpa,pvc -n studyslot
+          helm list -n studyslot

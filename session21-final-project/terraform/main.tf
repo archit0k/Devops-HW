@@ -86,6 +86,49 @@ resource "aws_eks_node_group" "lab" {
   depends_on = [aws_iam_role_policy_attachment.node, aws_route_table_association.public]
 }
 
+data "aws_eks_addon_version" "pod_identity" {
+  addon_name         = "eks-pod-identity-agent"
+  kubernetes_version = var.kubernetes_version
+  most_recent        = true
+}
+data "aws_eks_addon_version" "ebs" {
+  addon_name         = "aws-ebs-csi-driver"
+  kubernetes_version = var.kubernetes_version
+  most_recent        = true
+}
+resource "aws_eks_addon" "pod_identity" {
+  cluster_name  = aws_eks_cluster.lab.name
+  addon_name    = "eks-pod-identity-agent"
+  addon_version = data.aws_eks_addon_version.pod_identity.version
+  depends_on    = [aws_eks_node_group.lab]
+}
+resource "aws_iam_role" "ebs" {
+  name = "studyslot-ebs-driver"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow", Principal = { Service = "pods.eks.amazonaws.com" },
+      Action = ["sts:AssumeRole", "sts:TagSession"]
+    }]
+  })
+}
+resource "aws_iam_role_policy_attachment" "ebs" {
+  role       = aws_iam_role.ebs.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+}
+resource "aws_eks_pod_identity_association" "ebs" {
+  cluster_name    = aws_eks_cluster.lab.name
+  namespace       = "kube-system"
+  service_account = "ebs-csi-controller-sa"
+  role_arn        = aws_iam_role.ebs.arn
+}
+resource "aws_eks_addon" "ebs" {
+  cluster_name  = aws_eks_cluster.lab.name
+  addon_name    = "aws-ebs-csi-driver"
+  addon_version = data.aws_eks_addon_version.ebs.version
+  depends_on    = [aws_eks_node_group.lab, aws_eks_addon.pod_identity, aws_iam_role_policy_attachment.ebs, aws_eks_pod_identity_association.ebs]
+}
+
 # Root credentials provision the lab, but kubectl uses a short-lived IAM role session.
 resource "aws_iam_role" "lab_admin" {
   name = "studyslot-lab-admin"

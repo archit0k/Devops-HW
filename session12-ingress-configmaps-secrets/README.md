@@ -53,3 +53,7 @@ Vault / cloud secret manager -> External Secrets Operator -> Kubernetes Secret -
 ```
 
 The external manager remains the source of truth. The operator synchronizes short-lived Kubernetes Secrets, and workloads consume only the keys they need.
+
+## End-to-end verification
+
+The [successful run](https://github.com/archit0k/Devops-HW/actions/runs/37664018450) installed the real NGINX Ingress controller, injected configuration and a disposable Secret, waited for routes to load, then checked `/` and `/api/` using `Host: yatri.local`. It deliberately broke the backend Service selector, observed the unavailable backend, fixed it and retested HTTP. Finally it changed `LOG_LEVEL`, restarted the backend and read `DEBUG` from its environment. [Full command output](evidence/runner/commands.txt) includes the checks and cleanup; passwords were not printed.

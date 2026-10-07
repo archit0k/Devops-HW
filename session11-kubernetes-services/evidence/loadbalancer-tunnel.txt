@@ -1,0 +1,35 @@
+Recorded: 2026-10-07T17:53:29.655368+00:00
+Command: bash -c 'minikube kubectl -- -n homework11 get svc,pods; curl -fsS http://127.0.0.1; minikube kubectl -- delete namespace homework11 --wait=true'
+
+NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+service/loadbalancer-web   LoadBalancer   10.107.235.169   127.0.0.1     80:32651/TCP   4m37s
+
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/loadbalancer-web-5d8766f9ff-bc5kn   1/1     Running   0          4m39s
+pod/loadbalancer-web-5d8766f9ff-xkjn5   1/1     Running   0          4m39s
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+namespace "homework11" deleted
+
+Exit code: 0

@@ -1,0 +1,21 @@
+Recorded: 2026-10-07T17:48:51.510918+00:00
+Command: terraform -chdir=session19-cloud-terraform init -plugin-dir=/tmp/homework-provider -input=false -no-color
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Installing hashicorp/aws v6.67.0...
+- Installed hashicorp/aws v6.67.0 (unauthenticated)
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+
+Exit code: 0

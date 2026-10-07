@@ -7,12 +7,12 @@ Roll number: 24BCS10194
 
 This lab uses `kubectl` to talk to the cluster and Minikube to create the local control-plane node.
 
-```powershell
+```bash
 minikube version
-kubectl version --client --output=yaml
-minikube start --driver=virtualbox
+minikube kubectl -- version --client --output=yaml
+minikube start --driver=docker
 minikube status
-kubectl get nodes -o wide
+minikube kubectl -- get nodes -o wide
 minikube stop
 ```
 
@@ -49,3 +49,5 @@ CoreDNS is running at https://127.0.0.1:32771/api/v1/namespaces/kube-system/serv
 NAME       STATUS   ROLES           VERSION
 minikube   Ready    control-plane   v1.37.0
 ```
+
+The [full recheck](evidence/lab.txt), produced by [run-basics.sh](run-basics.sh), also deploys Nginx, exposes its Service, scales to four replicas, changes the image, checks rollout history, rolls back and verifies HTTP from inside the cluster. The temporary `homework9` namespace is then removed. WSL uses the Docker driver; `minikube kubectl --` keeps the CLI version matched to the cluster.

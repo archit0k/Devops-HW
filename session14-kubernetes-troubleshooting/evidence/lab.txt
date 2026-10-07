@@ -1,0 +1,849 @@
+Recorded: 2026-10-07T17:10:26.271233+00:00
+Command: bash '/mnt/c/Users/archi/Github Projects/Devops-HW/session14-kubernetes-troubleshooting/run-lab.sh'
+
+namespace/homework14 unchanged
++ k apply -f mini-project/deployment.yaml -f mini-project/service.yaml
++ minikube kubectl -- -n homework14 apply -f mini-project/deployment.yaml -f mini-project/service.yaml
+deployment.apps/troubleshooting-app unchanged
+service/troubleshooting-service unchanged
++ k rollout status deployment/troubleshooting-app --timeout=180s
++ minikube kubectl -- -n homework14 rollout status deployment/troubleshooting-app --timeout=180s
+deployment "troubleshooting-app" successfully rolled out
++ k run client --image=busybox:1.36 --restart=Never -- sleep 3600
++ minikube kubectl -- -n homework14 run client --image=busybox:1.36 --restart=Never -- sleep 3600
+pod/client created
++ k wait --for=condition=Ready pod/client --timeout=180s
++ minikube kubectl -- -n homework14 wait --for=condition=Ready pod/client --timeout=180s
+pod/client condition met
++ k get pods,svc -o wide
++ minikube kubectl -- -n homework14 get pods,svc -o wide
+NAME                                       READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
+pod/client                                 1/1     Running   0          3s    10.244.0.6   minikube   <none>           <none>
+pod/troubleshooting-app-59d4957864-4qbfx   1/1     Running   0          13m   10.244.0.4   minikube   <none>           <none>
+pod/troubleshooting-app-59d4957864-8qz66   1/1     Running   0          13m   10.244.0.5   minikube   <none>           <none>
+
+NAME                              TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/troubleshooting-service   ClusterIP   10.105.153.66   <none>        80/TCP    13m   app=troubleshooting-app
++ k describe deployment troubleshooting-app
++ minikube kubectl -- -n homework14 describe deployment troubleshooting-app
+Name:                   troubleshooting-app
+Namespace:              homework14
+CreationTimestamp:      Wed, 07 Oct 2026 16:57:29 +0000
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=troubleshooting-app
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=troubleshooting-app
+  Containers:
+   app:
+    Image:         nginx:1.27
+    Port:          80/TCP
+    Host Port:     0/TCP
+    Environment:   <none>
+    Mounts:        <none>
+  Volumes:         <none>
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   troubleshooting-app-59d4957864 (2/2 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  13m   deployment-controller  Scaled up replica set troubleshooting-app-59d4957864 from 0 to 2
++ k logs deployment/troubleshooting-app --tail=8
++ minikube kubectl -- -n homework14 logs deployment/troubleshooting-app --tail=8
+Found 2 pods, using pod/troubleshooting-app-59d4957864-8qz66
+2026/10/07 17:02:59 [notice] 1#1: start worker process 33
+2026/10/07 17:02:59 [notice] 1#1: start worker process 34
+2026/10/07 17:02:59 [notice] 1#1: start worker process 35
+2026/10/07 17:02:59 [notice] 1#1: start worker process 36
+2026/10/07 17:02:59 [notice] 1#1: start worker process 37
+2026/10/07 17:02:59 [notice] 1#1: start worker process 38
+2026/10/07 17:02:59 [notice] 1#1: start worker process 39
+2026/10/07 17:02:59 [notice] 1#1: start worker process 40
++ k exec client -- nslookup troubleshooting-service.homework14.svc.cluster.local
++ minikube kubectl -- -n homework14 exec client -- nslookup troubleshooting-service.homework14.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	troubleshooting-service.homework14.svc.cluster.local
+Address: 10.105.153.66
+
+
++ k exec client -- wget -qO- http://troubleshooting-service
++ minikube kubectl -- -n homework14 exec client -- wget -qO- http://troubleshooting-service
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ k explain pod.spec.containers
++ minikube kubectl -- -n homework14 explain pod.spec.containers
+KIND:       Pod
+VERSION:    v1
+
+FIELD: containers <[]Container>
+
+
+DESCRIPTION:
+    List of containers belonging to the pod. Containers cannot currently be
+    added or removed. There must be at least one container in a Pod. Cannot be
+    updated.
+    A single application container that you want to run within a pod.
+    
+FIELDS:
+  args	<[]string>
+    Arguments to the entrypoint. The container image's CMD is used if this is
+    not provided. Variable references $(VAR_NAME) are expanded using the
+    container's environment. If a variable cannot be resolved, the reference in
+    the input string will be unchanged. Double $$ are reduced to a single $,
+    which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
+    produce the string literal "$(VAR_NAME)". Escaped references will never be
+    expanded, regardless of whether the variable exists or not. Cannot be
+    updated. More info:
+    https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+
+  command	<[]string>
+    Entrypoint array. Not executed within a shell. The container image's
+    ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME)
+    are expanded using the container's environment. If a variable cannot be
+    resolved, the reference in the input string will be unchanged. Double $$ are
+    reduced to a single $, which allows for escaping the $(VAR_NAME) syntax:
+    i.e. "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)". Escaped
+    references will never be expanded, regardless of whether the variable exists
+    or not. Cannot be updated. More info:
+    https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+
+  env	<[]EnvVar>
+    List of environment variables to set in the container. Cannot be updated.
+
+  envFrom	<[]EnvFromSource>
+    List of sources to populate environment variables in the container. The keys
+    defined within a source may consist of any printable ASCII characters except
+    '='. When a key exists in multiple sources, the value associated with the
+    last source will take precedence. Values defined by an Env with a duplicate
+    key will take precedence. Cannot be updated.
+
+  image	<string>
+    Container image name. More info:
+    https://kubernetes.io/docs/concepts/containers/images This field is optional
+    to allow higher level config management to default or override container
+    images in workload controllers like Deployments and StatefulSets.
+
+  imagePullPolicy	<string>
+  enum: Always, IfNotPresent, Never
+    Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if
+    :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More
+    info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+    
+    Possible enum values:
+     - `"Always"` means that kubelet always attempts to pull the latest image.
+    Container will fail If the pull fails.
+     - `"IfNotPresent"` means that kubelet pulls if the image isn't present on
+    disk. Container will fail if the image isn't present and the pull fails.
+     - `"Never"` means that kubelet never pulls an image, but only uses a local
+    image. Container will fail if the image isn't present
+
+  lifecycle	<Lifecycle>
+    Actions that the management system should take in response to container
+    lifecycle events. Cannot be updated.
+
+  livenessProbe	<Probe>
+    Periodic probe of container liveness. Container will be restarted if the
+    probe fails. Cannot be updated. More info:
+    https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+
+  name	<string> -required-
+    Name of the container specified as a DNS_LABEL. Each container in a pod must
+    have a unique name (DNS_LABEL). Cannot be updated.
+
+  ports	<[]ContainerPort>
+    List of ports to expose from the container. Not specifying a port here DOES
+    NOT prevent that port from being exposed. Any port which is listening on the
+    default "0.0.0.0" address inside a container will be accessible from the
+    network. Modifying this array with strategic merge patch may corrupt the
+    data. For more information See
+    https://github.com/kubernetes/kubernetes/issues/108255. Cannot be updated.
+
+  readinessProbe	<Probe>
+    Periodic probe of container service readiness. Container will be removed
+    from service endpoints if the probe fails. Cannot be updated. More info:
+    https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+
+  resizePolicy	<[]ContainerResizePolicy>
+    Resources resize policy for the container. This field cannot be set on
+    ephemeral containers.
+
+  resources	<ResourceRequirements>
+    Compute Resources required by this container. Cannot be updated. More info:
+    https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
+  restartPolicy	<string>
+    RestartPolicy defines the restart behavior of individual containers in a
+    pod. This overrides the pod-level restart policy. When this field is not
+    specified, the restart behavior is defined by the Pod's restart policy and
+    the container type. Additionally, setting the RestartPolicy as "Always" for
+    the init container will have the following effect: this init container will
+    be continually restarted on exit until all regular containers have
+    terminated. Once all regular containers have completed, all init containers
+    with restartPolicy "Always" will be shut down. This lifecycle differs from
+    normal init containers and is often referred to as a "sidecar" container.
+    Although this init container still starts in the init container sequence, it
+    does not wait for the container to complete before proceeding to the next
+    init container. Instead, the next init container starts immediately after
+    this init container is started, or after any startupProbe has successfully
+    completed.
+
+  restartPolicyRules	<[]ContainerRestartRule>
+    Represents a list of rules to be checked to determine if the container
+    should be restarted on exit. The rules are evaluated in order. Once a rule
+    matches a container exit condition, the remaining rules are ignored. If no
+    rule matches the container exit condition, the Container-level restart
+    policy determines the whether the container is restarted or not. Constraints
+    on the rules: - At most 20 rules are allowed. - Rules can have the same
+    action. - Identical rules are not forbidden in validations. When rules are
+    specified, container MUST set RestartPolicy explicitly even it if matches
+    the Pod's RestartPolicy.
+
+  securityContext	<SecurityContext>
+    SecurityContext defines the security options the container should be run
+    with. If set, the fields of SecurityContext override the equivalent fields
+    of PodSecurityContext. More info:
+    https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+
+  startupProbe	<Probe>
+    StartupProbe indicates that the Pod has successfully initialized. If
+    specified, no other probes are executed until this completes successfully.
+    If this probe fails, the Pod will be restarted, just as if the livenessProbe
+    failed. This can be used to provide different probe parameters at the
+    beginning of a Pod's lifecycle, when it might take a long time to load data
+    or warm a cache, than during steady-state operation. This cannot be updated.
+    More info:
+    https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+
+  stdin	<boolean>
+    Whether this container should allocate a buffer for stdin in the container
+    runtime. If this is not set, reads from stdin in the container will always
+    result in EOF. Default is false.
+
+  stdinOnce	<boolean>
+    Whether the container runtime should close the stdin channel after it has
+    been opened by a single attach. When stdin is true the stdin stream will
+    remain open across multiple attach sessions. If stdinOnce is set to true,
+    stdin is opened on container start, is empty until the first client attaches
+    to stdin, and then remains open and accepts data until the client
+    disconnects, at which time stdin is closed and remains closed until the
+    container is restarted. If this flag is false, a container processes that
+    reads from stdin will never receive an EOF. Default is false
+
+  terminationMessagePath	<string>
+    Optional: Path at which the file to which the container's termination
+    message will be written is mounted into the container's filesystem. Message
+    written is intended to be brief final status, such as an assertion failure
+    message. Will be truncated by the node if greater than 4096 bytes. The total
+    message length across all containers will be limited to 12kb. Defaults to
+    /dev/termination-log. Cannot be updated.
+
+  terminationMessagePolicy	<string>
+  enum: FallbackToLogsOnError, File
+    Indicate how the termination message should be populated. File will use the
+    contents of terminationMessagePath to populate the container status message
+    on both success and failure. FallbackToLogsOnError will use the last chunk
+    of container log output if the termination message file is empty and the
+    container exited with an error. The log output is limited to 2048 bytes or
+    80 lines, whichever is smaller. Defaults to File. Cannot be updated.
+    
+    Possible enum values:
+     - `"FallbackToLogsOnError"` will read the most recent contents of the
+    container logs for the container status message when the container exits
+    with an error and the terminationMessagePath has no contents.
+     - `"File"` is the default behavior and will set the container status
+    message to the contents of the container's terminationMessagePath when the
+    container exits.
+
+  tty	<boolean>
+    Whether this container should allocate a TTY for itself, also requires
+    'stdin' to be true. Default is false.
+
+  volumeDevices	<[]VolumeDevice>
+    volumeDevices is the list of block devices to be used by the container.
+
+  volumeMounts	<[]VolumeMount>
+    Pod volumes to mount into the container's filesystem. Cannot be updated.
+
+  workingDir	<string>
+    Container's working directory. If not specified, the container runtime's
+    default will be used, which might be configured in the container image.
+    Cannot be updated.
+
+
++ k top pods
++ minikube kubectl -- -n homework14 top pods
+NAME                                   CPU(cores)   MEMORY(bytes)   
+troubleshooting-app-59d4957864-4qbfx   0m           10Mi            
+troubleshooting-app-59d4957864-8qz66   0m           10Mi            
++ k get events --sort-by=.metadata.creationTimestamp
++ minikube kubectl -- -n homework14 get events --sort-by=.metadata.creationTimestamp
+LAST SEEN   TYPE      REASON              OBJECT                                      MESSAGE
+13m         Normal    Scheduled           pod/troubleshooting-app-59d4957864-8qz66    Successfully assigned homework14/troubleshooting-app-59d4957864-8qz66 to minikube
+13m         Normal    ScalingReplicaSet   deployment/troubleshooting-app              Scaled up replica set troubleshooting-app-59d4957864 from 0 to 2
+13m         Normal    SuccessfulCreate    replicaset/troubleshooting-app-59d4957864   Created pod: troubleshooting-app-59d4957864-4qbfx
+13m         Normal    SuccessfulCreate    replicaset/troubleshooting-app-59d4957864   Created pod: troubleshooting-app-59d4957864-8qz66
+13m         Normal    Scheduled           pod/troubleshooting-app-59d4957864-4qbfx    Successfully assigned homework14/troubleshooting-app-59d4957864-4qbfx to minikube
+8m39s       Normal    Pulling             pod/troubleshooting-app-59d4957864-4qbfx    Pulling image "nginx:1.27"
+8m48s       Normal    Pulling             pod/troubleshooting-app-59d4957864-8qz66    Pulling image "nginx:1.27"
+10m         Warning   Failed              pod/troubleshooting-app-59d4957864-8qz66    Error: ErrImagePull
+13m         Warning   Failed              pod/troubleshooting-app-59d4957864-8qz66    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to copy: httpReadSeeker: failed open: failed to authorize: failed to fetch anonymous token: Get "https://auth.docker.io/token?scope=%5BREDACTED%5D&service=%5BREDACTED%5D": dial tcp [2606:4700:4403::ac40:904e]:443: connect: network is unreachable
+9m          Warning   Failed              pod/troubleshooting-app-59d4957864-8qz66    Error: ImagePullBackOff
+9m          Normal    BackOff             pod/troubleshooting-app-59d4957864-8qz66    Back-off pulling image "nginx:1.27"
+10m         Warning   Failed              pod/troubleshooting-app-59d4957864-4qbfx    Error: ErrImagePull
+13m         Warning   Failed              pod/troubleshooting-app-59d4957864-4qbfx    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to resolve reference "docker.io/library/nginx:1.27": failed to do request: Head "https://registry-1.docker.io/v2/library/nginx/manifests/1.27": dial tcp [2600:1f18:2148:bc02:3839:c9d8:4c0f:1af9]:443: connect: network is unreachable
+8m51s       Normal    BackOff             pod/troubleshooting-app-59d4957864-4qbfx    Back-off pulling image "nginx:1.27"
+8m51s       Warning   Failed              pod/troubleshooting-app-59d4957864-4qbfx    Error: ImagePullBackOff
+12m         Warning   Failed              pod/troubleshooting-app-59d4957864-8qz66    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to resolve reference "docker.io/library/nginx:1.27": failed to do request: Head "https://registry-1.docker.io/v2/library/nginx/manifests/1.27": dial tcp: lookup registry-1.docker.io on 100.129.165.185:53: server misbehaving
+12m         Warning   Failed              pod/troubleshooting-app-59d4957864-4qbfx    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to copy: httpReadSeeker: failed open: failed to do request: Get "https://registry-1.docker.io/v2/library/nginx/manifests/sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d": dial tcp [2600:1f18:2148:bc02:cb20:9355:47d5:335b]:443: connect: network is unreachable
+11m         Warning   Failed              pod/troubleshooting-app-59d4957864-8qz66    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to copy: httpReadSeeker: failed open: failed to do request: Get "https://production.cloudfront.docker.com/registry-v2/docker/registry/v2/blobs/sha256/1e/1e5f3c5b981a9f91ca91cf13ce87c2eedfc7a083f4f279552084dd08fc477512/data?Expires=%5BREDACTED%5D&Key-Pair-Id=%5BREDACTED%5D&Signature=%5BREDACTED%5D": dial tcp: lookup production.cloudfront.docker.com on 100.129.165.185:53: server misbehaving
+11m         Warning   Failed              pod/troubleshooting-app-59d4957864-4qbfx    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to copy: httpReadSeeker: failed open: failed to do request: Get "https://registry-1.docker.io/v2/library/nginx/manifests/sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d": dial tcp [2600:1f18:2148:bc00:b14b:d695:28a2:4338]:443: connect: network is unreachable
+10m         Warning   Failed              pod/troubleshooting-app-59d4957864-8qz66    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to copy: httpReadSeeker: failed open: failed to do request: Get "https://production.cloudfront.docker.com/registry-v2/docker/registry/v2/blobs/sha256/97/979e6233a40af9a51ee2c9894bd42ebf78a79c87cbed70cc6a3840a0952f3d57/data?Expires=%5BREDACTED%5D&Key-Pair-Id=%5BREDACTED%5D&Signature=%5BREDACTED%5D": dial tcp: lookup production.cloudfront.docker.com on 100.129.165.185:53: server misbehaving
+10m         Warning   Failed              pod/troubleshooting-app-59d4957864-4qbfx    Failed to pull image "nginx:1.27": failed to pull and unpack image "docker.io/library/nginx:1.27": failed to resolve reference "docker.io/library/nginx:1.27": failed to authorize: failed to fetch anonymous token: Get "https://auth.docker.io/token?scope=%5BREDACTED%5D&service=%5BREDACTED%5D": dial tcp: lookup auth.docker.io on 100.129.165.185:53: server misbehaving
+7m54s       Normal    Pulled              pod/troubleshooting-app-59d4957864-8qz66    Successfully pulled image "nginx:1.27" in 54.267s (54.267s including waiting). Image size: 72406859 bytes.
+7m54s       Normal    Created             pod/troubleshooting-app-59d4957864-8qz66    Container created
+7m53s       Normal    Started             pod/troubleshooting-app-59d4957864-8qz66    Container started
+7m47s       Normal    Created             pod/troubleshooting-app-59d4957864-4qbfx    Container created
+7m47s       Normal    Pulled              pod/troubleshooting-app-59d4957864-4qbfx    Successfully pulled image "nginx:1.27" in 7.018s (52.285s including waiting). Image size: 72406859 bytes.
+7m46s       Normal    Started             pod/troubleshooting-app-59d4957864-4qbfx    Container started
+17s         Normal    Scheduled           pod/client                                  Successfully assigned homework14/client to minikube
+16s         Normal    Started             pod/client                                  Container started
+16s         Normal    Created             pod/client                                  Container created
+16s         Normal    Pulled              pod/client                                  Container image "busybox:1.36" already present on machine and can be accessed by the pod
++ k apply -f mini-project/broken-pod.yaml
++ minikube kubectl -- -n homework14 apply -f mini-project/broken-pod.yaml
+pod/project-broken-pod created
++ for attempt in {1..20}
+++ k get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
+++ minikube kubectl -- -n homework14 get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
++ reason=ContainerCreating
++ [[ ContainerCreating == ImagePullBackOff ]]
++ sleep 3
++ for attempt in {1..20}
+++ k get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
+++ minikube kubectl -- -n homework14 get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
++ reason=ErrImagePull
++ [[ ErrImagePull == ImagePullBackOff ]]
++ sleep 3
++ for attempt in {1..20}
+++ k get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
+++ minikube kubectl -- -n homework14 get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
++ reason=ErrImagePull
++ [[ ErrImagePull == ImagePullBackOff ]]
++ sleep 3
++ for attempt in {1..20}
+++ k get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
+++ minikube kubectl -- -n homework14 get pod project-broken-pod -o 'jsonpath={.status.containerStatuses[0].state.waiting.reason}'
++ reason=ImagePullBackOff
++ [[ ImagePullBackOff == ImagePullBackOff ]]
++ break
++ k get pod project-broken-pod
++ minikube kubectl -- -n homework14 get pod project-broken-pod
+NAME                 READY   STATUS             RESTARTS   AGE
+project-broken-pod   0/1     ImagePullBackOff   0          20s
++ k describe pod project-broken-pod
++ minikube kubectl -- -n homework14 describe pod project-broken-pod
+Name:             project-broken-pod
+Namespace:        homework14
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:10:54 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Pending
+IP:               10.244.0.7
+IPs:
+  IP:  10.244.0.7
+Containers:
+  app:
+    Container ID:   
+    Image:          nginx:this-tag-does-not-exist
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-llzt2 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-llzt2:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age               From               Message
+  ----     ------     ----              ----               -------
+  Normal   Scheduled  22s               default-scheduler  Successfully assigned homework14/project-broken-pod to minikube
+  Normal   BackOff    17s               kubelet            spec.containers{app}: Back-off pulling image "nginx:this-tag-does-not-exist"
+  Warning  Failed     17s               kubelet            spec.containers{app}: Error: ImagePullBackOff
+  Normal   Pulling    6s (x2 over 21s)  kubelet            spec.containers{app}: Pulling image "nginx:this-tag-does-not-exist"
+  Warning  Failed     1s (x2 over 18s)  kubelet            spec.containers{app}: Failed to pull image "nginx:this-tag-does-not-exist": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/library/nginx:this-tag-does-not-exist": failed to resolve reference "docker.io/library/nginx:this-tag-does-not-exist": docker.io/library/nginx:this-tag-does-not-exist: not found
+  Warning  Failed     1s (x2 over 18s)  kubelet            spec.containers{app}: Error: ErrImagePull
++ k set image pod/project-broken-pod app=nginx:1.27
++ minikube kubectl -- -n homework14 set image pod/project-broken-pod app=nginx:1.27
+pod/project-broken-pod image updated
++ k wait --for=condition=Ready pod/project-broken-pod --timeout=180s
++ minikube kubectl -- -n homework14 wait --for=condition=Ready pod/project-broken-pod --timeout=180s
+pod/project-broken-pod condition met
++ k get pod project-broken-pod
++ minikube kubectl -- -n homework14 get pod project-broken-pod
+NAME                 READY   STATUS    RESTARTS   AGE
+project-broken-pod   1/1     Running   0          27s
++ k patch svc troubleshooting-service -p '{"spec":{"selector":{"app":"wrong-app"}}}'
++ minikube kubectl -- -n homework14 patch svc troubleshooting-service -p '{"spec":{"selector":{"app":"wrong-app"}}}'
+service/troubleshooting-service patched
++ k get endpointslice -l kubernetes.io/service-name=troubleshooting-service
++ minikube kubectl -- -n homework14 get endpointslice -l kubernetes.io/service-name=troubleshooting-service
+NAME                            ADDRESSTYPE   PORTS     ENDPOINTS   AGE
+troubleshooting-service-9djg6   IPv4          <unset>   <unset>     13m
++ k get pods --show-labels
++ minikube kubectl -- -n homework14 get pods --show-labels
+NAME                                   READY   STATUS    RESTARTS   AGE   LABELS
+client                                 1/1     Running   0          52s   run=client
+project-broken-pod                     1/1     Running   0          33s   <none>
+troubleshooting-app-59d4957864-4qbfx   1/1     Running   0          13m   app=troubleshooting-app,pod-template-hash=59d4957864
+troubleshooting-app-59d4957864-8qz66   1/1     Running   0          13m   app=troubleshooting-app,pod-template-hash=59d4957864
++ k exec client -- timeout 5 wget -qO- http://troubleshooting-service
++ minikube kubectl -- -n homework14 exec client -- timeout 5 wget -qO- http://troubleshooting-service
+wget: can't connect to remote host (10.105.153.66): Connection refused
+command terminated with exit code 1
++ true
++ k patch svc troubleshooting-service -p '{"spec":{"selector":{"app":"troubleshooting-app"}}}'
++ minikube kubectl -- -n homework14 patch svc troubleshooting-service -p '{"spec":{"selector":{"app":"troubleshooting-app"}}}'
+service/troubleshooting-service patched
++ k get endpointslice -l kubernetes.io/service-name=troubleshooting-service
++ minikube kubectl -- -n homework14 get endpointslice -l kubernetes.io/service-name=troubleshooting-service
+NAME                            ADDRESSTYPE   PORTS   ENDPOINTS               AGE
+troubleshooting-service-9djg6   IPv4          80      10.244.0.5,10.244.0.4   14m
++ k exec client -- wget -qO- http://troubleshooting-service
++ minikube kubectl -- -n homework14 exec client -- wget -qO- http://troubleshooting-service
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ k run crash --image=busybox:1.36 --restart=Always -- sh -c 'echo missing-startup-config; exit 1'
++ minikube kubectl -- -n homework14 run crash --image=busybox:1.36 --restart=Always -- sh -c 'echo missing-startup-config; exit 1'
+pod/crash created
++ sleep 12
++ k get pod crash
++ minikube kubectl -- -n homework14 get pod crash
+NAME    READY   STATUS   RESTARTS      AGE
+crash   0/1     Error    2 (13s ago)   15s
++ k logs crash --previous
++ minikube kubectl -- -n homework14 logs crash --previous
+unable to retrieve container logs for containerd://625cfa8b899a80f1edb2ede650a7f6b43202c62750a5f64a640dc3da58dbdfd8+ k describe pod crash
++ minikube kubectl -- -n homework14 describe pod crash
+Name:             crash
+Namespace:        homework14
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:11:37 +0000
+Labels:           run=crash
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.8
+IPs:
+  IP:  10.244.0.8
+Containers:
+  crash:
+    Container ID:  containerd://4136b1d1f7582be1219b44ecca0af734d611736abb73a4a2f0a067b6f18a64dc
+    Image:         busybox:1.36
+    Image ID:      sha256:b116e155074440ffd9e449559433feb4cd2341eb3554b1da1c638c976e56451d
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      sh
+      -c
+      echo missing-startup-config; exit 1
+    State:          Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 07 Oct 2026 17:11:50 +0000
+      Finished:     Wed, 07 Oct 2026 17:11:51 +0000
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 07 Oct 2026 17:11:39 +0000
+      Finished:     Wed, 07 Oct 2026 17:11:39 +0000
+    Ready:          False
+    Restart Count:  2
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-8lfct (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-8lfct:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age               From               Message
+  ----     ------     ----              ----               -------
+  Normal   Scheduled  19s               default-scheduler  Successfully assigned homework14/crash to minikube
+  Normal   Pulled     6s (x3 over 18s)  kubelet            spec.containers{crash}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created    6s (x3 over 18s)  kubelet            spec.containers{crash}: Container created
+  Normal   Started    5s (x3 over 18s)  kubelet            spec.containers{crash}: Container started
+  Warning  BackOff    5s (x3 over 16s)  kubelet            spec.containers{crash}: Back-off restarting failed container crash in pod crash_homework14(9191b546-54c9-44c4-b6aa-4b54f9a045ed)
++ k delete pod crash --wait=true
++ minikube kubectl -- -n homework14 delete pod crash --wait=true
+pod "crash" deleted from homework14 namespace
++ k run crash --image=busybox:1.36 --restart=Always -- sleep 3600
++ minikube kubectl -- -n homework14 run crash --image=busybox:1.36 --restart=Always -- sleep 3600
+pod/crash created
++ k wait --for=condition=Ready pod/crash --timeout=120s
++ minikube kubectl -- -n homework14 wait --for=condition=Ready pod/crash --timeout=120s
+pod/crash condition met
++ k create deployment pending --image=nginx:1.27
++ minikube kubectl -- -n homework14 create deployment pending --image=nginx:1.27
+deployment.apps/pending created
++ k set resources deployment/pending --requests=memory=9Gi
++ minikube kubectl -- -n homework14 set resources deployment/pending --requests=memory=9Gi
+deployment.apps/pending resource requirements updated
++ sleep 5
++ k get pods -l app=pending
++ minikube kubectl -- -n homework14 get pods -l app=pending
+NAME                       READY   STATUS    RESTARTS   AGE
+pending-5c4899fbcc-v7w7s   0/1     Pending   0          6s
+pending-78c54954fc-pm5dh   1/1     Running   0          8s
++ k describe pods -l app=pending
++ minikube kubectl -- -n homework14 describe pods -l app=pending
+Name:             pending-5c4899fbcc-v7w7s
+Namespace:        homework14
+Priority:         0
+Service Account:  default
+Node:             <none>
+Labels:           app=pending
+                  pod-template-hash=5c4899fbcc
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Controlled By:    ReplicaSet/pending-5c4899fbcc
+Containers:
+  nginx:
+    Image:      nginx:1.27
+    Port:       <none>
+    Host Port:  <none>
+    Requests:
+      memory:     9Gi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-j6g8q (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  kube-api-access-j6g8q:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             pending-78c54954fc-pm5dh
+Namespace:        homework14
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:12:06 +0000
+Labels:           app=pending
+                  pod-template-hash=78c54954fc
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.10
+IPs:
+  IP:           10.244.0.10
+Controlled By:  ReplicaSet/pending-78c54954fc
+Containers:
+  nginx:
+    Container ID:   containerd://49ecf79bcdf343478e7780f17ac6301393f8065ee71b5a4e164668b1c8e65266
+    Image:          nginx:1.27
+    Image ID:       docker.io/library/nginx@sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:12:08 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xp8hr (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-xp8hr:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
++ k set resources deployment/pending --requests=memory=32Mi,cpu=25m
++ minikube kubectl -- -n homework14 set resources deployment/pending --requests=memory=32Mi,cpu=25m
+deployment.apps/pending resource requirements updated
++ k rollout status deployment/pending --timeout=120s
++ minikube kubectl -- -n homework14 rollout status deployment/pending --timeout=120s
+deployment "pending" successfully rolled out
++ k run missing-config --image=nginx:1.27 --restart=Never '--overrides={"spec":{"containers":[{"name":"missing-config","image":"nginx:1.27","volumeMounts":[{"name":"settings","mountPath":"/settings"}]}],"volumes":[{"name":"settings","configMap":{"name":"required-settings"}}]}}'
++ minikube kubectl -- -n homework14 run missing-config --image=nginx:1.27 --restart=Never '--overrides={"spec":{"containers":[{"name":"missing-config","image":"nginx:1.27","volumeMounts":[{"name":"settings","mountPath":"/settings"}]}],"volumes":[{"name":"settings","configMap":{"name":"required-settings"}}]}}'
+pod/missing-config created
++ sleep 8
++ k get pod missing-config
++ minikube kubectl -- -n homework14 get pod missing-config
+NAME             READY   STATUS              RESTARTS   AGE
+missing-config   0/1     ContainerCreating   0          10s
++ k describe pod missing-config
++ minikube kubectl -- -n homework14 describe pod missing-config
+Name:             missing-config
+Namespace:        homework14
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:12:22 +0000
+Labels:           run=missing-config
+Annotations:      <none>
+Status:           Pending
+IP:               
+IPs:              <none>
+Containers:
+  missing-config:
+    Container ID:   
+    Image:          nginx:1.27
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       ContainerCreating
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /settings from settings (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-8brwd (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  settings:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      required-settings
+    Optional:  false
+  kube-api-access-8brwd:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason       Age               From               Message
+  ----     ------       ----              ----               -------
+  Normal   Scheduled    12s               default-scheduler  Successfully assigned homework14/missing-config to minikube
+  Warning  FailedMount  4s (x5 over 12s)  kubelet            MountVolume.SetUp failed for volume "settings" : configmap "required-settings" not found
++ k create configmap required-settings --from-literal=mode=classroom
++ minikube kubectl -- -n homework14 create configmap required-settings --from-literal=mode=classroom
+configmap/required-settings created
++ k wait --for=condition=Ready pod/missing-config --timeout=120s
++ minikube kubectl -- -n homework14 wait --for=condition=Ready pod/missing-config --timeout=120s
+pod/missing-config condition met
++ k exec missing-config -- cat /settings/mode
++ minikube kubectl -- -n homework14 exec missing-config -- cat /settings/mode
+classroom+ k exec client -- nslookup troubleshooting-service.wrong-namespace.svc.cluster.local
++ minikube kubectl -- -n homework14 exec client -- nslookup troubleshooting-service.wrong-namespace.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+** server can't find troubleshooting-service.wrong-namespace.svc.cluster.local: NXDOMAIN
+
+** server can't find troubleshooting-service.wrong-namespace.svc.cluster.local: NXDOMAIN
+
+command terminated with exit code 1
++ true
++ k exec client -- nslookup troubleshooting-service.homework14.svc.cluster.local
++ minikube kubectl -- -n homework14 exec client -- nslookup troubleshooting-service.homework14.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	troubleshooting-service.homework14.svc.cluster.local
+Address: 10.105.153.66
+
+
++ k exec client -- timeout 5 wget -qO- http://troubleshooting-service:81
++ minikube kubectl -- -n homework14 exec client -- timeout 5 wget -qO- http://troubleshooting-service:81
+command terminated with exit code 143
++ true
++ k get service troubleshooting-service -o yaml
++ minikube kubectl -- -n homework14 get service troubleshooting-service -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"troubleshooting-service","namespace":"homework14"},"spec":{"ports":[{"port":80,"targetPort":80}],"selector":{"app":"troubleshooting-app"},"type":"ClusterIP"}}
+  creationTimestamp: "2026-10-07T16:57:29Z"
+  name: troubleshooting-service
+  namespace: homework14
+  resourceVersion: "6993"
+  uid: a89c1bdc-be0a-4b5f-96a8-6c1ae6f5496a
+spec:
+  clusterIP: 10.105.153.66
+  clusterIPs:
+  - 10.105.153.66
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: troubleshooting-app
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
++ k exec client -- wget -qO- http://troubleshooting-service:80
++ minikube kubectl -- -n homework14 exec client -- wget -qO- http://troubleshooting-service:80
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ k get pods,svc -o wide
++ minikube kubectl -- -n homework14 get pods,svc -o wide
+NAME                                       READY   STATUS    RESTARTS   AGE     IP            NODE       NOMINATED NODE   READINESS GATES
+pod/client                                 1/1     Running   0          2m23s   10.244.0.6    minikube   <none>           <none>
+pod/crash                                  1/1     Running   0          56s     10.244.0.9    minikube   <none>           <none>
+pod/missing-config                         1/1     Running   0          36s     10.244.0.12   minikube   <none>           <none>
+pod/pending-7575fddddf-xvpmr               1/1     Running   0          40s     10.244.0.11   minikube   <none>           <none>
+pod/project-broken-pod                     1/1     Running   0          2m4s    10.244.0.7    minikube   <none>           <none>
+pod/troubleshooting-app-59d4957864-4qbfx   1/1     Running   0          15m     10.244.0.4    minikube   <none>           <none>
+pod/troubleshooting-app-59d4957864-8qz66   1/1     Running   0          15m     10.244.0.5    minikube   <none>           <none>
+
+NAME                              TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE   SELECTOR
+service/troubleshooting-service   ClusterIP   10.105.153.66   <none>        80/TCP    15m   app=troubleshooting-app
++ minikube kubectl -- delete namespace homework14 --wait=true
+namespace "homework14" deleted
+
+Exit code: 0

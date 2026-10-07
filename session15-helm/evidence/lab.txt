@@ -1,0 +1,419 @@
+Recorded: 2026-10-07T17:12:18.008643+00:00
+Command: bash '/mnt/c/Users/archi/Github Projects/Devops-HW/session15-helm/run-lab.sh'
+
+namespace/homework15 created
++ helm version --short
+v3.22.0+g144ca65
++ helm repo add bitnami https://charts.bitnami.com/bitnami
+"bitnami" has been added to your repositories
++ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈Happy Helming!⎈
++ helm search repo bitnami/nginx
++ head -n 5
+NAME                            	CHART VERSION	APP VERSION	DESCRIPTION                                       
+bitnami/nginx                   	25.2.1       	1.31.6     	NGINX Open Source is a web server that can be a...
+bitnami/nginx-ingress-controller	12.0.7       	1.13.1     	NGINX Ingress Controller is an Ingress controll...
+bitnami/nginx-intel             	2.1.15       	0.4.9      	DEPRECATED NGINX Open Source for Intel is a lig...
+++ mktemp -d
++ scratch=/tmp/tmp.HQv00uS4nX
++ helm create /tmp/tmp.HQv00uS4nX/practice-chart
+Creating /tmp/tmp.HQv00uS4nX/practice-chart
++ helm lint /tmp/tmp.HQv00uS4nX/practice-chart
+==> Linting /tmp/tmp.HQv00uS4nX/practice-chart
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
++ helm lint notes-chart
+==> Linting notes-chart
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
++ helm template notes-dev notes-chart -n homework15
+---
+# Source: notes-chart/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notes-dev-config
+data:
+  APP_NAME: "notes-app"
+  ENVIRONMENT: "development"
+---
+# Source: notes-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: notes-dev-svc
+spec:
+  type: NodePort
+  selector:
+    app: notes-dev
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30090
+---
+# Source: notes-chart/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-dev-deploy
+  labels:
+    app: notes-dev
+    environment: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-dev
+  template:
+    metadata:
+      labels:
+        app: notes-dev
+    spec:
+      containers:
+        - name: notes
+          image: "nginx:1.24"
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: notes-dev-config
++ helm install notes-dev notes-chart -n homework15 --wait --timeout 180s
+NAME: notes-dev
+LAST DEPLOYED: Wed Oct  7 17:13:21 2026
+NAMESPACE: homework15
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
++ helm list -n homework15
+NAME     	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART            	APP VERSION
+notes-dev	homework15	1       	2026-10-07 17:13:21.753880634 +0000 UTC	deployed	notes-chart-0.1.0	1.0        
++ helm status notes-dev -n homework15
+NAME: notes-dev
+LAST DEPLOYED: Wed Oct  7 17:13:21 2026
+NAMESPACE: homework15
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
++ helm get values notes-dev -n homework15
+USER-SUPPLIED VALUES:
+null
++ helm get manifest notes-dev -n homework15
+---
+# Source: notes-chart/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notes-dev-config
+data:
+  APP_NAME: "notes-app"
+  ENVIRONMENT: "development"
+---
+# Source: notes-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: notes-dev-svc
+spec:
+  type: NodePort
+  selector:
+    app: notes-dev
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30090
+---
+# Source: notes-chart/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-dev-deploy
+  labels:
+    app: notes-dev
+    environment: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-dev
+  template:
+    metadata:
+      labels:
+        app: notes-dev
+    spec:
+      containers:
+        - name: notes
+          image: "nginx:1.24"
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: notes-dev-config
+
++ minikube kubectl -- -n homework15 get pods,svc,configmap
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/notes-dev-deploy-74956bd987-w4dlj   1/1     Running   0          9s
+
+NAME                    TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+service/notes-dev-svc   NodePort   10.99.121.32   <none>        80:30090/TCP   9s
+
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      71s
+configmap/notes-dev-config   2      9s
++ helm upgrade notes-dev notes-chart -n homework15 -f notes-chart/values-prod.yaml --wait --timeout 180s
+Release "notes-dev" has been upgraded. Happy Helming!
+NAME: notes-dev
+LAST DEPLOYED: Wed Oct  7 17:13:33 2026
+NAMESPACE: homework15
+STATUS: deployed
+REVISION: 2
+TEST SUITE: None
++ helm history notes-dev -n homework15
+REVISION	UPDATED                 	STATUS    	CHART            	APP VERSION	DESCRIPTION     
+1       	Wed Oct  7 17:13:21 2026	superseded	notes-chart-0.1.0	1.0        	Install complete
+2       	Wed Oct  7 17:13:33 2026	deployed  	notes-chart-0.1.0	1.0        	Upgrade complete
++ minikube kubectl -- -n homework15 get pods -o wide
+NAME                               READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+notes-dev-deploy-bbcc464b4-5g2g6   1/1     Running   0          8s    10.244.0.18   minikube   <none>           <none>
+notes-dev-deploy-bbcc464b4-7c5ks   1/1     Running   0          14s   10.244.0.16   minikube   <none>           <none>
+notes-dev-deploy-bbcc464b4-mfh9w   1/1     Running   0          11s   10.244.0.17   minikube   <none>           <none>
++ minikube kubectl -- -n homework15 exec deployment/notes-dev-deploy -- printenv ENVIRONMENT
+production
++ helm upgrade notes-dev notes-chart -n homework15 -f notes-chart/values-prod.yaml --set image.tag=this-tag-does-not-exist
+Release "notes-dev" has been upgraded. Happy Helming!
+NAME: notes-dev
+LAST DEPLOYED: Wed Oct  7 17:13:52 2026
+NAMESPACE: homework15
+STATUS: deployed
+REVISION: 3
+TEST SUITE: None
++ sleep 20
++ minikube kubectl -- -n homework15 get pods
+NAME                                READY   STATUS         RESTARTS   AGE
+notes-dev-deploy-56f7f45585-5svdq   0/1     ErrImagePull   0          22s
+notes-dev-deploy-bbcc464b4-5g2g6    1/1     Running        0          35s
+notes-dev-deploy-bbcc464b4-7c5ks    1/1     Running        0          41s
+notes-dev-deploy-bbcc464b4-mfh9w    1/1     Running        0          38s
++ minikube kubectl -- -n homework15 describe pods -l app=notes-dev
+Name:             notes-dev-deploy-56f7f45585-5svdq
+Namespace:        homework15
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:13:53 +0000
+Labels:           app=notes-dev
+                  pod-template-hash=56f7f45585
+Annotations:      <none>
+Status:           Pending
+IP:               10.244.0.19
+IPs:
+  IP:           10.244.0.19
+Controlled By:  ReplicaSet/notes-dev-deploy-56f7f45585
+Containers:
+  notes:
+    Container ID:   
+    Image:          nginx:this-tag-does-not-exist
+    Image ID:       
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Waiting
+      Reason:       ErrImagePull
+    Ready:          False
+    Restart Count:  0
+    Environment Variables from:
+      notes-dev-config  ConfigMap  Optional: false
+    Environment:        <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-xdvxs (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-xdvxs:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             notes-dev-deploy-bbcc464b4-5g2g6
+Namespace:        homework15
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:13:40 +0000
+Labels:           app=notes-dev
+                  pod-template-hash=bbcc464b4
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.18
+IPs:
+  IP:           10.244.0.18
+Controlled By:  ReplicaSet/notes-dev-deploy-bbcc464b4
+Containers:
+  notes:
+    Container ID:   containerd://fab7952255f73246794fae5bb5580704a7f063bf4ca73405bf37ada7748a622c
+    Image:          nginx:1.25
+    Image ID:       sha256:e784f4560448b14a66f55c26e1b4dad2c2877cc73d001b7cd0b18e24a700a070
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:13:42 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment Variables from:
+      notes-dev-config  ConfigMap  Optional: false
+    Environment:        <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-d8lp2 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-d8lp2:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             notes-dev-deploy-bbcc464b4-7c5ks
+Namespace:        homework15
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:13:34 +0000
+Labels:           app=notes-dev
+                  pod-template-hash=bbcc464b4
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.16
+IPs:
+  IP:           10.244.0.16
+Controlled By:  ReplicaSet/notes-dev-deploy-bbcc464b4
+Containers:
+  notes:
+    Container ID:   containerd://0ad92cf3b59dd0eebde510d305ae90ba6d28bdcc1b3fd51323a772fb6eaca23d
+    Image:          nginx:1.25
+    Image ID:       sha256:e784f4560448b14a66f55c26e1b4dad2c2877cc73d001b7cd0b18e24a700a070
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:13:37 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment Variables from:
+      notes-dev-config  ConfigMap  Optional: false
+    Environment:        <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-k6gd4 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-k6gd4:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             notes-dev-deploy-bbcc464b4-mfh9w
+Namespace:        homework15
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 07 Oct 2026 17:13:38 +0000
+Labels:           app=notes-dev
+                  pod-template-hash=bbcc464b4
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.17
+IPs:
+  IP:           10.244.0.17
+Controlled By:  ReplicaSet/notes-dev-deploy-bbcc464b4
+Containers:
+  notes:
+    Container ID:   containerd://b1102d1ff21921a075408f32e49c151791ef9d7b7d8d6fa874980677f05b66f2
+    Image:          nginx:1.25
+    Image ID:       sha256:e784f4560448b14a66f55c26e1b4dad2c2877cc73d001b7cd0b18e24a700a070
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:13:39 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment Variables from:
+      notes-dev-config  ConfigMap  Optional: false
+    Environment:        <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jtlcj (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-jtlcj:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
++ helm rollback notes-dev 2 -n homework15 --wait --timeout 180s
+Rollback was a success! Happy Helming!
++ helm history notes-dev -n homework15
+REVISION	UPDATED                 	STATUS    	CHART            	APP VERSION	DESCRIPTION     
+1       	Wed Oct  7 17:13:21 2026	superseded	notes-chart-0.1.0	1.0        	Install complete
+2       	Wed Oct  7 17:13:33 2026	superseded	notes-chart-0.1.0	1.0        	Upgrade complete
+3       	Wed Oct  7 17:13:52 2026	superseded	notes-chart-0.1.0	1.0        	Upgrade complete
+4       	Wed Oct  7 17:14:19 2026	deployed  	notes-chart-0.1.0	1.0        	Rollback to 2   
++ minikube kubectl -- -n homework15 get pods
+NAME                               READY   STATUS    RESTARTS   AGE
+notes-dev-deploy-bbcc464b4-5g2g6   1/1     Running   0          44s
+notes-dev-deploy-bbcc464b4-7c5ks   1/1     Running   0          50s
+notes-dev-deploy-bbcc464b4-mfh9w   1/1     Running   0          47s
++ helm uninstall notes-dev -n homework15
+release "notes-dev" uninstalled
++ helm list -n homework15
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
++ minikube kubectl -- delete namespace homework15 --wait=true
+namespace "homework15" deleted
+
+Exit code: 0

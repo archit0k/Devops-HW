@@ -12,3 +12,7 @@ Each subfolder is independent and has its own Dockerfile. Build and run commands
 | Nginx | `docker build -t hw-nginx ./nginx-app && docker run --rm -p 8084:80 hw-nginx` | http://localhost:8084 |
 
 Use `curl http://localhost:<port>` to verify the Hello World response after starting each container.
+
+## Verification
+
+All six images were built and started on a clean Linux runner. HTTP checks passed for Node.js, Python, Java, Apache, React and Nginx; the React check also downloaded the built JavaScript asset. [Complete command output](evidence/commands.txt) and the [actual run](https://github.com/archit0k/Devops-HW/actions/runs/37658269060) show the builds, responses and cleanup. The same run checked the multi-stage app on port 8080.

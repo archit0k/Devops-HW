@@ -1,0 +1,10 @@
+Recorded: 2026-10-07T17:50:18.274874+00:00
+Command: terraform -chdir=session19-cloud-terraform output -no-color
+
+bucket_name = "archit-24bcs10194-devops-hw19-20261007"
+instance_id = "i-05bb24c08a3b1aa70"
+subnet_id = "subnet-095fea060897c4fa4"
+vpc_id = "vpc-00cf8c8d690b92acf"
+web_url = "http://100.26.1.121"
+
+Exit code: 0

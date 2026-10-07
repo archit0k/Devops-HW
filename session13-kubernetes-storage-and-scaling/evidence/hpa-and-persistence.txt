@@ -1,0 +1,458 @@
+Recorded: 2026-10-07T17:27:48.540993+00:00
+Command: bash '/mnt/c/Users/archi/Github Projects/Devops-HW/session13-kubernetes-storage-and-scaling/run-scaling.sh'
+
++ k get nodes
++ minikube kubectl -- get nodes
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   17d   v1.37.0
++ k -n kube-system get deployment metrics-server
++ minikube kubectl -- -n kube-system get deployment metrics-server
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+metrics-server   1/1     1            1           38m
++ k top nodes
++ minikube kubectl -- top nodes
+NAME       CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+minikube   264m         2%       1190Mi          17%         
++ k apply -f mini-project/namespace.yaml
++ minikube kubectl -- apply -f mini-project/namespace.yaml
+namespace/production-webapp created
++ k apply -f mini-project/pvc.yaml -f mini-project/deployment.yaml -f mini-project/service.yaml -f mini-project/hpa.yaml
++ minikube kubectl -- apply -f mini-project/pvc.yaml -f mini-project/deployment.yaml -f mini-project/service.yaml -f mini-project/hpa.yaml
+persistentvolumeclaim/web-data created
+deployment.apps/web-app created
+service/web-service created
+horizontalpodautoscaler.autoscaling/web-app-hpa created
++ k -n production-webapp rollout status deployment/web-app --timeout=180s
++ minikube kubectl -- -n production-webapp rollout status deployment/web-app --timeout=180s
+Waiting for deployment "web-app" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web-app" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app" successfully rolled out
++ k -n production-webapp get pods,pvc,hpa
++ minikube kubectl -- -n production-webapp get pods,pvc,hpa
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/web-app-d45775485-mdj2d   1/1     Running   0          12s
+pod/web-app-d45775485-w6lgw   1/1     Running   0          12s
+
+NAME                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/web-data   Bound    pvc-cb8a52e3-1daf-477a-ae8c-9978ea871321   500Mi      RWO            standard       <unset>                 12s
+
+NAME                                              REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          12s
++ k -n production-webapp exec deployment/web-app -- sh -c 'echo "Student: Archit Kulkarni - 24BCS10194" > /data/student.txt'
++ minikube kubectl -- -n production-webapp exec deployment/web-app -- sh -c 'echo "Student: Archit Kulkarni - 24BCS10194" > /data/student.txt'
+++ k -n production-webapp get pod -l app=web-app -o 'jsonpath={.items[0].metadata.name}'
+++ minikube kubectl -- -n production-webapp get pod -l app=web-app -o 'jsonpath={.items[0].metadata.name}'
++ old=web-app-d45775485-mdj2d
++ k -n production-webapp delete pod web-app-d45775485-mdj2d
++ minikube kubectl -- -n production-webapp delete pod web-app-d45775485-mdj2d
+pod "web-app-d45775485-mdj2d" deleted from production-webapp namespace
++ k -n production-webapp rollout status deployment/web-app --timeout=120s
++ minikube kubectl -- -n production-webapp rollout status deployment/web-app --timeout=120s
+Waiting for deployment "web-app" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app" successfully rolled out
++ k -n production-webapp exec deployment/web-app -- cat /data/student.txt
++ minikube kubectl -- -n production-webapp exec deployment/web-app -- cat /data/student.txt
+Student: Archit Kulkarni - 24BCS10194
++ loadpids=()
+++ k -n production-webapp get pods -l app=web-app -o 'jsonpath={.items[*].metadata.name}'
+++ minikube kubectl -- -n production-webapp get pods -l app=web-app -o 'jsonpath={.items[*].metadata.name}'
++ for pod in $(k -n production-webapp get pods -l app=web-app -o jsonpath='{.items[*].metadata.name}')
++ loadpids+=("$!")
++ k -n production-webapp exec web-app-d45775485-6wr2h -- sh -c 'timeout 180s sh -c "yes >/dev/null"'
++ minikube kubectl -- -n production-webapp exec web-app-d45775485-6wr2h -- sh -c 'timeout 180s sh -c "yes >/dev/null"'
++ for pod in $(k -n production-webapp get pods -l app=web-app -o jsonpath='{.items[*].metadata.name}')
++ loadpids+=("$!")
++ k -n production-webapp exec web-app-d45775485-w6lgw -- sh -c 'timeout 180s sh -c "yes >/dev/null"'
++ minikube kubectl -- -n production-webapp exec web-app-d45775485-w6lgw -- sh -c 'timeout 180s sh -c "yes >/dev/null"'
++ scaled=0
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          31s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-w6lgw   22m          11Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ ((  replicas > 2  ))
++ sleep 5
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          40s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-w6lgw   22m          11Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ ((  replicas > 2  ))
++ sleep 5
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          49s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-w6lgw   22m          11Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ ((  replicas > 2  ))
++ sleep 5
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          59s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-w6lgw   22m          11Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ ((  replicas > 2  ))
++ sleep 5
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          68s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-w6lgw   22m          11Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ ((  replicas > 2  ))
++ sleep 5
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          76s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-w6lgw   22m          11Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ ((  replicas > 2  ))
++ sleep 5
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: <unknown>/50%   2         5         2          86s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-6wr2h   163m         10Mi            
+web-app-d45775485-w6lgw   152m         13Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ ((  replicas > 2  ))
++ sleep 5
++ for attempt in {1..35}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 152%/50%   2         5         2          95s
++ k -n production-webapp top pods
++ minikube kubectl -- -n production-webapp top pods
+NAME                      CPU(cores)   MEMORY(bytes)   
+web-app-d45775485-6wr2h   163m         10Mi            
+web-app-d45775485-w6lgw   152m         13Mi            
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ ((  replicas > 2  ))
++ scaled=1
++ break
++ test 1 = 1
++ k -n production-webapp rollout status deployment/web-app --timeout=120s
++ minikube kubectl -- -n production-webapp rollout status deployment/web-app --timeout=120s
+Waiting for deployment "web-app" rollout to finish: 3 of 4 updated replicas are available...
+deployment "web-app" successfully rolled out
++ k -n production-webapp describe hpa web-app-hpa
++ minikube kubectl -- -n production-webapp describe hpa web-app-hpa
+Name:                                                  web-app-hpa
+Namespace:                                             production-webapp
+Labels:                                                <none>
+Annotations:                                           <none>
+CreationTimestamp:                                     Wed, 07 Oct 2026 17:27:55 +0000
+Reference:                                             Deployment/web-app
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  152% (152m) / 50%
+Min replicas:                                          2
+Max replicas:                                          5
+Behavior:
+  Scale Up:
+    Stabilization Window: 0 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Pods     Value: 4    Period: 15 seconds
+      - Type: Percent  Value: 100  Period: 15 seconds
+  Scale Down:
+    Stabilization Window: 30 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Percent  Value: 100  Period: 15 seconds
+Deployment pods:       2 current / 4 desired
+Conditions:
+  Type            Status  Reason              Message
+  ----            ------  ------              -------
+  AbleToScale     True    SucceededRescale    the HPA controller was able to update the target scale to 4
+  ScalingActive   True    ValidMetricFound    the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  False   DesiredWithinRange  the desired count is within the acceptable range
+  ScaledToZero    False   NotScaledToZero     the HPA controller did not scale the workload to zero
+Events:
+  Type     Reason                        Age                 From                       Message
+  ----     ------                        ----                ----                       -------
+  Warning  FailedGetResourceMetric       85s (x2 over 100s)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+  Warning  FailedComputeMetricsReplicas  85s (x2 over 100s)  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
+  Warning  FailedGetResourceMetric       25s (x4 over 70s)   horizontal-pod-autoscaler  failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)
+  Warning  FailedComputeMetricsReplicas  25s (x4 over 70s)   horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu resource metric value: failed to get cpu utilization: did not receive metrics for targeted pods (pods might be unready)
+  Normal   SuccessfulRescale             10s                 horizontal-pod-autoscaler  New size: 4; reason: cpu resource utilization (percentage of request) above target
++ k -n production-webapp get pods,pvc,hpa
++ minikube kubectl -- -n production-webapp get pods,pvc,hpa
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/web-app-d45775485-6wr2h   1/1     Running   0          86s
+pod/web-app-d45775485-9pvql   1/1     Running   0          11s
+pod/web-app-d45775485-vrddn   1/1     Running   0          11s
+pod/web-app-d45775485-w6lgw   1/1     Running   0          102s
+
+NAME                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/web-data   Bound    pvc-cb8a52e3-1daf-477a-ae8c-9978ea871321   500Mi      RWO            standard       <unset>                 102s
+
+NAME                                              REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/web-app-hpa   Deployment/web-app   cpu: 152%/50%   2         5         2          102s
++ for pid in "${loadpids[@]}"
++ wait 28628
+command terminated with exit code 124
++ true
++ for pid in "${loadpids[@]}"
++ wait 28630
+command terminated with exit code 124
++ true
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          3m32s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          3m40s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          3m48s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          3m55s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          4m3s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          4m11s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          4m20s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 100%/50%   2         5         5          4m27s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 32%/50%   2         5         5          4m35s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 32%/50%   2         5         5          4m42s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=5
++ [[ 5 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 32%/50%   2         5         5          4m50s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 32%/50%   2         5         5          4m58s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 40%/50%   2         5         4          5m6s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 40%/50%   2         5         4          5m13s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 40%/50%   2         5         4          5m21s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 40%/50%   2         5         4          5m29s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 1%/50%   2         5         4          5m36s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 1%/50%   2         5         4          5m44s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=4
++ [[ 4 == 2 ]]
++ sleep 5
++ for attempt in {1..40}
++ k -n production-webapp get hpa
++ minikube kubectl -- -n production-webapp get hpa
+NAME          REFERENCE            TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+web-app-hpa   Deployment/web-app   cpu: 1%/50%   2         5         4          5m51s
+++ k -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
+++ minikube kubectl -- -n production-webapp get deployment web-app -o 'jsonpath={.spec.replicas}'
++ replicas=2
++ [[ 2 == 2 ]]
++ break
++ test 2 = 2
++ k -n production-webapp rollout status deployment/web-app --timeout=120s
++ minikube kubectl -- -n production-webapp rollout status deployment/web-app --timeout=120s
+deployment "web-app" successfully rolled out
++ k -n production-webapp get pods,pvc,hpa
++ minikube kubectl -- -n production-webapp get pods,pvc,hpa
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/web-app-d45775485-6wr2h   1/1     Running   0          5m39s
+pod/web-app-d45775485-w6lgw   1/1     Running   0          5m55s
+
+NAME                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/web-data   Bound    pvc-cb8a52e3-1daf-477a-ae8c-9978ea871321   500Mi      RWO            standard       <unset>                 5m55s
+
+NAME                                              REFERENCE            TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/web-app-hpa   Deployment/web-app   cpu: 1%/50%   2         5         4          5m55s
++ k delete namespace production-webapp --wait=true
++ minikube kubectl -- delete namespace production-webapp --wait=true
+namespace "production-webapp" deleted
+
+Exit code: 0

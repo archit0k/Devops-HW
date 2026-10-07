@@ -13,6 +13,8 @@ docker exec homework-backend ping -c 2 homework-database
 docker compose ps
 ```
 
+Set a disposable password before starting: `export MYSQL_ROOT_PASSWORD="$(openssl rand -hex 16)"`. It is passed to MySQL at runtime, not committed. The automated check uses a disposable copy of this folder and removes only its own lab containers, networks and volume.
+
 The third network, `database-network`, is created to meet the three-network exercise and can be used to attach an additional database client without exposing it to the frontend.
 
 ## Task 2 - host networking
@@ -29,7 +31,7 @@ Host networking shares the host network namespace, so Docker ignores `-p` mappin
 
 ## Task 3 - bind mount
 
-The Compose `frontend` service bind-mounts `frontend/index.html` into Nginx and publishes it on port 8090:
+The Compose `frontend` service bind-mounts the `frontend` directory into Nginx and publishes it on port 8090. A directory mount also handles editors that replace a file when saving:
 
 ```bash
 docker compose up -d frontend
@@ -58,3 +60,7 @@ docker service create --name web --network homework-overlay nginx:alpine
 docker compose down
 docker rm -f apache-host
 ```
+
+## Executed checks
+
+[check-networking.sh](../scripts/check-networking.sh) starts the three containers, inspects the backend's two networks, pings both peers, checks MySQL's port, and verifies that the frontend cannot resolve the isolated database. It then edits the mounted page to include my name/roll number and checks that the container start time is unchanged. Finally it installs Apache on the Linux host and reaches port 80 from an Alpine container using `--network host`. The [successful live run](https://github.com/archit0k/Devops-HW/actions/runs/37664384256) preserves those checks and cleanup. Overlay networking is a research exercise here, not a claim of a deployed multi-host Swarm.

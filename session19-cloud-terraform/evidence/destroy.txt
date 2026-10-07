@@ -1,0 +1,387 @@
+Recorded: 2026-10-07T18:05:04.937920+00:00
+Command: terraform -chdir=session19-cloud-terraform destroy -auto-approve -input=false -no-color
+
+data.aws_availability_zones.available: Reading...
+data.aws_ssm_parameter.ami: Reading...
+aws_vpc.homework: Refreshing state... [id=vpc-00cf8c8d690b92acf]
+aws_s3_bucket.homework: Refreshing state... [id=archit-24bcs10194-devops-hw19-20261007]
+data.aws_availability_zones.available: Read complete after 1s [id=us-east-1]
+aws_internet_gateway.homework: Refreshing state... [id=igw-097576906d41e323e]
+aws_subnet.public: Refreshing state... [id=subnet-095fea060897c4fa4]
+aws_security_group.web: Refreshing state... [id=sg-0a5f2f2fac362c8ac]
+aws_route_table.public: Refreshing state... [id=rtb-0aed96afba77d684a]
+aws_route_table_association.public: Refreshing state... [id=rtbassoc-014ea3a7197393021]
+data.aws_ssm_parameter.ami: Still reading... [00m10s elapsed]
+aws_s3_bucket_public_access_block.homework: Refreshing state... [id=archit-24bcs10194-devops-hw19-20261007]
+data.aws_ssm_parameter.ami: Still reading... [00m20s elapsed]
+data.aws_ssm_parameter.ami: Read complete after 20s [id=/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64]
+aws_instance.web: Refreshing state... [id=i-05bb24c08a3b1aa70]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_instance.web will be destroyed
+  - resource "aws_instance" "web" {
+      - ami                                  = (sensitive value) -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:731372490400:instance/i-05bb24c08a3b1aa70" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "us-east-1a" -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - force_destroy                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-05bb24c08a3b1aa70" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t3.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - monitoring                           = false -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-03f7309cd6d34a352" -> null
+      - private_dns                          = "ip-10-20-1-181.ec2.internal" -> null
+      - private_ip                           = "10.20.1.181" -> null
+      - public_dns                           = "ec2-100-26-1-121.compute-1.amazonaws.com" -> null
+      - public_ip                            = "100.26.1.121" -> null
+      - region                               = "us-east-1" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-095fea060897c4fa4" -> null
+      - tags                                 = {
+          - "Name" = "archit-homework19-web"
+        } -> null
+      - tags_all                             = {
+          - "Name"    = "archit-homework19-web"
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework19"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data                            = <<-EOT
+            #!/bin/bash
+            dnf install -y httpd
+            printf '<h1>Archit Kulkarni - Terraform lab</h1><p>24BCS10194 - Section A</p>' > /var/www/html/index.html
+            systemctl enable --now httpd
+        EOT -> null
+      - user_data_replace_on_change          = false -> null
+      - vpc_security_group_ids               = [
+          - "sg-0a5f2f2fac362c8ac",
+        ] -> null
+        # (9 unchanged attributes hidden)
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count            = 1 -> null
+          - threads_per_core      = 2 -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "standard" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 2 -> null
+          - http_tokens                 = "required" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - primary_network_interface {
+          - delete_on_termination = true -> null
+          - network_interface_id  = "eni-03f7309cd6d34a352" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/xvda" -> null
+          - encrypted             = true -> null
+          - iops                  = 3000 -> null
+          - kms_key_id            = "arn:aws:kms:us-east-1:731372490400:key/8dd37d2c-e751-4ab8-af9b-94acd6ce929f" -> null
+          - tags                  = {} -> null
+          - tags_all              = {
+              - "Owner"   = "Archit-Kulkarni"
+              - "Project" = "devops-homework19"
+              - "Roll"    = "24BCS10194"
+            } -> null
+          - throughput            = 125 -> null
+          - volume_id             = "vol-0ed68142654913a34" -> null
+          - volume_size           = 8 -> null
+          - volume_type           = "gp3" -> null
+        }
+    }
+
+  # aws_internet_gateway.homework will be destroyed
+  - resource "aws_internet_gateway" "homework" {
+      - arn      = "arn:aws:ec2:us-east-1:731372490400:internet-gateway/igw-097576906d41e323e" -> null
+      - id       = "igw-097576906d41e323e" -> null
+      - owner_id = "731372490400" -> null
+      - region   = "us-east-1" -> null
+      - tags     = {} -> null
+      - tags_all = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework19"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - vpc_id   = "vpc-00cf8c8d690b92acf" -> null
+    }
+
+  # aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:us-east-1:731372490400:route-table/rtb-0aed96afba77d684a" -> null
+      - id               = "rtb-0aed96afba77d684a" -> null
+      - owner_id         = "731372490400" -> null
+      - propagating_vgws = [] -> null
+      - region           = "us-east-1" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-097576906d41e323e"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {} -> null
+      - tags_all         = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework19"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - vpc_id           = "vpc-00cf8c8d690b92acf" -> null
+    }
+
+  # aws_route_table_association.public will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-014ea3a7197393021" -> null
+      - region         = "us-east-1" -> null
+      - route_table_id = "rtb-0aed96afba77d684a" -> null
+      - subnet_id      = "subnet-095fea060897c4fa4" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_s3_bucket.homework will be destroyed
+  - resource "aws_s3_bucket" "homework" {
+      - arn                         = "arn:aws:s3:::archit-24bcs10194-devops-hw19-20261007" -> null
+      - bucket                      = "archit-24bcs10194-devops-hw19-20261007" -> null
+      - bucket_domain_name          = "archit-24bcs10194-devops-hw19-20261007.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "us-east-1" -> null
+      - bucket_regional_domain_name = "archit-24bcs10194-devops-hw19-20261007.s3.us-east-1.amazonaws.com" -> null
+      - force_destroy               = false -> null
+      - hosted_zone_id              = "Z3AQBSTGFYJSTF" -> null
+      - id                          = "archit-24bcs10194-devops-hw19-20261007" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "us-east-1" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework19"
+          - "Roll"    = "24BCS10194"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "6eada8133a35354e7866798d70df6269af3c334d1716560b849cde50898cd195" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket_public_access_block.homework will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "homework" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "archit-24bcs10194-devops-hw19-20261007" -> null
+      - id                      = "archit-24bcs10194-devops-hw19-20261007" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "us-east-1" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_security_group.web will be destroyed
+  - resource "aws_security_group" "web" {
+      - arn                    = "arn:aws:ec2:us-east-1:731372490400:security-group/sg-0a5f2f2fac362c8ac" -> null
+      - description            = "Disposable classroom HTTP server; no SSH" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - id                     = "sg-0a5f2f2fac362c8ac" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - name                   = "archit-homework19-web" -> null
+      - owner_id               = "731372490400" -> null
+      - region                 = "us-east-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {} -> null
+      - tags_all               = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework19"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - vpc_id                 = "vpc-00cf8c8d690b92acf" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_subnet.public will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:731372490400:subnet/subnet-095fea060897c4fa4" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1a" -> null
+      - availability_zone_id                           = "use1-az1" -> null
+      - cidr_block                                     = "10.20.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-095fea060897c4fa4" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "731372490400" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "us-east-1" -> null
+      - tags                                           = {
+          - "Name" = "homework19-public"
+        } -> null
+      - tags_all                                       = {
+          - "Name"    = "homework19-public"
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework19"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - vpc_id                                         = "vpc-00cf8c8d690b92acf" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_vpc.homework will be destroyed
+  - resource "aws_vpc" "homework" {
+      - arn                                  = "arn:aws:ec2:us-east-1:731372490400:vpc/vpc-00cf8c8d690b92acf" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.20.0.0/16" -> null
+      - default_network_acl_id               = "acl-001fb927abd49e2da" -> null
+      - default_route_table_id               = "rtb-004f39313680c54af" -> null
+      - default_security_group_id            = "sg-0851b9c036ae79d79" -> null
+      - dhcp_options_id                      = "dopt-0eef858bdbf9ca507" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-00cf8c8d690b92acf" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-004f39313680c54af" -> null
+      - owner_id                             = "731372490400" -> null
+      - region                               = "us-east-1" -> null
+      - tags                                 = {
+          - "Name" = "archit-homework19-vpc"
+        } -> null
+      - tags_all                             = {
+          - "Name"    = "archit-homework19-vpc"
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "devops-homework19"
+          - "Roll"    = "24BCS10194"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 9 to destroy.
+
+Changes to Outputs:
+  - bucket_name = "archit-24bcs10194-devops-hw19-20261007" -> null
+  - instance_id = "i-05bb24c08a3b1aa70" -> null
+  - subnet_id   = "subnet-095fea060897c4fa4" -> null
+  - vpc_id      = "vpc-00cf8c8d690b92acf" -> null
+  - web_url     = "http://100.26.1.121" -> null
+aws_s3_bucket_public_access_block.homework: Destroying... [id=archit-24bcs10194-devops-hw19-20261007]
+aws_instance.web: Destroying... [id=i-05bb24c08a3b1aa70]
+aws_s3_bucket_public_access_block.homework: Still destroying... [id=archit-24bcs10194-devops-hw19-20261007, 00m10s elapsed]
+aws_instance.web: Still destroying... [id=i-05bb24c08a3b1aa70, 00m10s elapsed]
+aws_s3_bucket_public_access_block.homework: Destruction complete after 14s
+aws_s3_bucket.homework: Destroying... [id=archit-24bcs10194-devops-hw19-20261007]
+aws_s3_bucket.homework: Destruction complete after 0s
+aws_instance.web: Still destroying... [id=i-05bb24c08a3b1aa70, 00m20s elapsed]
+aws_instance.web: Still destroying... [id=i-05bb24c08a3b1aa70, 00m30s elapsed]
+aws_instance.web: Destruction complete after 33s
+aws_route_table_association.public: Destroying... [id=rtbassoc-014ea3a7197393021]
+aws_security_group.web: Destroying... [id=sg-0a5f2f2fac362c8ac]
+aws_route_table_association.public: Destruction complete after 1s
+aws_route_table.public: Destroying... [id=rtb-0aed96afba77d684a]
+aws_subnet.public: Destroying... [id=subnet-095fea060897c4fa4]
+aws_security_group.web: Destruction complete after 3s
+aws_subnet.public: Destruction complete after 6s
+aws_route_table.public: Destruction complete after 6s
+aws_internet_gateway.homework: Destroying... [id=igw-097576906d41e323e]
+aws_internet_gateway.homework: Destruction complete after 2s
+aws_vpc.homework: Destroying... [id=vpc-00cf8c8d690b92acf]
+aws_vpc.homework: Destruction complete after 1s
+
+Destroy complete! Resources: 9 destroyed.
+
+Exit code: 0

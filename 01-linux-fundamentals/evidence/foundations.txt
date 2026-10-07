@@ -1,0 +1,366 @@
+Recorded: 2026-10-07T17:52:00.532139+00:00
+Command: bash '/mnt/c/Users/archi/Github Projects/Devops-HW/scripts/check-foundations.sh'
+
+++ mktemp -d
++ scratch=/tmp/tmp.PSmPyfDhDh
++ cd /tmp/tmp.PSmPyfDhDh
++ pwd
+/tmp/tmp.PSmPyfDhDh
++ printf 'Archit Kulkarni - 24BCS10194\n'
++ ln original.txt hard-link.txt
++ ln -s original.txt soft-link.txt
++ ls -li original.txt hard-link.txt soft-link.txt
+88 -rw-r--r-- 2 root root 29 Oct  7 17:52 hard-link.txt
+88 -rw-r--r-- 2 root root 29 Oct  7 17:52 original.txt
+89 lrwxrwxrwx 1 root root 12 Oct  7 17:52 soft-link.txt -> original.txt
++ cat hard-link.txt soft-link.txt
+Archit Kulkarni - 24BCS10194
+Archit Kulkarni - 24BCS10194
++ rm original.txt
++ cat hard-link.txt
+Archit Kulkarni - 24BCS10194
++ test '!' -e soft-link.txt
++ test -L soft-link.txt
++ ls -li hard-link.txt soft-link.txt
+88 -rw-r--r-- 1 root root 29 Oct  7 17:52 hard-link.txt
+89 lrwxrwxrwx 1 root root 12 Oct  7 17:52 soft-link.txt -> original.txt
++ rm hard-link.txt soft-link.txt
++ for student_user in homework-adduser-24 homework-useradd-24
++ getent passwd homework-adduser-24
++ for student_user in homework-adduser-24 homework-useradd-24
++ getent passwd homework-useradd-24
++ adduser --disabled-password --gecos '' homework-adduser-24
+usermod: no changes
++ useradd --create-home --shell /bin/bash homework-useradd-24
++ id homework-adduser-24
+uid=1001(homework-adduser-24) gid=1001(homework-adduser-24) groups=1001(homework-adduser-24),100(users)
++ id homework-useradd-24
+uid=1002(homework-useradd-24) gid=1002(homework-useradd-24) groups=1002(homework-useradd-24)
++ getent passwd homework-adduser-24 homework-useradd-24
+homework-adduser-24:x:1001:1001::/home/homework-adduser-24:/bin/bash
+homework-useradd-24:x:1002:1002::/home/homework-useradd-24:/bin/bash
+++ getent passwd homework-adduser-24
+++ cut -d: -f6
++ test /home/homework-adduser-24 = /home/homework-adduser-24
+++ getent passwd homework-useradd-24
+++ cut -d: -f6
++ test /home/homework-useradd-24 = /home/homework-useradd-24
++ deluser --remove-home homework-adduser-24
++ userdel --remove homework-useradd-24
+userdel: homework-useradd-24 mail spool (/var/mail/homework-useradd-24) not found
++ journalctl -b -n 8 --no-pager
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5145]: delete user 'homework-adduser-24'
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5145]: delete 'homework-adduser-24' from group 'users'
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5145]: removed group 'homework-adduser-24' owned by 'homework-adduser-24'
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5145]: removed shadow group 'homework-adduser-24' owned by 'homework-adduser-24'
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5145]: delete 'homework-adduser-24' from shadow group 'users'
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5150]: delete user 'homework-useradd-24'
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5150]: removed group 'homework-useradd-24' owned by 'homework-useradd-24'
+Oct 07 17:52:01 LAPTOP-HG5QJ0K2 userdel[5150]: removed shadow group 'homework-useradd-24' owned by 'homework-useradd-24'
++ journalctl -u docker -n 8 --no-pager
+Oct 07 17:38:28 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:38:28.720789167Z" level=error msg="[resolver] failed to query external DNS server" client-addr="udp:10.255.255.254:44176" dns-server="udp:10.255.255.254:53" error="read udp 10.255.255.254:44176->10.255.255.254:53: i/o timeout" question=";grafana.com.\tIN\t A"
+Oct 07 17:38:32 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:38:32.722541040Z" level=error msg="[resolver] failed to query external DNS server" client-addr="udp:10.255.255.254:52547" dns-server="udp:10.255.255.254:53" error="read udp 10.255.255.254:52547->10.255.255.254:53: i/o timeout" question=";grafana.com.\tIN\t A"
+Oct 07 17:38:36 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:38:36.723551936Z" level=error msg="[resolver] failed to query external DNS server" client-addr="udp:10.255.255.254:40655" dns-server="udp:10.255.255.254:53" error="read udp 10.255.255.254:40655->10.255.255.254:53: i/o timeout" question=";grafana.com.\tIN\t A"
+Oct 07 17:40:58 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:40:58.114455262Z" level=warning msg="reference for unknown type: application/vnd.oci.empty.v1+json" digest="sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a" mediatype=application/vnd.oci.empty.v1+json size=2
+Oct 07 17:40:58 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:40:58.142247438Z" level=info msg="image pulled" digest="sha256:4a1c825b61479e6c898851ea66f13c620aaeab6002746e95067fc2c4b38a0b24" remote="gcr.io/k8s-minikube/kicbase@sha256:4a1c825b61479e6c898851ea66f13c620aaeab6002746e95067fc2c4b38a0b24"
+Oct 07 17:40:59 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:40:59.944221311Z" level=info msg="sbJoin: gwep4 ''->'682735abc3a1', gwep6 ''->''" eid=682735abc3a1 ep=minikube net=minikube nid=4f70cc18b67e
+Oct 07 17:47:59 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:47:59.476867024Z" level=error msg="[resolver] failed to query external DNS server" client-addr="udp:10.255.255.254:37714" dns-server="udp:10.255.255.254:53" error="read udp 10.255.255.254:37714->10.255.255.254:53: i/o timeout" question=";grafana.com.\tIN\t AAAA"
+Oct 07 17:48:03 LAPTOP-HG5QJ0K2 dockerd[367]: time="2026-10-07T17:48:03.479579777Z" level=error msg="[resolver] failed to query external DNS server" client-addr="udp:10.255.255.254:45912" dns-server="udp:10.255.255.254:53" error="read udp 10.255.255.254:45912->10.255.255.254:53: i/o timeout" question=";grafana.com.\tIN\t AAAA"
++ mkdir practice
++ touch practice/notes.txt
++ printf 'DevOps homework\nnetwork practice\n'
++ cp practice/notes.txt practice/copy.txt
++ mv practice/copy.txt practice/moved.txt
++ cat practice/notes.txt
+DevOps homework
+network practice
++ grep network practice/notes.txt
+network practice
++ chmod 640 practice/notes.txt
++ stat practice/notes.txt
+  File: practice/notes.txt
+  size: 33        	Blocks: 8          IO Block: 4096   regular file
+Device: 0,72	Inode: 91          Links: 1
+Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2026-10-07 17:52:01.199696630 +0000
+Modify: 2026-10-07 17:52:01.183696633 +0000
+Change: 2026-10-07 17:52:01.203696630 +0000
+ Birth: 2026-10-07 17:52:01.183696633 +0000
++ find practice -type f
+practice/moved.txt
+practice/notes.txt
++ du -sh practice
+8.0K	practice
++ df -h /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdd       1007G   14G  943G   2% /
++ ps -eo pid,comm
++ head -n 12
+    PID COMMAND
+      1 systemd
+      2 init-systemd(Ub
+      6 init
+     53 systemd-journal
+     88 systemd-resolve
+     95 systemd-udevd
+    164 chronyd-starter
+    165 cron
+    166 dbus-daemon
+    175 networkd-dispat
+    184 systemd-logind
++ tar -czf practice.tgz practice
++ tar -tzf practice.tgz
+practice/
+practice/moved.txt
+practice/notes.txt
++ ip addr show eth0
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:15:5d:b2:e7:1c brd ff:ff:ff:ff:ff:ff
+    altname enx00155db2e71c
+    inet 172.24.12.180/20 brd 172.24.15.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::215:5dff:feb2:e71c/64 scope link proto kernel_ll 
+       valid_lft forever preferred_lft forever
++ ip route
+default via 172.24.0.1 dev eth0 proto kernel 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.18.0.0/16 dev br-07c473ff4594 proto kernel scope link src 172.18.0.1 linkdown 
+172.19.0.0/16 dev br-84f155ed744b proto kernel scope link src 172.19.0.1 linkdown 
+172.20.0.0/16 dev br-a6c4c7eaeee8 proto kernel scope link src 172.20.0.1 
+172.24.0.0/20 dev eth0 proto kernel scope link src 172.24.12.180 
+192.168.49.0/24 dev br-4f70cc18b67e proto kernel scope link src 192.168.49.1 
++ ss -tulpn
+Netid State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess                                  
+udp   UNCONN 0      0          127.0.0.54:53         0.0.0.0:*    users:(("systemd-resolve",pid=88,fd=18))
+udp   UNCONN 0      0       127.0.0.53%lo:53         0.0.0.0:*    users:(("systemd-resolve",pid=88,fd=16))
+udp   UNCONN 0      0      10.255.255.254:53         0.0.0.0:*                                            
+udp   UNCONN 0      0           127.0.0.1:323        0.0.0.0:*    users:(("chronyd",pid=266,fd=4))        
+udp   UNCONN 0      0           127.0.0.1:323        0.0.0.0:*                                            
+udp   UNCONN 0      0               [::1]:323           [::]:*                                            
+udp   UNCONN 0      0               [::1]:323           [::]:*    users:(("chronyd",pid=266,fd=5))        
+tcp   LISTEN 0      4096       127.0.0.54:53         0.0.0.0:*    users:(("systemd-resolve",pid=88,fd=19))
+tcp   LISTEN 0      151         127.0.0.1:3306       0.0.0.0:*    users:(("mysqld",pid=303,fd=23))        
+tcp   LISTEN 0      4096        127.0.0.1:40049      0.0.0.0:*    users:(("containerd",pid=334,fd=13))    
+tcp   LISTEN 0      4096        127.0.0.1:3000       0.0.0.0:*    users:(("docker-proxy",pid=1080,fd=7))  
+tcp   LISTEN 0      200         127.0.0.1:5432       0.0.0.0:*    users:(("postgres",pid=301,fd=6))       
+tcp   LISTEN 0      4096        127.0.0.1:9090       0.0.0.0:*    users:(("docker-proxy",pid=989,fd=7))   
+tcp   LISTEN 0      4096    127.0.0.53%lo:53         0.0.0.0:*    users:(("systemd-resolve",pid=88,fd=17))
+tcp   LISTEN 0      1000   10.255.255.254:53         0.0.0.0:*                                            
+tcp   LISTEN 0      70          127.0.0.1:33060      0.0.0.0:*    users:(("mysqld",pid=303,fd=21))        
+tcp   LISTEN 0      4096        127.0.0.1:32772      0.0.0.0:*    users:(("docker-proxy",pid=1683,fd=7))  
+tcp   LISTEN 0      4096        127.0.0.1:32771      0.0.0.0:*    users:(("docker-proxy",pid=1666,fd=7))  
+tcp   LISTEN 0      4096        127.0.0.1:32770      0.0.0.0:*    users:(("docker-proxy",pid=1649,fd=7))  
+tcp   LISTEN 0      4096        127.0.0.1:32769      0.0.0.0:*    users:(("docker-proxy",pid=1632,fd=7))  
+tcp   LISTEN 0      4096        127.0.0.1:32768      0.0.0.0:*    users:(("docker-proxy",pid=1616,fd=7))  
+tcp   LISTEN 0      128         127.0.0.1:80         0.0.0.0:*    users:(("ssh",pid=4721,fd=5))           
+tcp   LISTEN 0      128             [::1]:80            [::]:*    users:(("ssh",pid=4721,fd=4))           
++ getent hosts github.com
+20.207.73.82    github.com
++ ping -c 2 -W 2 1.1.1.1
+PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
+64 bytes from 1.1.1.1: icmp_seq=1 ttl=56 time=196 ms
+64 bytes from 1.1.1.1: icmp_seq=2 ttl=56 time=17.8 ms
+
+--- 1.1.1.1 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 17.819/106.767/195.716/88.948 ms
++ curl -4 -I --retry 3 --max-time 20 https://github.com
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0           00:01              0
+  0      0   0      0   0      0      0      0           00:02              0
+  0      0   0      0   0      0      0      0           00:03              0HTTP/2 200 
+date: Wed, 07 Oct 2026 17:52:05 GMT
+content-type: text/html; charset=utf-8
+content-language: en-US
+vary: X-PJAX, X-PJAX-Container, Turbo-Visit, Turbo-Frame, X-Requested-With, X-GitHub-Client-Version, Accept-Language, Sec-Fetch-Site,Accept-Encoding, Accept, X-Requested-With
+etag: W/"7b9059b950c7679a147252b226374ede"
+cache-control: max-age=0, private, must-revalidate
+strict-transport-security: max-age=31536000; includeSubdomains; preload
+x-frame-options: deny
+x-content-type-options: nosniff
+x-xss-protection: 0
+referrer-policy: origin-when-cross-origin, strict-origin-when-cross-origin
+content-security-policy: default-src 'none'; base-uri 'self'; child-src github.githubassets.com github.com/assets-cdn/worker/ github.com/assets/ gist.github.com/assets-cdn/worker/; connect-src 'self' uploads.github.com www.githubstatus.com collector.github.com raw.githubusercontent.com api.github.com github-cloud.s3.amazonaws.com github-production-repository-file-5c1aeb.s3.amazonaws.com github-production-upload-manifest-file-7fdce7.s3.amazonaws.com github-production-user-asset-6210df.s3.amazonaws.com *.rel.tunnels.api.visualstudio.com wss://*.rel.tunnels.api.visualstudio.com github.githubassets.com objects-origin.githubusercontent.com copilot-proxy.githubusercontent.com proxy.individual.githubcopilot.com proxy.business.githubcopilot.com proxy.enterprise.githubcopilot.com *.actions.githubusercontent.com wss://*.actions.githubusercontent.com productionresultssa0.blob.core.windows.net productionresultssa1.blob.core.windows.net productionresultssa2.blob.core.windows.net productionresultssa3.blob.core.windows.net productionresultssa4.blob.core.windows.net productionresultssa5.blob.core.windows.net productionresultssa6.blob.core.windows.net productionresultssa7.blob.core.windows.net productionresultssa8.blob.core.windows.net productionresultssa9.blob.core.windows.net productionresultssa10.blob.core.windows.net productionresultssa11.blob.core.windows.net productionresultssa12.blob.core.windows.net productionresultssa13.blob.core.windows.net productionresultssa14.blob.core.windows.net productionresultssa15.blob.core.windows.net productionresultssa16.blob.core.windows.net productionresultssa17.blob.core.windows.net productionresultssa18.blob.core.windows.net productionresultssa19.blob.core.windows.net github-production-repository-image-32fea6.s3.amazonaws.com github-production-release-asset-2e65be.s3.amazonaws.com insights.github.com wss://alive.github.com wss://alive-staging.github.com api.githubcopilot.com api.individual.githubcopilot.com api.business.githubcopilot.com api.enterprise.githubcopilot.com wss://production-copilot-host.webpubsub.azure.com api.github.com/cmc_internal/api/ edge.fullstory.com rs.fullstory.com; font-src github.githubassets.com; form-action 'self' github.com gist.github.com copilot-workspace.githubnext.com objects-origin.githubusercontent.com; frame-ancestors 'none'; frame-src viewscreen.githubusercontent.com notebooks.githubusercontent.com www.youtube-nocookie.com; img-src 'self' data: blob: github.githubassets.com media.githubusercontent.com camo.githubusercontent.com identicons.github.com avatars.githubusercontent.com private-avatars.githubusercontent.com github-cloud.s3.amazonaws.com objects.githubusercontent.com release-assets.githubusercontent.com secured-user-images.githubusercontent.com user-images.githubusercontent.com private-user-images.githubusercontent.com opengraph.githubassets.com repository-images.githubusercontent.com marketplace-screenshots.githubusercontent.com copilotprodattachments.blob.core.windows.net/github-production-copilot-attachments/ github-production-user-asset-6210df.s3.amazonaws.com customer-stories-feed.github.com spotlights-feed.github.com explore-feed.github.com *.googleusercontent.com objects-origin.githubusercontent.com *.githubusercontent.com images.ctfassets.net/8aevphvgewt8/; manifest-src 'self'; media-src github.com user-images.githubusercontent.com secured-user-images.githubusercontent.com private-user-images.githubusercontent.com github-production-user-asset-62
+  0      0   0      0   0      0      0      0           00:03              0
+  0      0   0      0   0      0      0      0           00:03              0
+  0      0   0      0   0      0      0      0           00:03              0
+10df.s3.amazonaws.com gist.github.com github.githubassets.com assets.ctfassets.net/8aevphvgewt8/ videos.ctfassets.net/8aevphvgewt8/; script-src github.githubassets.com 'sha256-tSjmyPUky1KbRZ0fw9VUil3wFEbeM82rtbJDygGJAXw='; style-src 'unsafe-inline' github.githubassets.com; upgrade-insecure-requests; worker-src github.githubassets.com github.com/assets-cdn/worker/ github.com/assets/ gist.github.com/assets-cdn/worker/
+server: github.com
+accept-ranges: bytes
+set-cookie: _gh_sess=ycZABphvnyttiEZTMLwRnEQA%2BoQUyltdjA2cx9kZmFoniHyk62BXzm7cnWFCZI78oeKHnnqf8S7HnRVRTpTn5YSkFcOefkA1blQ75qXUB6A3soKRfYh6UT6IbVJnllMFa%2BQuokj%2Ft4QOiG6fwqynbuPweD8dSjp31KOf%2FxzbdkGACNjoKZB837MYPropMxoL3JihSs9v9nv65vieSStj492fg%2FGpN%2BXSlVisOvWfK3RzI%2FQyehr%2F4MXwvAJkV1q6d%2BEeE097gQr2mp7VFRd2MQ%3D%3D--AaGY9aua%2FXfxwIOj--DSePU9uZIEa%2B7JzklFRPrw%3D%3D; path=/; HttpOnly; secure; SameSite=Lax
+set-cookie: _octo=GH1.1.1414676885.1791395531; expires=Thu, 07 Oct 2027 17:52:11 GMT; domain=.github.com; path=/; secure; SameSite=Lax
+set-cookie: logged_in=no; expires=Thu, 07 Oct 2027 17:52:11 GMT; domain=.github.com; path=/; HttpOnly; secure; SameSite=Lax
+x-github-request-id: F442:320F48:C25B9:D9054:6AC686CB
+x-github-edge-region: centralindia
+
++ printf '%s\n%s\n' /tmp/tmp.PSmPyfDhDh/system-report processes.log
++ bash '/mnt/c/Users/archi/Github Projects/Devops-HW/02-shell-scripting/system-info.sh'
+Current date: 2026-10-07 17:52:12 UTC
+Hostname: LAPTOP-HG5QJ0K2
+Username: root
+Disk usage:
+Filesystem      Size  Used Avail Use% Mounted on
+none            3.4G     0  3.4G   0% /usr/lib/modules/6.18.33.1-microsoft-standard-WSL2
+none            3.4G  4.0K  3.4G   1% /mnt/wsl
+drivers         475G  435G   40G  92% /usr/lib/wsl/drivers
+/dev/sdd       1007G   14G  943G   2% /
+none            3.4G   32K  3.4G   1% /mnt/wslg
+none            3.4G     0  3.4G   0% /usr/lib/wsl/lib
+rootfs          3.4G  2.8M  3.4G   1% /init
+none            3.4G  852K  3.4G   1% /run
+none            3.4G     0  3.4G   0% /run/lock
+none            3.4G  1.1M  3.4G   1% /run/shm
+none            3.4G  100K  3.4G   1% /mnt/wslg/versions.txt
+none            3.4G  100K  3.4G   1% /mnt/wslg/doc
+C:\             475G  435G   40G  92% /mnt/c
+none            1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+tmpfs           3.4G  961M  2.5G  29% /tmp
+none            1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+none            1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs           686M   12K  686M   1% /run/user/0
+overlay        1007G   14G  943G   2% /var/lib/docker/rootfs/overlayfs/e275611558a07a5a288b79e75af4770a7539820197b95d0c45184aea8b9daaac
+overlay        1007G   14G  943G   2% /var/lib/docker/rootfs/overlayfs/aedfdad0658ed93ecbf1c3f146971d4241d877fdbd7da31ee5c3ff6d7183a143
+overlay        1007G   14G  943G   2% /var/lib/docker/rootfs/overlayfs/41aacbc0fe254690a80c0ad70c8ee96b32d18edddbff6fb70216099ce7289771
+Running processes:
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.1  0.2  24652 15548 ?        Ss   17:37   0:01 /sbin/init
+root           2  0.0  0.0   3180  2164 hvc0     Sl+  17:37   0:00 /init
+root           6  0.0  0.0   3180  2048 hvc0     Sl+  17:37   0:00 plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+root          53  0.0  0.1  33968 13180 ?        S<s  17:37   0:00 /usr/lib/systemd/systemd-journald
+systemd+      88  0.0  0.2  22540 14512 ?        Ss   17:37   0:00 /usr/lib/systemd/systemd-resolved
+root          95  0.2  0.1  35136 11896 ?        Ss   17:37   0:01 /usr/lib/systemd/systemd-udevd
+root         164  0.0  0.0   2888  1948 ?        Ss   17:37   0:00 /bin/sh /usr/lib/systemd/scripts/chronyd-starter.sh -n -F 1
+root         165  0.0  0.0   4472  3040 ?        Ss   17:37   0:00 /usr/sbin/cron -f -P
+message+     166  0.0  0.0   8792  5292 ?        Ss   17:37   0:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root         175  0.0  0.4  44092 29576 ?        Ss   17:37   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root         184  0.0  0.1  18352  9400 ?        Ss   17:37   0:00 /usr/lib/systemd/systemd-logind
+syslog       217  0.0  0.0 220548  5960 ?        Ssl  17:37   0:00 /usr/sbin/rsyslogd -n -iNONE
+_chrony      266  0.0  0.1  24248 11540 ?        S    17:37   0:00 /usr/sbin/chronyd -n -F 1 -x
+_chrony      271  0.0  0.0  12092  2408 ?        S    17:37   0:00 /usr/sbin/chronyd -n -F 1 -x
+postgres     301  0.0  0.4 224992 33564 ?        Ss   17:37   0:00 /usr/lib/postgresql/18/bin/postgres -D /var/lib/postgresql/18/main -c config_file=/etc/postgresql/18/main/postgresql.conf
+mysql        303  1.0  7.4 982508 526364 ?       Ssl  17:37   0:09 /usr/sbin/mysqld
+postgres     317  0.0  0.1 225128  8440 ?        Ss   17:37   0:00 postgres: 18/main: io worker 0
+postgres     318  0.0  0.0 225128  6832 ?        Ss   17:37   0:00 postgres: 18/main: io worker 1
+postgres     319  0.0  0.0 224992  5960 ?        Ss   17:37   0:00 postgres: 18/main: io worker 2
+postgres     320  0.0  0.1 225128  9060 ?        Ss   17:37   0:00 postgres: 18/main: checkpointer 
+postgres     321  0.0  0.1 225128  7348 ?        Ss   17:37   0:00 postgres: 18/main: background writer 
+postgres     325  0.0  0.1 225128 10444 ?        Ss   17:37   0:00 postgres: 18/main: walwriter 
+postgres     326  0.0  0.1 226584  9296 ?        Ss   17:37   0:00 postgres: 18/main: autovacuum launcher 
+postgres     328  0.0  0.1 226584  8320 ?        Ss   17:37   0:00 postgres: 18/main: logical replication launcher 
+root         333  0.0  0.4 123456 32644 ?        Ssl  17:37   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+root         334  0.9  0.8 2535664 61124 ?       Ssl  17:37   0:08 /usr/bin/containerd
+root         337  0.0  0.0   5492  2712 tty1     Ss+  17:37   0:00 /usr/sbin/agetty --noreset --noclear --issue-file=/etc/issue:/etc/issue.d:/run/issue.d:/usr/lib/issue.d - linux
+root         367  0.8  1.3 2786616 94280 ?       Ssl  17:37   0:07 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+root         772  0.0  0.0   3188  1072 ?        Ss   17:37   0:00 /init
+root         773  0.0  0.0   3204  1148 ?        S    17:37   0:00 /init
+root         774  0.0  0.1  16112  7768 pts/0    Ss+  17:37   0:00 sleep 5400
+root         775  0.0  0.0   8500  5276 ?        Ss   17:37   0:00 login -- root
+root         821  0.0  0.1  22420 13560 ?        Ss   17:37   0:00 /usr/lib/systemd/systemd --user
+root         823  0.0  0.0  22916  4004 ?        S    17:37   0:00 (sd-pam)
+root         850  0.0  0.0   6136  5368 pts/1    Ss+  17:37   0:00 -bash
+root         934  0.0  0.1 1233872 11000 ?       Sl   17:37   0:00 /usr/bin/containerd-shim-runc-v2 -namespace moby -id e275611558a07a5a288b79e75af4770a7539820197b95d0c45184aea8b9daaac -address /run/containerd/containerd.sock
+nobody       959  0.6  1.3 1471660 96440 ?       Ssl  17:37   0:05 /bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus
+root         989  0.0  0.0 1745260 4868 ?        Sl   17:37   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 9090 -container-ip 172.20.0.2 -container-port 9090 -use-listen-fd
+root        1012  0.0  0.1 1233616 10916 ?       Sl   17:37   0:00 /usr/bin/containerd-shim-runc-v2 -namespace moby -id aedfdad0658ed93ecbf1c3f146971d4241d877fdbd7da31ee5c3ff6d7183a143 -address /run/containerd/containerd.sock
+472         1040  2.7  3.8 1803680 269152 ?      Ssl  17:37   0:23 grafana server --homepath=/usr/share/grafana --config=/etc/grafana/grafana.ini --packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins cfg:default.paths.provisioning=/etc/grafana/provisioning
+root        1080  0.0  0.0 1819248 5300 ?        Sl   17:37   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 3000 -container-ip 172.20.0.3 -container-port 3000 -use-listen-fd
+root        1537  0.0  0.1 1233616 11012 ?       Sl   17:40   0:00 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 41aacbc0fe254690a80c0ad70c8ee96b32d18edddbff6fb70216099ce7289771 -address /run/containerd/containerd.sock
+root        1561  0.3  0.1  20200 11936 ?        Ss   17:40   0:02 /sbin/init
+root        1616  0.0  0.0 1819504 5400 ?        Sl   17:40   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 32768 -container-ip 192.168.49.2 -container-port 22 -use-listen-fd
+root        1632  0.0  0.0 1745260 4916 ?        Sl   17:40   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 32769 -container-ip 192.168.49.2 -container-port 2376 -use-listen-fd
+root        1649  0.0  0.0 1745260 5004 ?        Sl   17:40   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 32770 -container-ip 192.168.49.2 -container-port 5000 -use-listen-fd
+root        1666  0.1  0.0 1745260 5184 ?        Sl   17:40   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 32771 -container-ip 192.168.49.2 -container-port 8443 -use-listen-fd
+root        1683  0.0  0.0 1818992 4792 ?        Sl   17:40   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 127.0.0.1 -host-port 32772 -container-ip 192.168.49.2 -container-port 32443 -use-listen-fd
+root        1805  0.0  0.1  25108 10412 ?        Ss   17:41   0:00 /lib/systemd/systemd-journald
+root        1849  0.0  0.1  15460  9528 ?        Ss   17:41   0:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+root        2228  2.9  1.0 3229116 72216 ?       Ssl  17:41   0:19 /usr/bin/containerd
+root        2397  5.0  1.3 2727128 97896 ?       Ssl  17:41   0:33 /var/lib/minikube/binaries/v1.37.0/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --config=/var/lib/kubelet/config.yaml --hostname-override=minikube --kubeconfig=/etc/kubernetes/kubelet.conf --node-ip=192.168.49.2
+syslog      2464  0.0  0.0   8068  4580 ?        Ss   17:41   0:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root        2572  0.4  0.1 1268532 12868 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 1e6178dfa875e2f72986c526bd66b67590190a23b1b17c1a49942fa61d07642c -address /run/containerd/containerd.sock
+root        2583  0.4  0.1 1268532 12588 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 0872decd22661bafcfb560338572d249aa5e2ff0da2a03726112c8ef5657d5bf -address /run/containerd/containerd.sock
+root        2637  0.4  0.1 1268276 12676 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 3b86a2e5034e00f06813bd4646483710690421422c197ac3a087b8514559742a -address /run/containerd/containerd.sock
+root        2639  0.4  0.1 1268532 12568 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 4c71ff728e34f166486b2958bac9f963089c7ed35359b29c188d75564fa8f62b -address /run/containerd/containerd.sock
+65535       2688  0.0  0.0   1028   752 ?        Ss   17:41   0:00 /pause
+65535       2690  0.0  0.0   1028   752 ?        Ss   17:41   0:00 /pause
+65535       2704  0.0  0.0   1028   748 ?        Ss   17:41   0:00 /pause
+65535       2705  0.0  0.0   1028   756 ?        Ss   17:41   0:00 /pause
+root        2830  1.4  0.9 1378736 63400 ?       Ssl  17:41   0:09 kube-scheduler --authentication-kubeconfig=/etc/kubernetes/scheduler.conf --authorization-kubeconfig=/etc/kubernetes/scheduler.conf --bind-address=127.0.0.1 --kubeconfig=/etc/kubernetes/scheduler.conf --leader-elect=false
+root        2831  3.7  1.6 1407536 112472 ?      Ssl  17:41   0:24 kube-controller-manager --authentication-kubeconfig=/etc/kubernetes/controller-manager.conf --authorization-kubeconfig=/etc/kubernetes/controller-manager.conf --bind-address=127.0.0.1 --client-ca-file=/var/lib/minikube/certs/ca.crt --cluster-cidr=10.244.0.0/16 --cluster-name=mk --cluster-signing-cert-file=/var/lib/minikube/certs/ca.crt --cluster-signing-key-file=/var/lib/minikube/certs/ca.key --controllers=*,bootstrapsigner,tokencleaner --kubeconfig=/etc/kubernetes/controller-manager.conf --requestheader-client-ca-file=/var/lib/minikube/certs/front-proxy-ca.crt --root-ca-file=/var/lib/minikube/certs/ca.crt --service-account-private-key-file=/var/lib/minikube/certs/sa.key --service-cluster-ip-range=10.96.0.0/12 --use-service-account-credentials=true --allocate-node-cidrs=true --leader-elect=false
+root        2833  5.6  1.1 11773628 83988 ?      Ssl  17:41   0:36 etcd --advertise-client-urls=https://192.168.49.2:2379 --cert-file=/var/lib/minikube/certs/etcd/server.crt --client-cert-auth=true --data-dir=/var/lib/minikube/etcd --feature-gates=InitialCorruptCheck=true --initial-advertise-peer-urls=https://192.168.49.2:2380 --initial-cluster=minikube=https://192.168.49.2:2380 --key-file=/var/lib/minikube/certs/etcd/server.key --listen-client-urls=https://127.0.0.1:2379,https://192.168.49.2:2379 --listen-metrics-urls=http://127.0.0.1:2381 --listen-peer-urls=https://192.168.49.2:2380 --name=minikube --peer-cert-file=/var/lib/minikube/certs/etcd/peer.crt --peer-client-cert-auth=true --peer-key-file=/var/lib/minikube/certs/etcd/peer.key --peer-trusted-ca-file=/var/lib/minikube/certs/etcd/ca.crt --snapshot-count=10000 --trusted-ca-file=/var/lib/minikube/certs/etcd/ca.crt --watch-progress-notify-interval=5s
+root        2835  9.8  4.4 1624344 310120 ?      Ssl  17:41   1:04 kube-apiserver --advertise-address=192.168.49.2 --allow-privileged=true --authorization-mode=Node,RBAC --client-ca-file=/var/lib/minikube/certs/ca.crt --enable-bootstrap-token-auth=true --etcd-cafile=/var/lib/minikube/certs/etcd/ca.crt --etcd-certfile=/var/lib/minikube/certs/apiserver-etcd-client.crt --etcd-keyfile=/var/lib/minikube/certs/apiserver-etcd-client.key --etcd-servers=https://127.0.0.1:2379 --kubelet-client-certificate=/var/lib/minikube/certs/apiserver-kubelet-client.crt --kubelet-client-key=/var/lib/minikube/certs/apiserver-kubelet-client.key --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --proxy-client-cert-file=/var/lib/minikube/certs/front-proxy-client.crt --proxy-client-key-file=/var/lib/minikube/certs/front-proxy-client.key --requestheader-allowed-names=front-proxy-client --requestheader-client-ca-file=/var/lib/minikube/certs/front-proxy-ca.crt --requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User --secure-port=8443 --service-account-issuer=https://kubernetes.default.svc.cluster.local --service-account-key-file=/var/lib/minikube/certs/sa.pub --service-account-signing-key-file=/var/lib/minikube/certs/sa.key --service-cluster-ip-range=10.96.0.0/12 --tls-cert-file=/var/lib/minikube/certs/apiserver.crt --tls-private-key-file=/var/lib/minikube/certs/apiserver.key --enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota
+root        3214  0.4  0.1 1268532 12492 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id bafaf603a6340e66fa204f82dfede2f671e37a2580a010d2ccee7eb438043d23 -address /run/containerd/containerd.sock
+root        3234  0.4  0.1 1268532 13212 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 9f55d869de71ac7d93ba852e0da6de3cb4d39475d49993ac47aefcd4a5475b72 -address /run/containerd/containerd.sock
+root        3289  0.4  0.1 1268276 12816 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 1d23233baa92bd65a4cbaaf57a930eff9f123eec2f501b9c7725af5b5e687e04 -address /run/containerd/containerd.sock
+65535       3341  0.0  0.0   1028   716 ?        Ss   17:41   0:00 /pause
+65535       3353  0.0  0.0   1028   748 ?        Ss   17:41   0:00 /pause
+65535       3361  0.0  0.0   1028   752 ?        Ss   17:41   0:00 /pause
+root        3363  0.4  0.1 1268532 12648 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 1cafe1f87ff79959022eb274548f1cb007838d485c09d39a979b6a75c43c7385 -address /run/containerd/containerd.sock
+root        3403  0.4  0.1 1268532 12356 ?       Sl   17:41   0:02 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id c7fbc1d83bb642a07b408e8f0c177e644bdc2c234273299ad369988851d9df06 -address /run/containerd/containerd.sock
+65535       3427  0.0  0.0   1028   752 ?        Ss   17:41   0:00 /pause
+65535       3446  0.0  0.0   1028   748 ?        Ss   17:41   0:00 /pause
+root        3488  0.1  0.6 1306740 47328 ?       Ssl  17:41   0:00 /usr/local/bin/kube-proxy --config=/var/lib/kube-proxy/config.conf --hostname-override=minikube
+65532       3529  0.4  0.8 1335784 62104 ?       Ssl  17:41   0:02 /coredns -conf /etc/coredns/Corefile
+root        3563  0.2  0.2 1308120 19612 ?       Ssl  17:41   0:01 /bin/kindnetd
+archit      3604  0.6  0.9 1332228 67744 ?       Ssl  17:41   0:04 /metrics-server --cert-dir=/tmp --secure-port=4443 --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --kubelet-use-node-status-port --metric-resolution=60s --kubelet-insecure-tls
+root        3647  0.0  0.0   3188  1080 ?        Ss   17:41   0:00 /init
+root        3648  0.0  0.0   3204  1156 ?        S    17:41   0:00 /init
+root        3650  0.3  1.4 2245108 102392 pts/2  Ssl+ 17:41   0:02 minikube tunnel --cleanup
+root        3860  0.0  0.1  15920 10112 ?        Ss   17:41   0:00 sshd: docker [priv]
+archit      3866  0.0  0.0  16180  6448 ?        S    17:41   0:00 sshd: docker@notty
+root        3962  0.3  0.4 737016 30304 ?        Ssl  17:42   0:02 /storage-provisioner
+root        4293  0.0  0.0   3208  1084 ?        Ss   17:48   0:00 /init
+root        4294  0.0  0.0   3224  1160 ?        S    17:48   0:00 /init
+root        4296  0.0  0.0   4948  3644 pts/3    Ss+  17:48   0:00 bash /mnt/c/Users/archi/Github Projects/Devops-HW/scripts/run-terraform-labs.sh
+root        4487  0.4  0.1 1268532 12528 ?       Sl   17:48   0:00 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 1aeb516f23ec3b974d43ff35374de3fbeab6915088b5ca1e3befa10452d8b605 -address /run/containerd/containerd.sock
+root        4488  0.4  0.1 1268532 12552 ?       Sl   17:48   0:00 /usr/bin/containerd-shim-runc-v2 -namespace k8s.io -id 6b103fb6f1320baefd974012080aaaf36626706925014d62789fb44de3866f3b -address /run/containerd/containerd.sock
+65535       4533  0.0  0.0   1028   752 ?        Ss   17:48   0:00 /pause
+65535       4534  0.0  0.0   1028   752 ?        Ss   17:48   0:00 /pause
+root        4598  0.0  0.1  11472  7796 ?        Ss   17:48   0:00 nginx: master process nginx -g daemon off;
+root        4599  0.0  0.1  11472  8008 ?        Ss   17:48   0:00 nginx: master process nginx -g daemon off;
+landsca+    4669  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4670  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4671  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4672  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4673  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4674  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4675  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4676  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4677  0.0  0.0  11936  3160 ?        S    17:48   0:00 nginx: worker process
+landsca+    4678  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4679  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4680  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4681  0.0  0.0  11936  3236 ?        S    17:48   0:00 nginx: worker process
+landsca+    4682  0.0  0.0  11936  3152 ?        S    17:48   0:00 nginx: worker process
+landsca+    4683  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4684  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4685  0.0  0.0  11936  3160 ?        S    17:48   0:00 nginx: worker process
+landsca+    4686  0.0  0.0  11936  3224 ?        S    17:48   0:00 nginx: worker process
+landsca+    4687  0.0  0.0  11936  3136 ?        S    17:48   0:00 nginx: worker process
+landsca+    4688  0.0  0.0  11936  3172 ?        S    17:48   0:00 nginx: worker process
+landsca+    4689  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4690  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+landsca+    4691  0.0  0.0  11936  3232 ?        S    17:48   0:00 nginx: worker process
+landsca+    4692  0.0  0.0  11936  3260 ?        S    17:48   0:00 nginx: worker process
+root        4718  0.0  0.0   9536  5668 pts/2    S+   17:48   0:00 sudo ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -N docker@127.0.0.1 -p 32768 -i /root/.minikube/machines/minikube/id_rsa -L 80:10.107.235.169:80
+root        4720  0.0  0.0   9536  1828 pts/5    Ss+  17:48   0:00 sudo ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -N docker@127.0.0.1 -p 32768 -i /root/.minikube/machines/minikube/id_rsa -L 80:10.107.235.169:80
+root        4721  0.0  0.1  14424  9740 pts/5    S    17:48   0:00 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentitiesOnly=yes -N docker@127.0.0.1 -p 32768 -i /root/.minikube/machines/minikube/id_rsa -L 80:10.107.235.169:80
+root        4722  0.0  0.1  15900  9984 ?        Ss   17:48   0:00 sshd: docker [priv]
+archit      4730  0.0  0.0  16160  6420 ?        S    17:48   0:00 sshd: docker
+root        4981  0.0  0.2  22260 16252 pts/3    S+   17:50   0:00 python3 scripts/record-output.py session18-terraform/evidence/plan.txt -- terraform -chdir=session18-terraform/terraform-s3-demo plan -out=lab.tfplan -input=false -no-color
+root        4982  5.1  3.1 1517936 217816 pts/3  Sl+  17:50   0:05 terraform -chdir=session18-terraform/terraform-s3-demo plan -out=lab.tfplan -input=false -no-color
+root        5036  1.1  5.5 2207200 390748 pts/3  Sl+  17:50   0:01 .terraform/providers/registry.terraform.io/hashicorp/aws/6.67.0/linux_amd64/terraform-provider-aws_v6.67.0_x5
+root        5081  0.0  0.0   3188  1080 ?        Ss   17:51   0:00 /init
+root        5082  0.0  0.0   3204  1156 ?        S    17:51   0:00 /init
+root        5085  0.5  0.2  22260 16228 pts/4    Ss+  17:51   0:00 python3 /mnt/c/Users/archi/Github Projects/Devops-HW/scripts/record-output.py /mnt/c/Users/archi/Github Projects/Devops-HW/01-linux-fundamentals/evidence/foundations.txt -- bash /mnt/c/Users/archi/Github Projects/Devops-HW/scripts/check-foundations.sh
+root        5086  0.1  0.0   4948  3640 pts/4    S+   17:51   0:00 bash /mnt/c/Users/archi/Github Projects/Devops-HW/scripts/check-foundations.sh
+root        5188  9.0  0.0   4948  3692 pts/4    S+   17:52   0:00 bash /mnt/c/Users/archi/Github Projects/Devops-HW/02-shell-scripting/system-info.sh
+root        5196  200  0.0   7804  4900 pts/4    R+   17:52   0:00 ps aux
+Process information was saved to: /tmp/tmp.PSmPyfDhDh/system-report/processes.log
++ test -s /tmp/tmp.PSmPyfDhDh/system-report/processes.log
++ wc -l /tmp/tmp.PSmPyfDhDh/system-report/processes.log
+133 /tmp/tmp.PSmPyfDhDh/system-report/processes.log
+
+Exit code: 0

@@ -1,0 +1,1630 @@
++ kubectl run lab-client --image=busybox:1.36 --restart=Never -- sleep 7200
+pod/lab-client created
++ kubectl wait --for=condition=Ready pod/lab-client --timeout=120s
+pod/lab-client condition met
++ case "$lab" in
++ cd session10-k8s-core-objects
++ kubectl apply -f pod.yml -f hello.yml
+pod/nginx-pod created
+pod/hello-pod created
++ kubectl wait --for=condition=Ready pod/nginx-pod --timeout=120s
+pod/nginx-pod condition met
++ kubectl wait '--for=jsonpath={.status.phase}=Succeeded' pod/hello-pod --timeout=90s
+pod/hello-pod condition met
++ kubectl logs hello-pod
+Hello Kubernetes
++ kubectl apply -f pod-lifecycle/
+pod/lifecycle-running created
+pod/lifecycle-pending created
+pod/lifecycle-succeeded created
+pod/lifecycle-failed created
+pod/lifecycle-crashloop created
+pod/lifecycle-image-error created
+pod/lifecycle-readiness created
+pod/lifecycle-liveness created
+pod/lifecycle-startup created
+pod/lifecycle-init created
+pod/lifecycle-multi-container created
+pod/lifecycle-termination created
++ kubectl get pods -o wide
+NAME                        READY   STATUS              RESTARTS   AGE   IP           NODE                       NOMINATED NODE   READINESS GATES
+hello-pod                   0/1     Completed           0          9s    10.244.0.7   assignment-control-plane   <none>           <none>
+lab-client                  1/1     Running             0          11s   10.244.0.5   assignment-control-plane   <none>           <none>
+lifecycle-crashloop         0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-failed            0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-image-error       0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-init              0/1     Init:0/1            0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-liveness          0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-multi-container   0/2     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-pending           0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-readiness         0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-running           0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-startup           0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-succeeded         0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+lifecycle-termination       0/1     ContainerCreating   0          0s    <none>       assignment-control-plane   <none>           <none>
+nginx-pod                   1/1     Running             0          9s    10.244.0.6   assignment-control-plane   <none>           <none>
++ sleep 45
++ kubectl wait --for=condition=Ready pod/lifecycle-startup --timeout=90s
+pod/lifecycle-startup condition met
++ kubectl get pods -o wide
+NAME                        READY   STATUS         RESTARTS      AGE   IP            NODE                       NOMINATED NODE   READINESS GATES
+hello-pod                   0/1     Completed      0             54s   10.244.0.7    assignment-control-plane   <none>           <none>
+lab-client                  1/1     Running        0             56s   10.244.0.5    assignment-control-plane   <none>           <none>
+lifecycle-crashloop         0/1     Error          2 (36s ago)   45s   10.244.0.12   assignment-control-plane   <none>           <none>
+lifecycle-failed            0/1     Error          0             45s   10.244.0.11   assignment-control-plane   <none>           <none>
+lifecycle-image-error       0/1     ErrImagePull   0             45s   10.244.0.14   assignment-control-plane   <none>           <none>
+lifecycle-init              1/1     Running        0             45s   10.244.0.17   assignment-control-plane   <none>           <none>
+lifecycle-liveness          1/1     Running        0             45s   10.244.0.15   assignment-control-plane   <none>           <none>
+lifecycle-multi-container   2/2     Running        0             45s   10.244.0.18   assignment-control-plane   <none>           <none>
+lifecycle-pending           1/1     Running        0             45s   10.244.0.9    assignment-control-plane   <none>           <none>
+lifecycle-readiness         1/1     Running        0             45s   10.244.0.13   assignment-control-plane   <none>           <none>
+lifecycle-running           1/1     Running        0             45s   10.244.0.8    assignment-control-plane   <none>           <none>
+lifecycle-startup           1/1     Running        0             45s   10.244.0.16   assignment-control-plane   <none>           <none>
+lifecycle-succeeded         0/1     Completed      0             45s   10.244.0.10   assignment-control-plane   <none>           <none>
+lifecycle-termination       1/1     Running        0             45s   10.244.0.19   assignment-control-plane   <none>           <none>
+nginx-pod                   1/1     Running        0             54s   10.244.0.6    assignment-control-plane   <none>           <none>
+++ kubectl get pods -o name
+++ grep lifecycle
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-crashloop
+Name:             lifecycle-crashloop
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.12
+IPs:
+  IP:  10.244.0.12
+Containers:
+  crashing-app:
+    Container ID:  containerd://ed28ddce6568b1fd89f3c287a572a9dc79e740640d87f0e0372d5f4841879cc8
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo 'Application started'; sleep 3; echo 'Application crashed'; exit 1
+    State:          Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 07 Oct 2026 17:21:27 +0000
+      Finished:     Wed, 07 Oct 2026 17:21:30 +0000
+    Last State:     Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 07 Oct 2026 17:21:11 +0000
+      Finished:     Wed, 07 Oct 2026 17:21:14 +0000
+    Ready:          False
+    Restart Count:  2
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-jzx5g (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-jzx5g:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  46s                default-scheduler  Successfully assigned default/lifecycle-crashloop to assignment-control-plane
+  Normal   Pulled     24s (x3 over 45s)  kubelet            spec.containers{crashing-app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created    24s (x3 over 45s)  kubelet            spec.containers{crashing-app}: Container created
+  Normal   Started    24s (x3 over 45s)  kubelet            spec.containers{crashing-app}: Container started
+  Warning  BackOff    21s (x2 over 36s)  kubelet            spec.containers{crashing-app}: Back-off restarting failed container crashing-app in pod lifecycle-crashloop_default(63229988-6d07-40a8-b039-484e3c127c05)
++ kubectl logs pod/lifecycle-crashloop --all-containers --tail=12
+Application started
+Application crashed
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-failed
+Name:             lifecycle-failed
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Failed
+IP:               10.244.0.11
+IPs:
+  IP:  10.244.0.11
+Containers:
+  task:
+    Container ID:  containerd://f7cdaf5cd11eecb85e637e529c3c7e0347e94dd07a57899131da09003bb5d9f4
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo 'Task started'; sleep 5; echo 'Task failed'; exit 1
+    State:          Terminated
+      Reason:       Error
+      Exit Code:    1
+      Started:      Wed, 07 Oct 2026 17:21:06 +0000
+      Finished:     Wed, 07 Oct 2026 17:21:11 +0000
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-k8j4p (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-k8j4p:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  46s   default-scheduler  Successfully assigned default/lifecycle-failed to assignment-control-plane
+  Normal  Pulled     45s   kubelet            spec.containers{task}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal  Created    45s   kubelet            spec.containers{task}: Container created
+  Normal  Started    45s   kubelet            spec.containers{task}: Container started
++ kubectl logs pod/lifecycle-failed --all-containers --tail=12
+Task started
+Task failed
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-image-error
+Name:             lifecycle-image-error
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Pending
+IP:               10.244.0.14
+IPs:
+  IP:  10.244.0.14
+Containers:
+  broken-image:
+    Container ID:   
+    Image:          jakwehrgkaejw:kahsdfgkhj
+    Image ID:       
+    Port:           <none>
+    Host Port:      <none>
+    State:          Waiting
+      Reason:       ErrImagePull
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-858gh (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-858gh:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  46s                default-scheduler  Successfully assigned default/lifecycle-image-error to assignment-control-plane
+  Normal   Pulling    26s (x2 over 45s)  kubelet            spec.containers{broken-image}: Pulling image "jakwehrgkaejw:kahsdfgkhj"
+  Warning  Failed     26s (x2 over 42s)  kubelet            spec.containers{broken-image}: Failed to pull image "jakwehrgkaejw:kahsdfgkhj": failed to pull and unpack image "docker.io/library/jakwehrgkaejw:kahsdfgkhj": failed to resolve reference "docker.io/library/jakwehrgkaejw:kahsdfgkhj": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+  Warning  Failed     26s (x2 over 42s)  kubelet            spec.containers{broken-image}: Error: ErrImagePull
+  Normal   BackOff    12s (x2 over 41s)  kubelet            spec.containers{broken-image}: Back-off pulling image "jakwehrgkaejw:kahsdfgkhj"
+  Warning  Failed     12s (x2 over 41s)  kubelet            spec.containers{broken-image}: Error: ImagePullBackOff
++ kubectl logs pod/lifecycle-image-error --all-containers --tail=12
+Error from server (BadRequest): container "broken-image" in pod "lifecycle-image-error" is waiting to start: image can't be pulled
++ true
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-init
+Name:             lifecycle-init
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.17
+IPs:
+  IP:  10.244.0.17
+Init Containers:
+  setup:
+    Container ID:  containerd://e6b28ad3bc0512b6d0845653d52902596c1b25b7a1d75ed343a47cb9ed3565cc
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo 'Init container running'; sleep 10; echo 'Init complete'
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 07 Oct 2026 17:21:06 +0000
+      Finished:     Wed, 07 Oct 2026 17:21:16 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-gzbj2 (ro)
+Containers:
+  app:
+    Container ID:   containerd://6ea0c3b9248a3fba68980c9148a6b18edcf75148a6d5d733eb26c67818a1fde1
+    Image:          nginx:1.27
+    Image ID:       docker.io/library/nginx@sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:17 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-gzbj2 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-gzbj2:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  46s   default-scheduler  Successfully assigned default/lifecycle-init to assignment-control-plane
+  Normal  Pulled     45s   kubelet            spec.initContainers{setup}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal  Created    45s   kubelet            spec.initContainers{setup}: Container created
+  Normal  Started    45s   kubelet            spec.initContainers{setup}: Container started
+  Normal  Pulled     34s   kubelet            spec.containers{app}: Container image "nginx:1.27" already present on machine and can be accessed by the pod
+  Normal  Created    34s   kubelet            spec.containers{app}: Container created
+  Normal  Started    34s   kubelet            spec.containers{app}: Container started
++ kubectl logs pod/lifecycle-init --all-containers --tail=12
+Init container running
+Init complete
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2026/10/07 17:21:17 [notice] 1#1: using the "epoll" event method
+2026/10/07 17:21:17 [notice] 1#1: nginx/1.27.5
+2026/10/07 17:21:17 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2026/10/07 17:21:17 [notice] 1#1: OS: Linux 6.17.0-1022-azure
+2026/10/07 17:21:17 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2026/10/07 17:21:17 [notice] 1#1: start worker processes
+2026/10/07 17:21:17 [notice] 1#1: start worker process 36
+2026/10/07 17:21:17 [notice] 1#1: start worker process 37
+2026/10/07 17:21:17 [notice] 1#1: start worker process 38
+2026/10/07 17:21:17 [notice] 1#1: start worker process 39
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-liveness
+Name:             lifecycle-liveness
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.15
+IPs:
+  IP:  10.244.0.15
+Containers:
+  app:
+    Container ID:  containerd://3ea1524fcab21dffc36c80c71d10185ba7dfa42692c189845b4dfdb84070b572
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo 'App started'; touch /tmp/healthy; sleep 20; rm /tmp/healthy; echo 'Health file removed'; sleep 300
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:06 +0000
+    Ready:          True
+    Restart Count:  0
+    Liveness:       exec [sh -c test -f /tmp/healthy] delay=5s timeout=1s period=5s successThreshold=1 failureThreshold=2
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-cwqkm (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-cwqkm:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  46s                default-scheduler  Successfully assigned default/lifecycle-liveness to assignment-control-plane
+  Normal   Pulled     45s                kubelet            spec.containers{app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created    45s                kubelet            spec.containers{app}: Container created
+  Normal   Started    45s                kubelet            spec.containers{app}: Container started
+  Warning  Unhealthy  16s (x2 over 21s)  kubelet            spec.containers{app}: Liveness probe failed:
+  Normal   Killing    16s                kubelet            spec.containers{app}: Container app failed liveness probe, will be restarted
++ kubectl logs pod/lifecycle-liveness --all-containers --tail=12
+App started
+Health file removed
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-multi-container
+Name:             lifecycle-multi-container
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.18
+IPs:
+  IP:  10.244.0.18
+Containers:
+  app:
+    Container ID:   containerd://e54a0a8cf5f0752985df7bd7aee418c75118097ccc511e27e0f47168a25b00f8
+    Image:          nginx:1.27
+    Image ID:       docker.io/library/nginx@sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:11 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-vmvvt (ro)
+  sidecar:
+    Container ID:  containerd://cc17f8d88ffd4a524a14b26e75159f8c9b9406a225c0d734bfd2d62e67f4e311
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      while true; do echo 'Sidecar is running'; sleep 10; done
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:11 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-vmvvt (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-vmvvt:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  46s   default-scheduler  Successfully assigned default/lifecycle-multi-container to assignment-control-plane
+  Normal  Pulling    45s   kubelet            spec.containers{app}: Pulling image "nginx:1.27"
+  Normal  Pulled     40s   kubelet            spec.containers{app}: Successfully pulled image "nginx:1.27" in 426ms (4.776s including waiting). Image size: 72406859 bytes.
+  Normal  Created    40s   kubelet            spec.containers{app}: Container created
+  Normal  Started    40s   kubelet            spec.containers{app}: Container started
+  Normal  Pulled     40s   kubelet            spec.containers{sidecar}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal  Created    40s   kubelet            spec.containers{sidecar}: Container created
+  Normal  Started    40s   kubelet            spec.containers{sidecar}: Container started
++ kubectl logs pod/lifecycle-multi-container --all-containers --tail=12
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2026/10/07 17:21:11 [notice] 1#1: using the "epoll" event method
+2026/10/07 17:21:11 [notice] 1#1: nginx/1.27.5
+2026/10/07 17:21:11 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2026/10/07 17:21:11 [notice] 1#1: OS: Linux 6.17.0-1022-azure
+2026/10/07 17:21:11 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2026/10/07 17:21:11 [notice] 1#1: start worker processes
+2026/10/07 17:21:11 [notice] 1#1: start worker process 36
+2026/10/07 17:21:11 [notice] 1#1: start worker process 37
+2026/10/07 17:21:11 [notice] 1#1: start worker process 38
+2026/10/07 17:21:11 [notice] 1#1: start worker process 39
+Sidecar is running
+Sidecar is running
+Sidecar is running
+Sidecar is running
+Sidecar is running
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-pending
+Name:             lifecycle-pending
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.9
+IPs:
+  IP:  10.244.0.9
+Containers:
+  impossible-resource:
+    Container ID:   containerd://0a725021b147d61e8bcb8e0413464969db139cfa197e46a220b82dae88590020
+    Image:          nginx:1.27
+    Image ID:       docker.io/library/nginx@sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:09 +0000
+    Ready:          True
+    Restart Count:  0
+    Requests:
+      cpu:        1
+      memory:     9Gi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dm55c (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-dm55c:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  47s   default-scheduler  Successfully assigned default/lifecycle-pending to assignment-control-plane
+  Normal  Pulling    47s   kubelet            spec.containers{impossible-resource}: Pulling image "nginx:1.27"
+  Normal  Pulled     44s   kubelet            spec.containers{impossible-resource}: Successfully pulled image "nginx:1.27" in 3.062s (3.062s including waiting). Image size: 72406859 bytes.
+  Normal  Created    44s   kubelet            spec.containers{impossible-resource}: Container created
+  Normal  Started    43s   kubelet            spec.containers{impossible-resource}: Container started
++ kubectl logs pod/lifecycle-pending --all-containers --tail=12
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2026/10/07 17:21:09 [notice] 1#1: using the "epoll" event method
+2026/10/07 17:21:09 [notice] 1#1: nginx/1.27.5
+2026/10/07 17:21:09 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2026/10/07 17:21:09 [notice] 1#1: OS: Linux 6.17.0-1022-azure
+2026/10/07 17:21:09 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2026/10/07 17:21:09 [notice] 1#1: start worker processes
+2026/10/07 17:21:09 [notice] 1#1: start worker process 36
+2026/10/07 17:21:09 [notice] 1#1: start worker process 37
+2026/10/07 17:21:09 [notice] 1#1: start worker process 38
+2026/10/07 17:21:09 [notice] 1#1: start worker process 39
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-readiness
+Name:             lifecycle-readiness
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.13
+IPs:
+  IP:  10.244.0.13
+Containers:
+  nginx:
+    Container ID:   containerd://3d8299d870d062e0bf4fac17a0adc297cd6af079b6496ad63c52b001f39f0079
+    Image:          nginx:1.27
+    Image ID:       docker.io/library/nginx@sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:10 +0000
+    Ready:          True
+    Restart Count:  0
+    Readiness:      http-get http://:80/ delay=5s timeout=1s period=5s successThreshold=1 failureThreshold=3
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-mhcx7 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-mhcx7:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  47s   default-scheduler  Successfully assigned default/lifecycle-readiness to assignment-control-plane
+  Normal  Pulling    46s   kubelet            spec.containers{nginx}: Pulling image "nginx:1.27"
+  Normal  Pulled     42s   kubelet            spec.containers{nginx}: Successfully pulled image "nginx:1.27" in 786ms (4.402s including waiting). Image size: 72406859 bytes.
+  Normal  Created    42s   kubelet            spec.containers{nginx}: Container created
+  Normal  Started    42s   kubelet            spec.containers{nginx}: Container started
++ kubectl logs pod/lifecycle-readiness --all-containers --tail=12
+2026/10/07 17:21:10 [notice] 1#1: start worker processes
+2026/10/07 17:21:10 [notice] 1#1: start worker process 36
+2026/10/07 17:21:10 [notice] 1#1: start worker process 37
+2026/10/07 17:21:10 [notice] 1#1: start worker process 38
+2026/10/07 17:21:10 [notice] 1#1: start worker process 39
+10.244.0.1 - - [07/Oct/2026:17:21:18 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.35" "-"
+10.244.0.1 - - [07/Oct/2026:17:21:23 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.35" "-"
+10.244.0.1 - - [07/Oct/2026:17:21:28 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.35" "-"
+10.244.0.1 - - [07/Oct/2026:17:21:33 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.35" "-"
+10.244.0.1 - - [07/Oct/2026:17:21:38 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.35" "-"
+10.244.0.1 - - [07/Oct/2026:17:21:43 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.35" "-"
+10.244.0.1 - - [07/Oct/2026:17:21:48 +0000] "GET / HTTP/1.1" 200 615 "-" "kube-probe/1.35" "-"
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-running
+Name:             lifecycle-running
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.8
+IPs:
+  IP:  10.244.0.8
+Containers:
+  nginx:
+    Container ID:   containerd://50a373ba2344b87e886fb5478617971341f837318601b85c4e0c8705c4227fa8
+    Image:          nginx:1.27
+    Image ID:       docker.io/library/nginx@sha256:6784fb0834aa7dbbe12e3d7471e69c290df3e6ba810dc38b34ae33d3c1c05f7d
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:09 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-t9xhd (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-t9xhd:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  47s   default-scheduler  Successfully assigned default/lifecycle-running to assignment-control-plane
+  Normal  Pulling    47s   kubelet            spec.containers{nginx}: Pulling image "nginx:1.27"
+  Normal  Pulled     43s   kubelet            spec.containers{nginx}: Successfully pulled image "nginx:1.27" in 399ms (3.398s including waiting). Image size: 72406859 bytes.
+  Normal  Created    43s   kubelet            spec.containers{nginx}: Container created
+  Normal  Started    43s   kubelet            spec.containers{nginx}: Container started
++ kubectl logs pod/lifecycle-running --all-containers --tail=12
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2026/10/07 17:21:09 [notice] 1#1: using the "epoll" event method
+2026/10/07 17:21:09 [notice] 1#1: nginx/1.27.5
+2026/10/07 17:21:09 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2026/10/07 17:21:09 [notice] 1#1: OS: Linux 6.17.0-1022-azure
+2026/10/07 17:21:09 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1073741816:1073741816
+2026/10/07 17:21:09 [notice] 1#1: start worker processes
+2026/10/07 17:21:09 [notice] 1#1: start worker process 36
+2026/10/07 17:21:09 [notice] 1#1: start worker process 37
+2026/10/07 17:21:09 [notice] 1#1: start worker process 38
+2026/10/07 17:21:09 [notice] 1#1: start worker process 39
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-startup
+Name:             lifecycle-startup
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.16
+IPs:
+  IP:  10.244.0.16
+Containers:
+  slow-app:
+    Container ID:  containerd://24546c835a97afaae4cbcbe9e427d5ede6df15f82b2b9aa5bb2a0fe341760a30
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo 'Application starting...'; sleep 30; touch /tmp/started; echo 'Application started'; sleep 300
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:06 +0000
+    Ready:          True
+    Restart Count:  0
+    Startup:        exec [sh -c test -f /tmp/started] delay=0s timeout=1s period=5s successThreshold=1 failureThreshold=10
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-pfwj6 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-pfwj6:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                From               Message
+  ----     ------     ----               ----               -------
+  Normal   Scheduled  47s                default-scheduler  Successfully assigned default/lifecycle-startup to assignment-control-plane
+  Normal   Pulled     46s                kubelet            spec.containers{slow-app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal   Created    46s                kubelet            spec.containers{slow-app}: Container created
+  Normal   Started    46s                kubelet            spec.containers{slow-app}: Container started
+  Warning  Unhealthy  17s (x6 over 42s)  kubelet            spec.containers{slow-app}: Startup probe failed:
++ kubectl logs pod/lifecycle-startup --all-containers --tail=12
+Application starting...
+Application started
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-succeeded
+Name:             lifecycle-succeeded
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Succeeded
+IP:               10.244.0.10
+IPs:
+  IP:  10.244.0.10
+Containers:
+  task:
+    Container ID:  containerd://b4a73c7855223d058ef83813afc163dbe3a752caad27cf4278cf6b041b4e91ff
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      echo 'Task started'; sleep 5; echo 'Task completed successfully'; exit 0
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 07 Oct 2026 17:21:06 +0000
+      Finished:     Wed, 07 Oct 2026 17:21:11 +0000
+    Ready:          False
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-d4f6z (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-d4f6z:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  47s   default-scheduler  Successfully assigned default/lifecycle-succeeded to assignment-control-plane
+  Normal  Pulled     46s   kubelet            spec.containers{task}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal  Created    46s   kubelet            spec.containers{task}: Container created
+  Normal  Started    46s   kubelet            spec.containers{task}: Container started
++ kubectl logs pod/lifecycle-succeeded --all-containers --tail=12
+Task started
+Task completed successfully
++ for pod in $(kubectl get pods -o name | grep lifecycle)
++ kubectl describe pod/lifecycle-termination
+Name:             lifecycle-termination
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             assignment-control-plane/172.18.0.2
+Start Time:       Wed, 07 Oct 2026 17:21:05 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.19
+IPs:
+  IP:  10.244.0.19
+Containers:
+  graceful-app:
+    Container ID:  containerd://93b2018acbaa9eb1839d1bf69b76be4ae2e12898337872af7234c10d2f8772aa
+    Image:         busybox:1.36
+    Image ID:      docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    Port:          <none>
+    Host Port:     <none>
+    Command:
+      sh
+      -c
+      trap 'echo "SIGTERM received; cleaning up..."; sleep 10; echo "Cleanup complete"; exit 0' TERM
+      echo "Application running"
+      while true; do sleep 2; done
+      
+    State:          Running
+      Started:      Wed, 07 Oct 2026 17:21:06 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-hj89k (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-hj89k:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  47s   default-scheduler  Successfully assigned default/lifecycle-termination to assignment-control-plane
+  Normal  Pulled     46s   kubelet            spec.containers{graceful-app}: Container image "busybox:1.36" already present on machine and can be accessed by the pod
+  Normal  Created    46s   kubelet            spec.containers{graceful-app}: Container created
+  Normal  Started    46s   kubelet            spec.containers{graceful-app}: Container started
++ kubectl logs pod/lifecycle-termination --all-containers --tail=12
+Application running
++ kubectl delete pod lifecycle-termination --wait=false
+pod "lifecycle-termination" deleted from default namespace
++ kubectl get pod lifecycle-termination
+NAME                    READY   STATUS        RESTARTS   AGE
+lifecycle-termination   1/1     Terminating   0          47s
++ kubectl logs lifecycle-termination -f --pod-running-timeout=20s
+Application running
+SIGTERM received; cleaning up...
+Cleanup complete
++ kubectl delete -f pod-lifecycle/ --ignore-not-found --wait=true
+pod "lifecycle-running" deleted from default namespace
+pod "lifecycle-pending" deleted from default namespace
+pod "lifecycle-succeeded" deleted from default namespace
+pod "lifecycle-failed" deleted from default namespace
+pod "lifecycle-crashloop" deleted from default namespace
+pod "lifecycle-image-error" deleted from default namespace
+pod "lifecycle-readiness" deleted from default namespace
+pod "lifecycle-liveness" deleted from default namespace
+pod "lifecycle-startup" deleted from default namespace
+pod "lifecycle-init" deleted from default namespace
+pod "lifecycle-multi-container" deleted from default namespace
++ kubectl apply -f replicaset.yml
+replicaset.apps/nginx-rs created
++ kubectl wait --for=condition=Ready pod -l app=nginx --timeout=180s
+pod/nginx-pod condition met
+pod/nginx-rs-jd6zq condition met
+pod/nginx-rs-zcc4g condition met
+++ kubectl get pod -l app=nginx -o 'jsonpath={.items[0].metadata.name}'
++ old=nginx-pod
++ kubectl delete pod nginx-pod
+pod "nginx-pod" deleted from default namespace
++ kubectl wait --for=condition=Ready pod -l app=nginx --timeout=180s
+pod/nginx-rs-4h5kd condition met
+pod/nginx-rs-jd6zq condition met
+pod/nginx-rs-zcc4g condition met
++ kubectl get rs,pods -l app=nginx
+NAME                 READY   STATUS    RESTARTS   AGE
+pod/nginx-rs-4h5kd   1/1     Running   0          2s
+pod/nginx-rs-jd6zq   1/1     Running   0          4s
+pod/nginx-rs-zcc4g   1/1     Running   0          4s
++ kubectl apply -f daemonset/node-agent-ds.yaml
+daemonset.apps/node-logging-agent created
++ kubectl rollout status daemonset/node-logging-agent --timeout=120s
+Waiting for daemon set "node-logging-agent" rollout to finish: 0 of 1 updated pods are available...
+daemon set "node-logging-agent" successfully rolled out
++ kubectl get ds,pods -o wide
+NAME                                DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE   CONTAINERS      IMAGES         SELECTOR
+daemonset.apps/node-logging-agent   1         1         1       1            1           <none>          2s    fluent-logger   busybox:1.36   app=node-logging-agent
+
+NAME                           READY   STATUS      RESTARTS   AGE    IP            NODE                       NOMINATED NODE   READINESS GATES
+pod/hello-pod                  0/1     Completed   0          107s   10.244.0.7    assignment-control-plane   <none>           <none>
+pod/lab-client                 1/1     Running     0          109s   10.244.0.5    assignment-control-plane   <none>           <none>
+pod/nginx-rs-4h5kd             1/1     Running     0          4s     10.244.0.22   assignment-control-plane   <none>           <none>
+pod/nginx-rs-jd6zq             1/1     Running     0          6s     10.244.0.21   assignment-control-plane   <none>           <none>
+pod/nginx-rs-zcc4g             1/1     Running     0          6s     10.244.0.20   assignment-control-plane   <none>           <none>
+pod/node-logging-agent-rhpps   1/1     Running     0          2s     10.244.0.23   assignment-control-plane   <none>           <none>
++ set +x
+secret/mysql-lab-secret created
++ kubectl apply -f k8s-core-objects/mysql-service.yml -f k8s-core-objects/statefulset.yml
+service/mysql created
+statefulset.apps/mysql created
++ kubectl rollout status statefulset/mysql --timeout=240s
+Waiting for 3 pods to be ready...
+Waiting for 2 pods to be ready...
+Waiting for 2 pods to be ready...
+Waiting for 1 pods to be ready...
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 3 new pods have been updated...
++ kubectl get sts,pods,pvc,svc
+NAME                     READY   AGE
+statefulset.apps/mysql   3/3     25s
+
+NAME                           READY   STATUS      RESTARTS   AGE
+pod/hello-pod                  0/1     Completed   0          2m12s
+pod/lab-client                 1/1     Running     0          2m14s
+pod/mysql-0                    1/1     Running     0          25s
+pod/mysql-1                    1/1     Running     0          14s
+pod/mysql-2                    1/1     Running     0          5s
+pod/nginx-rs-4h5kd             1/1     Running     0          29s
+pod/nginx-rs-jd6zq             1/1     Running     0          31s
+pod/nginx-rs-zcc4g             1/1     Running     0          31s
+pod/node-logging-agent-rhpps   1/1     Running     0          27s
+
+NAME                                                     STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/mysql-persistent-storage-mysql-0   Bound    pvc-725696b4-edc7-42b0-b039-7e47936b22dd   5Gi        RWO            standard       <unset>                 25s
+persistentvolumeclaim/mysql-persistent-storage-mysql-1   Bound    pvc-e93fc3ca-a766-4068-acb5-c032be190daf   5Gi        RWO            standard       <unset>                 14s
+persistentvolumeclaim/mysql-persistent-storage-mysql-2   Bound    pvc-45d82cc5-91bc-49a1-87d3-46aa2a797ada   5Gi        RWO            standard       <unset>                 5s
+
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP    2m36s
+service/mysql        ClusterIP   None         <none>        3306/TCP   25s
++ client nslookup mysql.default.svc.cluster.local
++ kubectl exec lab-client -- nslookup mysql.default.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	mysql.default.svc.cluster.local
+Address: 10.244.0.29
+Name:	mysql.default.svc.cluster.local
+Address: 10.244.0.27
+Name:	mysql.default.svc.cluster.local
+Address: 10.244.0.25
+
+
++ kubectl delete -f k8s-core-objects/statefulset.yml -f k8s-core-objects/mysql-service.yml
+statefulset.apps "mysql" deleted from default namespace
+service "mysql" deleted from default namespace
++ kubectl delete pvc -l app=mysql --ignore-not-found
+persistentvolumeclaim "mysql-persistent-storage-mysql-0" deleted from default namespace
+persistentvolumeclaim "mysql-persistent-storage-mysql-1" deleted from default namespace
+persistentvolumeclaim "mysql-persistent-storage-mysql-2" deleted from default namespace
++ kubectl apply -f 01-rolling-update/deployment-v1.yaml -f 01-rolling-update/service.yaml
+deployment.apps/app-rolling created
+service/app-rolling-service created
++ kubectl rollout status deployment/app-rolling --timeout=180s
+Waiting for deployment "app-rolling" rollout to finish: 0 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 1 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "app-rolling" rollout to finish: 3 of 4 updated replicas are available...
+deployment "app-rolling" successfully rolled out
++ client wget -qO- http://app-rolling-service
++ kubectl exec lab-client -- wget -qO- http://app-rolling-service
+<html><body style="background:#1a1a2e;color:#e94560;font-family:monospace;font-size:3em;text-align:center;padding-top:20vh">
+<p>VERSION: v1</p><p style="font-size:0.5em;color:#16213e">Rolling Update Demo</p></body></html>
++ kubectl apply -f 01-rolling-update/deployment-v2.yaml
+deployment.apps/app-rolling configured
++ kubectl get pods -l app=app-rolling --show-labels
+NAME                           READY   STATUS              RESTARTS   AGE   LABELS
+app-rolling-74cb66f44d-444q8   1/1     Running             0          11s   app=app-rolling,pod-template-hash=74cb66f44d,version=v1
+app-rolling-74cb66f44d-9z9q5   1/1     Running             0          11s   app=app-rolling,pod-template-hash=74cb66f44d,version=v1
+app-rolling-74cb66f44d-lpq8k   1/1     Running             0          11s   app=app-rolling,pod-template-hash=74cb66f44d,version=v1
+app-rolling-74cb66f44d-zh8ws   1/1     Running             0          11s   app=app-rolling,pod-template-hash=74cb66f44d,version=v1
+app-rolling-ff45bb477-nn4x6    0/1     ContainerCreating   0          0s    app=app-rolling,pod-template-hash=ff45bb477,version=v2
++ kubectl rollout status deployment/app-rolling --timeout=180s
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+deployment "app-rolling" successfully rolled out
++ client wget -qO- http://app-rolling-service
++ kubectl exec lab-client -- wget -qO- http://app-rolling-service
+<html><body style="background:#0f3460;color:#e94560;font-family:monospace;font-size:3em;text-align:center;padding-top:20vh">
+<p>VERSION: v2</p><p style="font-size:0.5em;color:#53d8fb">Rolling Update Demo - NEW VERSION!</p></body></html>
++ kubectl rollout history deployment/app-rolling
+deployment.apps/app-rolling 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
++ kubectl rollout undo deployment/app-rolling
+Warning: resource deployments/app-rolling was previously managed with 'kubectl apply'. Rolling back will not update the kubectl.kubernetes.io/last-applied-configuration annotation, which may cause unexpected behavior on future 'kubectl apply' operations. Consider using 'kubectl apply' with your previous configuration file instead.
+deployment.apps/app-rolling rolled back
++ kubectl rollout status deployment/app-rolling --timeout=180s
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 2 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 3 out of 4 new replicas have been updated...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "app-rolling" rollout to finish: 1 old replicas are pending termination...
+deployment "app-rolling" successfully rolled out
++ kubectl delete -f 01-rolling-update/deployment-v1.yaml -f 01-rolling-update/service.yaml
+deployment.apps "app-rolling" deleted from default namespace
+service "app-rolling-service" deleted from default namespace
++ kubectl apply -f 02-blue-green/deployment-blue.yaml -f 02-blue-green/deployment-green.yaml -f 02-blue-green/service-blue.yaml
+deployment.apps/app-blue created
+deployment.apps/app-green created
+service/myapp-service created
++ kubectl rollout status deployment/app-blue --timeout=180s
+Waiting for deployment "app-blue" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-blue" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-blue" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-blue" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-blue" successfully rolled out
++ kubectl rollout status deployment/app-green --timeout=180s
+Waiting for deployment "app-green" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-green" successfully rolled out
++ client wget -qO- http://myapp-service
++ kubectl exec lab-client -- wget -qO- http://myapp-service
+<html><body style="background:#003566;color:#ffd60a;font-family:monospace;font-size:3em;text-align:center;padding-top:20vh">
+<p>BLUE ENVIRONMENT</p>
+<p style="font-size:0.5em">Version: v1 | Slot: BLUE (LIVE)</p>
+</body></html>
++ kubectl apply -f 02-blue-green/service-green.yaml
+service/myapp-service configured
++ sleep 3
++ client wget -qO- http://myapp-service
++ kubectl exec lab-client -- wget -qO- http://myapp-service
+<html><body style="background:#1b4332;color:#95d5b2;font-family:monospace;font-size:3em;text-align:center;padding-top:20vh">
+<p>GREEN ENVIRONMENT</p>
+<p style="font-size:0.5em">Version: v2 | Slot: GREEN (STANDBY -> PROMOTED)</p>
+</body></html>
++ kubectl get endpointslice -l kubernetes.io/service-name=myapp-service
+NAME                  ADDRESSTYPE   PORTS   ENDPOINTS                             AGE
+myapp-service-cfpf4   IPv4          80      10.244.0.47,10.244.0.50,10.244.0.45   12s
++ kubectl delete -f 02-blue-green/deployment-blue.yaml -f 02-blue-green/deployment-green.yaml -f 02-blue-green/service-green.yaml
+deployment.apps "app-blue" deleted from default namespace
+deployment.apps "app-green" deleted from default namespace
+service "myapp-service" deleted from default namespace
++ kubectl apply -f 03-canary/
+deployment.apps/app-canary created
+deployment.apps/app-stable created
+service/myapp-canary-service created
++ kubectl rollout status deployment/app-stable --timeout=180s
+Waiting for deployment "app-stable" rollout to finish: 0 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 1 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 2 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 3 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 4 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 5 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 6 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 7 of 9 updated replicas are available...
+Waiting for deployment "app-stable" rollout to finish: 8 of 9 updated replicas are available...
+deployment "app-stable" successfully rolled out
++ kubectl rollout status deployment/app-canary --timeout=180s
+deployment "app-canary" successfully rolled out
++ kubectl get pods -l app=myapp-canary --show-labels
+NAME                          READY   STATUS    RESTARTS   AGE   LABELS
+app-canary-9bd67fcfc-hp88m    1/1     Running   0          9s    app=myapp-canary,pod-template-hash=9bd67fcfc,track=canary,version=v2
+app-stable-848f547c48-jlh4f   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-jlk74   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-m67x8   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-rb6xx   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-sdrnv   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-swn58   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-t86mj   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-tq5d9   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
+app-stable-848f547c48-wdhrc   1/1     Running   0          9s    app=myapp-canary,pod-template-hash=848f547c48,track=stable,version=v1
++ client sh -c 'for i in $(seq 1 60); do wget -qO- http://myapp-canary-service; done'
++ kubectl exec lab-client -- sh -c 'for i in $(seq 1 60); do wget -qO- http://myapp-canary-service; done'
++ grep -E 'STABLE v1|CANARY v2'
++ sort
++ uniq -c
+      7 <p>CANARY v2</p>
+     53 <p>STABLE v1</p>
++ kubectl scale deployment/app-stable --replicas=5
+deployment.apps/app-stable scaled
++ kubectl scale deployment/app-canary --replicas=5
+deployment.apps/app-canary scaled
++ kubectl rollout status deployment/app-canary --timeout=180s
+Waiting for deployment "app-canary" rollout to finish: 1 out of 5 new replicas have been updated...
+Waiting for deployment "app-canary" rollout to finish: 1 of 5 updated replicas are available...
+Waiting for deployment "app-canary" rollout to finish: 2 of 5 updated replicas are available...
+Waiting for deployment "app-canary" rollout to finish: 3 of 5 updated replicas are available...
+Waiting for deployment "app-canary" rollout to finish: 4 of 5 updated replicas are available...
+deployment "app-canary" successfully rolled out
++ kubectl get deployments
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+app-canary   5/5     5            5           17s
+app-stable   5/5     5            5           17s
++ kubectl delete -f 03-canary/
+deployment.apps "app-canary" deleted from default namespace
+deployment.apps "app-stable" deleted from default namespace
+service "myapp-canary-service" deleted from default namespace
++ kubectl apply -f 04-recreate/deployment-v1.yaml -f 04-recreate/service.yaml
+deployment.apps/app-recreate created
+service/app-recreate-service created
++ kubectl rollout status deployment/app-recreate --timeout=180s
+Waiting for deployment "app-recreate" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-recreate" successfully rolled out
++ client wget -qO- http://app-recreate-service
++ kubectl exec lab-client -- wget -qO- http://app-recreate-service
+<html><body style="background:#1b262c;color:#0f4c81;font-family:monospace;font-size:2.5em;text-align:center;padding-top:20vh">
+<p style="color:#bbe1fa">STRATEGY: RECREATE</p>
+<p style="color:#3282b8">VERSION: v1</p>
+<p style="font-size:0.4em;color:#bbe1fa">All v1 pods will be killed before v2 starts</p>
+</body></html>
++ kubectl apply -f 04-recreate/deployment-v2.yaml
+deployment.apps/app-recreate configured
++ kubectl get pods -l app=app-recreate --show-labels
+NAME                            READY   STATUS        RESTARTS   AGE   LABELS
+app-recreate-5fdc578485-2v7r5   1/1     Terminating   0          2s    app=app-recreate,pod-template-hash=5fdc578485,version=v1
+app-recreate-5fdc578485-ctntt   1/1     Terminating   0          2s    app=app-recreate,pod-template-hash=5fdc578485,version=v1
+app-recreate-5fdc578485-jskjk   1/1     Terminating   0          2s    app=app-recreate,pod-template-hash=5fdc578485,version=v1
++ kubectl rollout status deployment/app-recreate --timeout=180s
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 out of 3 new replicas have been updated...
+Waiting for deployment "app-recreate" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "app-recreate" rollout to finish: 2 of 3 updated replicas are available...
+deployment "app-recreate" successfully rolled out
++ client wget -qO- http://app-recreate-service
++ kubectl exec lab-client -- wget -qO- http://app-recreate-service
+<html><body style="background:#0f4c81;color:#ffffff;font-family:monospace;font-size:2.5em;text-align:center;padding-top:20vh">
+<p style="color:#bbe1fa">STRATEGY: RECREATE</p>
+<p style="color:#00ffcc">VERSION: v2 (UPGRADED)</p>
+<p style="font-size:0.4em;color:#ffffff">Successfully replaced after full shutdown</p>
+</body></html>
++ kubectl get events --sort-by=.metadata.creationTimestamp
+LAST SEEN   TYPE      REASON                    OBJECT                                                   MESSAGE
+4m54s       Normal    Starting                  node/assignment-control-plane                            Starting kubelet.
+4m54s       Normal    NodeAllocatableEnforced   node/assignment-control-plane                            Updated Node Allocatable limit across pods
+4m54s       Normal    NodeHasSufficientMemory   node/assignment-control-plane                            Node assignment-control-plane status is now: NodeHasSufficientMemory
+4m54s       Normal    NodeHasNoDiskPressure     node/assignment-control-plane                            Node assignment-control-plane status is now: NodeHasNoDiskPressure
+4m54s       Normal    NodeHasSufficientPID      node/assignment-control-plane                            Node assignment-control-plane status is now: NodeHasSufficientPID
+4m49s       Normal    RegisteredNode            node/assignment-control-plane                            Node assignment-control-plane event: Registered Node assignment-control-plane in Controller
+4m46s       Normal    Starting                  node/assignment-control-plane                            
+4m37s       Normal    NodeReady                 node/assignment-control-plane                            Node assignment-control-plane status is now: NodeReady
+4m34s       Normal    Pulling                   pod/lab-client                                           Pulling image "busybox:1.36"
+4m34s       Normal    Scheduled                 pod/lab-client                                           Successfully assigned default/lab-client to assignment-control-plane
+4m33s       Normal    Started                   pod/lab-client                                           Container started
+4m33s       Normal    Created                   pod/lab-client                                           Container created
+4m33s       Normal    Pulled                    pod/lab-client                                           Successfully pulled image "busybox:1.36" in 1.344s (1.344s including waiting). Image size: 2217006 bytes.
+4m32s       Normal    Scheduled                 pod/hello-pod                                            Successfully assigned default/hello-pod to assignment-control-plane
+4m32s       Normal    Pulling                   pod/nginx-pod                                            Pulling image "nginx:latest"
+4m32s       Normal    Scheduled                 pod/nginx-pod                                            Successfully assigned default/nginx-pod to assignment-control-plane
+4m32s       Normal    Pulling                   pod/hello-pod                                            Pulling image "busybox"
+4m29s       Normal    Created                   pod/nginx-pod                                            Container created
+4m29s       Normal    Started                   pod/nginx-pod                                            Container started
+4m29s       Normal    Pulled                    pod/nginx-pod                                            Successfully pulled image "nginx:latest" in 2.685s (2.685s including waiting). Image size: 63873678 bytes.
+4m28s       Normal    Created                   pod/hello-pod                                            Container created
+4m28s       Normal    Started                   pod/hello-pod                                            Container started
+4m28s       Normal    Pulled                    pod/hello-pod                                            Successfully pulled image "busybox" in 1.287s (3.964s including waiting). Image size: 2236767 bytes.
+4m23s       Normal    Scheduled                 pod/lifecycle-liveness                                   Successfully assigned default/lifecycle-liveness to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-crashloop                                  Successfully assigned default/lifecycle-crashloop to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-readiness                                  Successfully assigned default/lifecycle-readiness to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-pending                                    Successfully assigned default/lifecycle-pending to assignment-control-plane
+4m23s       Normal    Pulling                   pod/lifecycle-pending                                    Pulling image "nginx:1.27"
+4m23s       Normal    Scheduled                 pod/lifecycle-succeeded                                  Successfully assigned default/lifecycle-succeeded to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-init                                       Successfully assigned default/lifecycle-init to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-termination                                Successfully assigned default/lifecycle-termination to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-multi-container                            Successfully assigned default/lifecycle-multi-container to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-failed                                     Successfully assigned default/lifecycle-failed to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-image-error                                Successfully assigned default/lifecycle-image-error to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-startup                                    Successfully assigned default/lifecycle-startup to assignment-control-plane
+4m23s       Normal    Scheduled                 pod/lifecycle-running                                    Successfully assigned default/lifecycle-running to assignment-control-plane
+4m23s       Normal    Pulling                   pod/lifecycle-running                                    Pulling image "nginx:1.27"
+4m22s       Normal    Pulling                   pod/lifecycle-multi-container                            Pulling image "nginx:1.27"
+4m22s       Normal    Pulled                    pod/lifecycle-failed                                     Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m22s       Normal    Pulled                    pod/lifecycle-init                                       Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m22s       Normal    Created                   pod/lifecycle-init                                       Container created
+4m22s       Normal    Started                   pod/lifecycle-termination                                Container started
+4m22s       Normal    Pulled                    pod/lifecycle-startup                                    Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m22s       Normal    Created                   pod/lifecycle-startup                                    Container created
+4m22s       Normal    Started                   pod/lifecycle-startup                                    Container started
+4m22s       Normal    Created                   pod/lifecycle-termination                                Container created
+4m22s       Normal    Started                   pod/lifecycle-failed                                     Container started
+4m22s       Normal    Pulled                    pod/lifecycle-succeeded                                  Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m22s       Normal    Created                   pod/lifecycle-succeeded                                  Container created
+4m22s       Normal    Started                   pod/lifecycle-succeeded                                  Container started
+4m22s       Normal    Pulled                    pod/lifecycle-termination                                Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m22s       Normal    Created                   pod/lifecycle-failed                                     Container created
+3m34s       Normal    Pulling                   pod/lifecycle-image-error                                Pulling image "jakwehrgkaejw:kahsdfgkhj"
+3m23s       Normal    Started                   pod/lifecycle-liveness                                   Container started
+3m23s       Normal    Created                   pod/lifecycle-liveness                                   Container created
+3m23s       Normal    Pulled                    pod/lifecycle-liveness                                   Container image "busybox:1.36" already present on machine and can be accessed by the pod
+3m36s       Normal    Started                   pod/lifecycle-crashloop                                  Container started
+3m36s       Normal    Created                   pod/lifecycle-crashloop                                  Container created
+3m36s       Normal    Pulled                    pod/lifecycle-crashloop                                  Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m22s       Normal    Pulling                   pod/lifecycle-readiness                                  Pulling image "nginx:1.27"
+4m22s       Normal    Started                   pod/lifecycle-init                                       Container started
+4m20s       Normal    Created                   pod/lifecycle-pending                                    Container created
+4m20s       Normal    Pulled                    pod/lifecycle-pending                                    Successfully pulled image "nginx:1.27" in 3.062s (3.062s including waiting). Image size: 72406859 bytes.
+4m19s       Normal    Started                   pod/lifecycle-pending                                    Container started
+4m19s       Normal    Started                   pod/lifecycle-running                                    Container started
+4m19s       Normal    Pulled                    pod/lifecycle-running                                    Successfully pulled image "nginx:1.27" in 399ms (3.398s including waiting). Image size: 72406859 bytes.
+4m19s       Normal    Created                   pod/lifecycle-running                                    Container created
+3m34s       Warning   Failed                    pod/lifecycle-image-error                                Error: ErrImagePull
+3m34s       Warning   Failed                    pod/lifecycle-image-error                                Failed to pull image "jakwehrgkaejw:kahsdfgkhj": failed to pull and unpack image "docker.io/library/jakwehrgkaejw:kahsdfgkhj": failed to resolve reference "docker.io/library/jakwehrgkaejw:kahsdfgkhj": pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+3m49s       Warning   Failed                    pod/lifecycle-image-error                                Error: ImagePullBackOff
+4m18s       Normal    Started                   pod/lifecycle-readiness                                  Container started
+3m53s       Warning   Unhealthy                 pod/lifecycle-startup                                    Startup probe failed:
+4m18s       Normal    Created                   pod/lifecycle-readiness                                  Container created
+4m18s       Normal    Pulled                    pod/lifecycle-readiness                                  Successfully pulled image "nginx:1.27" in 786ms (4.402s including waiting). Image size: 72406859 bytes.
+3m49s       Normal    BackOff                   pod/lifecycle-image-error                                Back-off pulling image "jakwehrgkaejw:kahsdfgkhj"
+4m17s       Normal    Created                   pod/lifecycle-multi-container                            Container created
+4m17s       Normal    Started                   pod/lifecycle-multi-container                            Container started
+4m17s       Normal    Started                   pod/lifecycle-multi-container                            Container started
+4m17s       Normal    Pulled                    pod/lifecycle-multi-container                            Successfully pulled image "nginx:1.27" in 426ms (4.776s including waiting). Image size: 72406859 bytes.
+4m17s       Normal    Pulled                    pod/lifecycle-multi-container                            Container image "busybox:1.36" already present on machine and can be accessed by the pod
+4m17s       Normal    Created                   pod/lifecycle-multi-container                            Container created
+3m33s       Warning   BackOff                   pod/lifecycle-crashloop                                  Back-off restarting failed container crashing-app in pod lifecycle-crashloop_default(63229988-6d07-40a8-b039-484e3c127c05)
+4m11s       Normal    Created                   pod/lifecycle-init                                       Container created
+4m11s       Normal    Started                   pod/lifecycle-init                                       Container started
+4m11s       Normal    Pulled                    pod/lifecycle-init                                       Container image "nginx:1.27" already present on machine and can be accessed by the pod
+3m53s       Warning   Unhealthy                 pod/lifecycle-liveness                                   Liveness probe failed:
+3m53s       Normal    Killing                   pod/lifecycle-liveness                                   Container app failed liveness probe, will be restarted
+3m36s       Normal    Killing                   pod/lifecycle-termination                                Stopping container graceful-app
+3m25s       Normal    Killing                   pod/lifecycle-pending                                    Stopping container impossible-resource
+3m25s       Normal    Killing                   pod/lifecycle-init                                       Stopping container app
+3m25s       Normal    Killing                   pod/lifecycle-multi-container                            Stopping container app
+3m25s       Normal    Killing                   pod/lifecycle-startup                                    Stopping container slow-app
+3m25s       Normal    Killing                   pod/lifecycle-readiness                                  Stopping container nginx
+3m25s       Normal    Killing                   pod/lifecycle-multi-container                            Stopping container sidecar
+3m25s       Normal    Killing                   pod/lifecycle-running                                    Stopping container nginx
+3m22s       Normal    Killing                   pod/lifecycle-liveness                                   Stopping container app
+2m51s       Normal    SuccessfulCreate          replicaset/nginx-rs                                      Created pod: nginx-rs-jd6zq
+2m51s       Normal    Scheduled                 pod/nginx-rs-jd6zq                                       Successfully assigned default/nginx-rs-jd6zq to assignment-control-plane
+2m51s       Normal    Scheduled                 pod/nginx-rs-zcc4g                                       Successfully assigned default/nginx-rs-zcc4g to assignment-control-plane
+2m51s       Normal    SuccessfulCreate          replicaset/nginx-rs                                      Created pod: nginx-rs-zcc4g
+2m50s       Normal    Pulled                    pod/nginx-rs-jd6zq                                       Successfully pulled image "nginx:latest" in 395ms (822ms including waiting). Image size: 63873678 bytes.
+2m50s       Normal    Started                   pod/nginx-rs-jd6zq                                       Container started
+2m50s       Normal    Pulling                   pod/nginx-rs-jd6zq                                       Pulling image "nginx:latest"
+2m50s       Normal    Created                   pod/nginx-rs-jd6zq                                       Container created
+2m50s       Normal    Started                   pod/nginx-rs-zcc4g                                       Container started
+2m50s       Normal    Created                   pod/nginx-rs-zcc4g                                       Container created
+2m50s       Normal    Pulled                    pod/nginx-rs-zcc4g                                       Successfully pulled image "nginx:latest" in 431ms (431ms including waiting). Image size: 63873678 bytes.
+2m51s       Normal    Pulling                   pod/nginx-rs-zcc4g                                       Pulling image "nginx:latest"
+2m49s       Normal    SuccessfulCreate          replicaset/nginx-rs                                      Created pod: nginx-rs-4h5kd
+2m49s       Normal    Killing                   pod/nginx-pod                                            Stopping container nginx
+2m49s       Normal    Scheduled                 pod/nginx-rs-4h5kd                                       Successfully assigned default/nginx-rs-4h5kd to assignment-control-plane
+2m48s       Normal    Started                   pod/nginx-rs-4h5kd                                       Container started
+2m48s       Normal    Created                   pod/nginx-rs-4h5kd                                       Container created
+2m48s       Normal    Pulled                    pod/nginx-rs-4h5kd                                       Successfully pulled image "nginx:latest" in 421ms (421ms including waiting). Image size: 63873678 bytes.
+2m48s       Normal    Pulling                   pod/nginx-rs-4h5kd                                       Pulling image "nginx:latest"
+2m47s       Normal    Scheduled                 pod/node-logging-agent-rhpps                             Successfully assigned default/node-logging-agent-rhpps to assignment-control-plane
+2m47s       Normal    SuccessfulCreate          daemonset/node-logging-agent                             Created pod: node-logging-agent-rhpps
+2m46s       Normal    Created                   pod/node-logging-agent-rhpps                             Container created
+2m46s       Normal    Pulled                    pod/node-logging-agent-rhpps                             Container image "busybox:1.36" already present on machine and can be accessed by the pod
+2m45s       Normal    Provisioning              persistentvolumeclaim/mysql-persistent-storage-mysql-0   External provisioner is provisioning volume for claim "default/mysql-persistent-storage-mysql-0"
+2m45s       Normal    Started                   pod/node-logging-agent-rhpps                             Container started
+2m45s       Normal    SuccessfulCreate          statefulset/mysql                                        Create Pod mysql-0 in StatefulSet mysql successful
+2m45s       Normal    ExternalProvisioning      persistentvolumeclaim/mysql-persistent-storage-mysql-0   Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+2m45s       Normal    WaitForFirstConsumer      persistentvolumeclaim/mysql-persistent-storage-mysql-0   waiting for first consumer to be created before binding
+2m45s       Normal    SuccessfulCreate          statefulset/mysql                                        Create Claim mysql-persistent-storage-mysql-0 Pod mysql-0 in StatefulSet mysql success
+2m43s       Normal    ProvisioningSucceeded     persistentvolumeclaim/mysql-persistent-storage-mysql-0   Successfully provisioned volume pvc-725696b4-edc7-42b0-b039-7e47936b22dd
+2m42s       Normal    Scheduled                 pod/mysql-0                                              Successfully assigned default/mysql-0 to assignment-control-plane
+2m41s       Normal    Pulling                   pod/mysql-0                                              Pulling image "mysql:8.4"
+2m35s       Normal    Started                   pod/mysql-0                                              Container started
+2m35s       Normal    Pulled                    pod/mysql-0                                              Successfully pulled image "mysql:8.4" in 6.749s (6.749s including waiting). Image size: 238996708 bytes.
+2m35s       Normal    Created                   pod/mysql-0                                              Container created
+2m34s       Normal    WaitForFirstConsumer      persistentvolumeclaim/mysql-persistent-storage-mysql-1   waiting for first consumer to be created before binding
+2m34s       Normal    Provisioning              persistentvolumeclaim/mysql-persistent-storage-mysql-1   External provisioner is provisioning volume for claim "default/mysql-persistent-storage-mysql-1"
+2m34s       Normal    ExternalProvisioning      persistentvolumeclaim/mysql-persistent-storage-mysql-1   Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+2m34s       Normal    SuccessfulCreate          statefulset/mysql                                        Create Pod mysql-1 in StatefulSet mysql successful
+2m34s       Normal    SuccessfulCreate          statefulset/mysql                                        Create Claim mysql-persistent-storage-mysql-1 Pod mysql-1 in StatefulSet mysql success
+2m27s       Normal    ProvisioningSucceeded     persistentvolumeclaim/mysql-persistent-storage-mysql-1   Successfully provisioned volume pvc-e93fc3ca-a766-4068-acb5-c032be190daf
+2m26s       Normal    Scheduled                 pod/mysql-1                                              Successfully assigned default/mysql-1 to assignment-control-plane
+2m26s       Normal    Pulled                    pod/mysql-1                                              Container image "mysql:8.4" already present on machine and can be accessed by the pod
+2m26s       Normal    Created                   pod/mysql-1                                              Container created
+2m25s       Normal    Provisioning              persistentvolumeclaim/mysql-persistent-storage-mysql-2   External provisioner is provisioning volume for claim "default/mysql-persistent-storage-mysql-2"
+2m25s       Normal    WaitForFirstConsumer      persistentvolumeclaim/mysql-persistent-storage-mysql-2   waiting for first consumer to be created before binding
+2m25s       Normal    Started                   pod/mysql-1                                              Container started
+2m25s       Normal    ExternalProvisioning      persistentvolumeclaim/mysql-persistent-storage-mysql-2   Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+2m25s       Normal    SuccessfulCreate          statefulset/mysql                                        Create Claim mysql-persistent-storage-mysql-2 Pod mysql-2 in StatefulSet mysql success
+2m25s       Normal    SuccessfulCreate          statefulset/mysql                                        Create Pod mysql-2 in StatefulSet mysql successful
+2m22s       Normal    ProvisioningSucceeded     persistentvolumeclaim/mysql-persistent-storage-mysql-2   Successfully provisioned volume pvc-45d82cc5-91bc-49a1-87d3-46aa2a797ada
+2m21s       Normal    Scheduled                 pod/mysql-2                                              Successfully assigned default/mysql-2 to assignment-control-plane
+2m20s       Normal    Killing                   pod/mysql-1                                              Stopping container mysql
+2m20s       Normal    Started                   pod/mysql-2                                              Container started
+2m20s       Normal    Killing                   pod/mysql-0                                              Stopping container mysql
+2m20s       Normal    Pulled                    pod/mysql-2                                              Container image "mysql:8.4" already present on machine and can be accessed by the pod
+2m20s       Normal    Created                   pod/mysql-2                                              Container created
+2m19s       Normal    Killing                   pod/mysql-2                                              Stopping container mysql
+108s        Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled up replica set app-rolling-74cb66f44d from 0 to 4
+108s        Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-444q8
+108s        Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-9z9q5
+108s        Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-lpq8k
+108s        Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-zh8ws
+108s        Normal    Scheduled                 pod/app-rolling-74cb66f44d-lpq8k                         Successfully assigned default/app-rolling-74cb66f44d-lpq8k to assignment-control-plane
+108s        Normal    Scheduled                 pod/app-rolling-74cb66f44d-zh8ws                         Successfully assigned default/app-rolling-74cb66f44d-zh8ws to assignment-control-plane
+108s        Normal    Scheduled                 pod/app-rolling-74cb66f44d-9z9q5                         Successfully assigned default/app-rolling-74cb66f44d-9z9q5 to assignment-control-plane
+108s        Normal    Scheduled                 pod/app-rolling-74cb66f44d-444q8                         Successfully assigned default/app-rolling-74cb66f44d-444q8 to assignment-control-plane
+107s        Normal    Pulling                   pod/app-rolling-74cb66f44d-zh8ws                         Pulling image "nginx:1.24-alpine"
+107s        Normal    Pulling                   pod/app-rolling-74cb66f44d-444q8                         Pulling image "nginx:1.24-alpine"
+107s        Normal    Pulling                   pod/app-rolling-74cb66f44d-9z9q5                         Pulling image "nginx:1.24-alpine"
+107s        Normal    Pulling                   pod/app-rolling-74cb66f44d-lpq8k                         Pulling image "nginx:1.24-alpine"
+105s        Normal    Pulled                    pod/app-rolling-74cb66f44d-9z9q5                         Successfully pulled image "nginx:1.24-alpine" in 408ms (2.588s including waiting). Image size: 16871417 bytes.
+105s        Normal    Created                   pod/app-rolling-74cb66f44d-9z9q5                         Container created
+105s        Normal    Started                   pod/app-rolling-74cb66f44d-lpq8k                         Container started
+105s        Normal    Started                   pod/app-rolling-74cb66f44d-zh8ws                         Container started
+105s        Normal    Created                   pod/app-rolling-74cb66f44d-zh8ws                         Container created
+105s        Normal    Created                   pod/app-rolling-74cb66f44d-lpq8k                         Container created
+105s        Normal    Pulled                    pod/app-rolling-74cb66f44d-lpq8k                         Successfully pulled image "nginx:1.24-alpine" in 444ms (2.183s including waiting). Image size: 16871417 bytes.
+105s        Normal    Pulled                    pod/app-rolling-74cb66f44d-zh8ws                         Successfully pulled image "nginx:1.24-alpine" in 1.747s (1.747s including waiting). Image size: 16871417 bytes.
+104s        Normal    Pulled                    pod/app-rolling-74cb66f44d-444q8                         Successfully pulled image "nginx:1.24-alpine" in 412ms (2.951s including waiting). Image size: 16871417 bytes.
+104s        Normal    Created                   pod/app-rolling-74cb66f44d-444q8                         Container created
+104s        Normal    Started                   pod/app-rolling-74cb66f44d-9z9q5                         Container started
+104s        Normal    Started                   pod/app-rolling-74cb66f44d-444q8                         Container started
+97s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled up replica set app-rolling-ff45bb477 from 0 to 1
+97s         Normal    SuccessfulCreate          replicaset/app-rolling-ff45bb477                         Created pod: app-rolling-ff45bb477-nn4x6
+97s         Normal    Scheduled                 pod/app-rolling-ff45bb477-nn4x6                          Successfully assigned default/app-rolling-ff45bb477-nn4x6 to assignment-control-plane
+96s         Normal    Pulling                   pod/app-rolling-ff45bb477-nn4x6                          Pulling image "nginx:1.25-alpine"
+94s         Normal    Started                   pod/app-rolling-ff45bb477-nn4x6                          Container started
+94s         Normal    Created                   pod/app-rolling-ff45bb477-nn4x6                          Container created
+94s         Normal    Pulled                    pod/app-rolling-ff45bb477-nn4x6                          Successfully pulled image "nginx:1.25-alpine" in 1.713s (1.713s including waiting). Image size: 20461242 bytes.
+88s         Normal    Scheduled                 pod/app-rolling-ff45bb477-98f6z                          Successfully assigned default/app-rolling-ff45bb477-98f6z to assignment-control-plane
+88s         Normal    Killing                   pod/app-rolling-74cb66f44d-444q8                         Stopping container web
+88s         Normal    SuccessfulDelete          replicaset/app-rolling-74cb66f44d                        Deleted pod: app-rolling-74cb66f44d-444q8
+88s         Normal    SuccessfulCreate          replicaset/app-rolling-ff45bb477                         Created pod: app-rolling-ff45bb477-98f6z
+88s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled up replica set app-rolling-ff45bb477 from 1 to 2
+88s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled down replica set app-rolling-74cb66f44d from 4 to 3
+87s         Normal    Created                   pod/app-rolling-ff45bb477-98f6z                          Container created
+87s         Normal    Started                   pod/app-rolling-ff45bb477-98f6z                          Container started
+87s         Normal    Pulled                    pod/app-rolling-ff45bb477-98f6z                          Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+80s         Normal    Killing                   pod/app-rolling-74cb66f44d-zh8ws                         Stopping container web
+80s         Normal    Scheduled                 pod/app-rolling-ff45bb477-sqvv6                          Successfully assigned default/app-rolling-ff45bb477-sqvv6 to assignment-control-plane
+80s         Normal    SuccessfulDelete          replicaset/app-rolling-74cb66f44d                        Deleted pod: app-rolling-74cb66f44d-zh8ws
+80s         Normal    SuccessfulCreate          replicaset/app-rolling-ff45bb477                         Created pod: app-rolling-ff45bb477-sqvv6
+80s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled down replica set app-rolling-74cb66f44d from 3 to 2
+80s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled up replica set app-rolling-ff45bb477 from 2 to 3
+79s         Normal    Started                   pod/app-rolling-ff45bb477-sqvv6                          Container started
+79s         Normal    Created                   pod/app-rolling-ff45bb477-sqvv6                          Container created
+79s         Normal    Pulled                    pod/app-rolling-ff45bb477-sqvv6                          Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+72s         Normal    SuccessfulDelete          replicaset/app-rolling-74cb66f44d                        Deleted pod: app-rolling-74cb66f44d-9z9q5
+72s         Normal    Scheduled                 pod/app-rolling-ff45bb477-bcvss                          Successfully assigned default/app-rolling-ff45bb477-bcvss to assignment-control-plane
+72s         Normal    Killing                   pod/app-rolling-74cb66f44d-9z9q5                         Stopping container web
+72s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled down replica set app-rolling-74cb66f44d from 2 to 1
+72s         Normal    SuccessfulCreate          replicaset/app-rolling-ff45bb477                         Created pod: app-rolling-ff45bb477-bcvss
+72s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled up replica set app-rolling-ff45bb477 from 3 to 4
+71s         Normal    Started                   pod/app-rolling-ff45bb477-bcvss                          Container started
+71s         Normal    Pulled                    pod/app-rolling-ff45bb477-bcvss                          Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+71s         Normal    Created                   pod/app-rolling-ff45bb477-bcvss                          Container created
+65s         Normal    SuccessfulDelete          replicaset/app-rolling-74cb66f44d                        Deleted pod: app-rolling-74cb66f44d-lpq8k
+65s         Normal    Killing                   pod/app-rolling-74cb66f44d-lpq8k                         Stopping container web
+65s         Normal    ScalingReplicaSet         deployment/app-rolling                                   Scaled down replica set app-rolling-74cb66f44d from 1 to 0
+64s         Normal    Pulled                    pod/app-rolling-74cb66f44d-tqd2m                         Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+64s         Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-tqd2m
+64s         Normal    Created                   pod/app-rolling-74cb66f44d-tqd2m                         Container created
+36s         Normal    ScalingReplicaSet         deployment/app-rolling                                   (combined from similar events): Scaled down replica set app-rolling-ff45bb477 from 1 to 0
+64s         Normal    Started                   pod/app-rolling-74cb66f44d-tqd2m                         Container started
+64s         Normal    Scheduled                 pod/app-rolling-74cb66f44d-tqd2m                         Successfully assigned default/app-rolling-74cb66f44d-tqd2m to assignment-control-plane
+57s         Normal    Killing                   pod/app-rolling-ff45bb477-sqvv6                          Stopping container web
+57s         Normal    Scheduled                 pod/app-rolling-74cb66f44d-tlbz7                         Successfully assigned default/app-rolling-74cb66f44d-tlbz7 to assignment-control-plane
+57s         Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-tlbz7
+57s         Normal    SuccessfulDelete          replicaset/app-rolling-ff45bb477                         Deleted pod: app-rolling-ff45bb477-sqvv6
+56s         Normal    Created                   pod/app-rolling-74cb66f44d-tlbz7                         Container created
+56s         Normal    Started                   pod/app-rolling-74cb66f44d-tlbz7                         Container started
+56s         Normal    Pulled                    pod/app-rolling-74cb66f44d-tlbz7                         Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+50s         Normal    SuccessfulDelete          replicaset/app-rolling-ff45bb477                         Deleted pod: app-rolling-ff45bb477-bcvss
+50s         Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-9cn8d
+50s         Normal    Killing                   pod/app-rolling-ff45bb477-bcvss                          Stopping container web
+50s         Normal    Scheduled                 pod/app-rolling-74cb66f44d-9cn8d                         Successfully assigned default/app-rolling-74cb66f44d-9cn8d to assignment-control-plane
+49s         Normal    Created                   pod/app-rolling-74cb66f44d-9cn8d                         Container created
+49s         Normal    Pulled                    pod/app-rolling-74cb66f44d-9cn8d                         Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+49s         Normal    Started                   pod/app-rolling-74cb66f44d-9cn8d                         Container started
+43s         Normal    SuccessfulDelete          replicaset/app-rolling-ff45bb477                         Deleted pod: app-rolling-ff45bb477-nn4x6
+43s         Normal    Scheduled                 pod/app-rolling-74cb66f44d-xjfmr                         Successfully assigned default/app-rolling-74cb66f44d-xjfmr to assignment-control-plane
+43s         Normal    Killing                   pod/app-rolling-ff45bb477-nn4x6                          Stopping container web
+43s         Normal    SuccessfulCreate          replicaset/app-rolling-74cb66f44d                        Created pod: app-rolling-74cb66f44d-xjfmr
+42s         Normal    Created                   pod/app-rolling-74cb66f44d-xjfmr                         Container created
+42s         Normal    Pulled                    pod/app-rolling-74cb66f44d-xjfmr                         Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+42s         Normal    Started                   pod/app-rolling-74cb66f44d-xjfmr                         Container started
+36s         Normal    Killing                   pod/app-rolling-ff45bb477-98f6z                          Stopping container web
+36s         Normal    SuccessfulDelete          replicaset/app-rolling-ff45bb477                         Deleted pod: app-rolling-ff45bb477-98f6z
+35s         Normal    Scheduled                 pod/app-blue-75d775cc67-sfwbq                            Successfully assigned default/app-blue-75d775cc67-sfwbq to assignment-control-plane
+35s         Normal    Killing                   pod/app-rolling-74cb66f44d-9cn8d                         Stopping container web
+35s         Normal    ScalingReplicaSet         deployment/app-green                                     Scaled up replica set app-green-5dbb4f5d8d from 0 to 3
+35s         Normal    SuccessfulCreate          replicaset/app-green-5dbb4f5d8d                          Created pod: app-green-5dbb4f5d8d-m6tpz
+35s         Normal    SuccessfulCreate          replicaset/app-green-5dbb4f5d8d                          Created pod: app-green-5dbb4f5d8d-ldvr8
+35s         Normal    SuccessfulCreate          replicaset/app-green-5dbb4f5d8d                          Created pod: app-green-5dbb4f5d8d-85d6r
+35s         Normal    Created                   pod/app-green-5dbb4f5d8d-m6tpz                           Container created
+35s         Normal    Pulled                    pod/app-green-5dbb4f5d8d-m6tpz                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+35s         Normal    Scheduled                 pod/app-green-5dbb4f5d8d-m6tpz                           Successfully assigned default/app-green-5dbb4f5d8d-m6tpz to assignment-control-plane
+35s         Normal    Started                   pod/app-green-5dbb4f5d8d-ldvr8                           Container started
+35s         Normal    Killing                   pod/app-rolling-74cb66f44d-tlbz7                         Stopping container web
+35s         Normal    Created                   pod/app-green-5dbb4f5d8d-ldvr8                           Container created
+35s         Normal    Pulled                    pod/app-green-5dbb4f5d8d-ldvr8                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+35s         Normal    Scheduled                 pod/app-green-5dbb4f5d8d-ldvr8                           Successfully assigned default/app-green-5dbb4f5d8d-ldvr8 to assignment-control-plane
+35s         Normal    Created                   pod/app-green-5dbb4f5d8d-85d6r                           Container created
+35s         Normal    Pulled                    pod/app-green-5dbb4f5d8d-85d6r                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+35s         Normal    Scheduled                 pod/app-green-5dbb4f5d8d-85d6r                           Successfully assigned default/app-green-5dbb4f5d8d-85d6r to assignment-control-plane
+35s         Normal    ScalingReplicaSet         deployment/app-blue                                      Scaled up replica set app-blue-75d775cc67 from 0 to 3
+35s         Normal    SuccessfulCreate          replicaset/app-blue-75d775cc67                           Created pod: app-blue-75d775cc67-sfwbq
+35s         Normal    SuccessfulCreate          replicaset/app-blue-75d775cc67                           Created pod: app-blue-75d775cc67-fqbsh
+35s         Normal    SuccessfulCreate          replicaset/app-blue-75d775cc67                           Created pod: app-blue-75d775cc67-84sb6
+35s         Normal    Created                   pod/app-blue-75d775cc67-sfwbq                            Container created
+35s         Normal    Pulled                    pod/app-blue-75d775cc67-sfwbq                            Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+35s         Normal    Killing                   pod/app-rolling-74cb66f44d-tqd2m                         Stopping container web
+35s         Normal    Created                   pod/app-blue-75d775cc67-fqbsh                            Container created
+35s         Normal    Pulled                    pod/app-blue-75d775cc67-fqbsh                            Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+35s         Normal    Killing                   pod/app-rolling-74cb66f44d-xjfmr                         Stopping container web
+35s         Normal    Scheduled                 pod/app-blue-75d775cc67-84sb6                            Successfully assigned default/app-blue-75d775cc67-84sb6 to assignment-control-plane
+35s         Normal    Scheduled                 pod/app-blue-75d775cc67-fqbsh                            Successfully assigned default/app-blue-75d775cc67-fqbsh to assignment-control-plane
+35s         Normal    Created                   pod/app-blue-75d775cc67-84sb6                            Container created
+35s         Normal    Pulled                    pod/app-blue-75d775cc67-84sb6                            Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+34s         Normal    Started                   pod/app-green-5dbb4f5d8d-m6tpz                           Container started
+34s         Normal    Started                   pod/app-blue-75d775cc67-84sb6                            Container started
+34s         Normal    Started                   pod/app-green-5dbb4f5d8d-85d6r                           Container started
+34s         Normal    Started                   pod/app-blue-75d775cc67-sfwbq                            Container started
+34s         Normal    Started                   pod/app-blue-75d775cc67-fqbsh                            Container started
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-tq5d9                          Successfully assigned default/app-stable-848f547c48-tq5d9 to assignment-control-plane
+23s         Normal    Killing                   pod/app-blue-75d775cc67-fqbsh                            Stopping container web
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-swn58
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-m67x8
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-sdrnv
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-tq5d9
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-jlh4f                          Successfully assigned default/app-stable-848f547c48-jlh4f to assignment-control-plane
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-jlh4f
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-wdhrc                          Successfully assigned default/app-stable-848f547c48-wdhrc to assignment-control-plane
+23s         Normal    Killing                   pod/app-blue-75d775cc67-84sb6                            Stopping container web
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-jlk74                          Successfully assigned default/app-stable-848f547c48-jlk74 to assignment-control-plane
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-jlk74
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-sdrnv                          Successfully assigned default/app-stable-848f547c48-sdrnv to assignment-control-plane
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-wdhrc
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-m67x8                          Successfully assigned default/app-stable-848f547c48-m67x8 to assignment-control-plane
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-rb6xx
+23s         Normal    Killing                   pod/app-green-5dbb4f5d8d-m6tpz                           Stopping container web
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-t86mj                          Successfully assigned default/app-stable-848f547c48-t86mj to assignment-control-plane
+23s         Normal    Killing                   pod/app-blue-75d775cc67-sfwbq                            Stopping container web
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-rb6xx                          Successfully assigned default/app-stable-848f547c48-rb6xx to assignment-control-plane
+23s         Normal    Scheduled                 pod/app-canary-9bd67fcfc-hp88m                           Successfully assigned default/app-canary-9bd67fcfc-hp88m to assignment-control-plane
+23s         Normal    Killing                   pod/app-green-5dbb4f5d8d-ldvr8                           Stopping container web
+23s         Normal    Scheduled                 pod/app-stable-848f547c48-swn58                          Successfully assigned default/app-stable-848f547c48-swn58 to assignment-control-plane
+23s         Normal    SuccessfulCreate          replicaset/app-canary-9bd67fcfc                          Created pod: app-canary-9bd67fcfc-hp88m
+23s         Normal    ScalingReplicaSet         deployment/app-stable                                    Scaled up replica set app-stable-848f547c48 from 0 to 9
+23s         Normal    ScalingReplicaSet         deployment/app-canary                                    Scaled up replica set app-canary-9bd67fcfc from 0 to 1
+23s         Normal    Killing                   pod/app-green-5dbb4f5d8d-85d6r                           Stopping container web
+23s         Normal    SuccessfulCreate          replicaset/app-stable-848f547c48                         Created pod: app-stable-848f547c48-t86mj
+22s         Normal    Created                   pod/app-stable-848f547c48-sdrnv                          Container created
+22s         Normal    Started                   pod/app-stable-848f547c48-rb6xx                          Container started
+22s         Normal    Created                   pod/app-stable-848f547c48-rb6xx                          Container created
+22s         Normal    Pulled                    pod/app-stable-848f547c48-sdrnv                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Started                   pod/app-stable-848f547c48-sdrnv                          Container started
+22s         Normal    Started                   pod/app-canary-9bd67fcfc-hp88m                           Container started
+22s         Normal    Created                   pod/app-canary-9bd67fcfc-hp88m                           Container created
+22s         Normal    Pulled                    pod/app-canary-9bd67fcfc-hp88m                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Pulled                    pod/app-stable-848f547c48-swn58                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Pulled                    pod/app-stable-848f547c48-rb6xx                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Created                   pod/app-stable-848f547c48-swn58                          Container created
+22s         Normal    Created                   pod/app-stable-848f547c48-m67x8                          Container created
+22s         Normal    Pulled                    pod/app-stable-848f547c48-m67x8                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Started                   pod/app-stable-848f547c48-swn58                          Container started
+22s         Normal    Pulled                    pod/app-stable-848f547c48-t86mj                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Created                   pod/app-stable-848f547c48-t86mj                          Container created
+22s         Normal    Started                   pod/app-stable-848f547c48-jlk74                          Container started
+22s         Normal    Created                   pod/app-stable-848f547c48-jlk74                          Container created
+22s         Normal    Started                   pod/app-stable-848f547c48-t86mj                          Container started
+22s         Normal    Pulled                    pod/app-stable-848f547c48-tq5d9                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Pulled                    pod/app-stable-848f547c48-jlk74                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Created                   pod/app-stable-848f547c48-tq5d9                          Container created
+22s         Normal    Created                   pod/app-stable-848f547c48-jlh4f                          Container created
+22s         Normal    Started                   pod/app-stable-848f547c48-tq5d9                          Container started
+22s         Normal    Pulled                    pod/app-stable-848f547c48-wdhrc                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Pulled                    pod/app-stable-848f547c48-jlh4f                          Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+22s         Normal    Created                   pod/app-stable-848f547c48-wdhrc                          Container created
+21s         Normal    Started                   pod/app-stable-848f547c48-jlh4f                          Container started
+21s         Normal    Started                   pod/app-stable-848f547c48-wdhrc                          Container started
+21s         Normal    Started                   pod/app-stable-848f547c48-m67x8                          Container started
+14s         Normal    SuccessfulCreate          replicaset/app-canary-9bd67fcfc                          Created pod: app-canary-9bd67fcfc-vm7lq
+14s         Normal    SuccessfulCreate          replicaset/app-canary-9bd67fcfc                          Created pod: app-canary-9bd67fcfc-jdhzr
+14s         Normal    SuccessfulDelete          replicaset/app-stable-848f547c48                         Deleted pod: app-stable-848f547c48-swn58
+14s         Normal    Scheduled                 pod/app-canary-9bd67fcfc-jdhzr                           Successfully assigned default/app-canary-9bd67fcfc-jdhzr to assignment-control-plane
+14s         Normal    SuccessfulDelete          replicaset/app-stable-848f547c48                         Deleted pod: app-stable-848f547c48-m67x8
+14s         Normal    ScalingReplicaSet         deployment/app-canary                                    Scaled up replica set app-canary-9bd67fcfc from 1 to 5
+14s         Normal    Killing                   pod/app-stable-848f547c48-t86mj                          Stopping container web
+14s         Normal    Killing                   pod/app-stable-848f547c48-swn58                          Stopping container web
+14s         Normal    Scheduled                 pod/app-canary-9bd67fcfc-vm7lq                           Successfully assigned default/app-canary-9bd67fcfc-vm7lq to assignment-control-plane
+14s         Normal    SuccessfulDelete          replicaset/app-stable-848f547c48                         Deleted pod: app-stable-848f547c48-t86mj
+14s         Normal    Killing                   pod/app-stable-848f547c48-m67x8                          Stopping container web
+14s         Normal    SuccessfulDelete          replicaset/app-stable-848f547c48                         Deleted pod: app-stable-848f547c48-jlh4f
+14s         Normal    Scheduled                 pod/app-canary-9bd67fcfc-l77zs                           Successfully assigned default/app-canary-9bd67fcfc-l77zs to assignment-control-plane
+14s         Normal    Killing                   pod/app-stable-848f547c48-jlh4f                          Stopping container web
+14s         Normal    ScalingReplicaSet         deployment/app-stable                                    Scaled down replica set app-stable-848f547c48 from 9 to 5
+14s         Normal    SuccessfulCreate          replicaset/app-canary-9bd67fcfc                          Created pod: app-canary-9bd67fcfc-mxlvx
+14s         Normal    SuccessfulCreate          replicaset/app-canary-9bd67fcfc                          Created pod: app-canary-9bd67fcfc-l77zs
+14s         Normal    Scheduled                 pod/app-canary-9bd67fcfc-mxlvx                           Successfully assigned default/app-canary-9bd67fcfc-mxlvx to assignment-control-plane
+13s         Normal    Pulled                    pod/app-canary-9bd67fcfc-l77zs                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+13s         Normal    Created                   pod/app-canary-9bd67fcfc-mxlvx                           Container created
+13s         Normal    Started                   pod/app-canary-9bd67fcfc-mxlvx                           Container started
+13s         Normal    Pulled                    pod/app-canary-9bd67fcfc-mxlvx                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+13s         Normal    Pulled                    pod/app-canary-9bd67fcfc-vm7lq                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+13s         Normal    Created                   pod/app-canary-9bd67fcfc-vm7lq                           Container created
+13s         Normal    Started                   pod/app-canary-9bd67fcfc-vm7lq                           Container started
+13s         Normal    Started                   pod/app-canary-9bd67fcfc-l77zs                           Container started
+13s         Normal    Created                   pod/app-canary-9bd67fcfc-l77zs                           Container created
+13s         Normal    Started                   pod/app-canary-9bd67fcfc-jdhzr                           Container started
+13s         Normal    Created                   pod/app-canary-9bd67fcfc-jdhzr                           Container created
+13s         Normal    Pulled                    pod/app-canary-9bd67fcfc-jdhzr                           Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+6s          Normal    SuccessfulCreate          replicaset/app-recreate-5fdc578485                       Created pod: app-recreate-5fdc578485-ctntt
+6s          Normal    ScalingReplicaSet         deployment/app-recreate                                  Scaled up replica set app-recreate-5fdc578485 from 0 to 3
+6s          Normal    Killing                   pod/app-canary-9bd67fcfc-hp88m                           Stopping container web
+6s          Warning   FailedToCreateEndpoint    endpoints/app-recreate-service                           Failed to create endpoint for service default/app-recreate-service: endpoints "app-recreate-service" already exists
+6s          Normal    Killing                   pod/app-canary-9bd67fcfc-l77zs                           Stopping container web
+6s          Normal    Killing                   pod/app-canary-9bd67fcfc-vm7lq                           Stopping container web
+6s          Normal    SuccessfulCreate          replicaset/app-recreate-5fdc578485                       Created pod: app-recreate-5fdc578485-2v7r5
+6s          Normal    SuccessfulCreate          replicaset/app-recreate-5fdc578485                       Created pod: app-recreate-5fdc578485-jskjk
+6s          Normal    Killing                   pod/app-stable-848f547c48-wdhrc                          Stopping container web
+6s          Normal    Scheduled                 pod/app-recreate-5fdc578485-ctntt                        Successfully assigned default/app-recreate-5fdc578485-ctntt to assignment-control-plane
+6s          Normal    Killing                   pod/app-stable-848f547c48-jlk74                          Stopping container web
+6s          Normal    Killing                   pod/app-canary-9bd67fcfc-jdhzr                           Stopping container web
+6s          Normal    Killing                   pod/app-stable-848f547c48-rb6xx                          Stopping container web
+6s          Normal    Scheduled                 pod/app-recreate-5fdc578485-jskjk                        Successfully assigned default/app-recreate-5fdc578485-jskjk to assignment-control-plane
+6s          Normal    Killing                   pod/app-stable-848f547c48-tq5d9                          Stopping container web
+6s          Normal    Killing                   pod/app-canary-9bd67fcfc-mxlvx                           Stopping container web
+6s          Normal    Scheduled                 pod/app-recreate-5fdc578485-2v7r5                        Successfully assigned default/app-recreate-5fdc578485-2v7r5 to assignment-control-plane
+6s          Normal    Killing                   pod/app-stable-848f547c48-sdrnv                          Stopping container web
+5s          Normal    Started                   pod/app-recreate-5fdc578485-ctntt                        Container started
+5s          Normal    Created                   pod/app-recreate-5fdc578485-jskjk                        Container created
+5s          Normal    Started                   pod/app-recreate-5fdc578485-2v7r5                        Container started
+5s          Normal    Created                   pod/app-recreate-5fdc578485-2v7r5                        Container created
+5s          Normal    Pulled                    pod/app-recreate-5fdc578485-2v7r5                        Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+5s          Normal    Created                   pod/app-recreate-5fdc578485-ctntt                        Container created
+5s          Normal    Pulled                    pod/app-recreate-5fdc578485-jskjk                        Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+5s          Normal    Pulled                    pod/app-recreate-5fdc578485-ctntt                        Container image "nginx:1.24-alpine" already present on machine and can be accessed by the pod
+5s          Normal    Started                   pod/app-recreate-5fdc578485-jskjk                        Container started
+4s          Normal    ScalingReplicaSet         deployment/app-recreate                                  Scaled down replica set app-recreate-5fdc578485 from 3 to 0
+4s          Normal    SuccessfulDelete          replicaset/app-recreate-5fdc578485                       Deleted pod: app-recreate-5fdc578485-2v7r5
+4s          Normal    SuccessfulDelete          replicaset/app-recreate-5fdc578485                       Deleted pod: app-recreate-5fdc578485-jskjk
+4s          Normal    SuccessfulDelete          replicaset/app-recreate-5fdc578485                       Deleted pod: app-recreate-5fdc578485-ctntt
+3s          Normal    Killing                   pod/app-recreate-5fdc578485-jskjk                        Stopping container web
+2s          Normal    Scheduled                 pod/app-recreate-75f5965c97-ptjh9                        Successfully assigned default/app-recreate-75f5965c97-ptjh9 to assignment-control-plane
+2s          Normal    Killing                   pod/app-recreate-5fdc578485-2v7r5                        Stopping container web
+2s          Normal    Created                   pod/app-recreate-75f5965c97-zn54f                        Container created
+2s          Normal    SuccessfulCreate          replicaset/app-recreate-75f5965c97                       Created pod: app-recreate-75f5965c97-zn54f
+2s          Normal    SuccessfulCreate          replicaset/app-recreate-75f5965c97                       Created pod: app-recreate-75f5965c97-ptjh9
+2s          Normal    SuccessfulCreate          replicaset/app-recreate-75f5965c97                       Created pod: app-recreate-75f5965c97-lh6rc
+2s          Normal    Pulled                    pod/app-recreate-75f5965c97-zn54f                        Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+2s          Normal    Scheduled                 pod/app-recreate-75f5965c97-zn54f                        Successfully assigned default/app-recreate-75f5965c97-zn54f to assignment-control-plane
+2s          Normal    Scheduled                 pod/app-recreate-75f5965c97-lh6rc                        Successfully assigned default/app-recreate-75f5965c97-lh6rc to assignment-control-plane
+2s          Normal    Killing                   pod/app-recreate-5fdc578485-ctntt                        Stopping container web
+2s          Normal    ScalingReplicaSet         deployment/app-recreate                                  Scaled up replica set app-recreate-75f5965c97 from 0 to 3
+1s          Normal    Created                   pod/app-recreate-75f5965c97-ptjh9                        Container created
+1s          Normal    Pulled                    pod/app-recreate-75f5965c97-lh6rc                        Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+1s          Normal    Started                   pod/app-recreate-75f5965c97-lh6rc                        Container started
+1s          Normal    Pulled                    pod/app-recreate-75f5965c97-ptjh9                        Container image "nginx:1.25-alpine" already present on machine and can be accessed by the pod
+1s          Normal    Started                   pod/app-recreate-75f5965c97-zn54f                        Container started
+1s          Normal    Created                   pod/app-recreate-75f5965c97-lh6rc                        Container created
+1s          Normal    Started                   pod/app-recreate-75f5965c97-ptjh9                        Container started
++ kubectl delete -f 04-recreate/deployment-v2.yaml -f 04-recreate/service.yaml
+deployment.apps "app-recreate" deleted from default namespace
+service "app-recreate-service" deleted from default namespace

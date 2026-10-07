@@ -1,0 +1,27 @@
+Recorded: 2026-10-07T16:44:00.470200+00:00
+Command: /tmp/studyslot-venv/bin/pytest -v session21-final-project/backend/tests
+
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /tmp/studyslot-venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /mnt/c/Users/archi/Github Projects/Devops-HW/session21-final-project/backend
+configfile: pytest.ini
+plugins: anyio-4.15.1, platformdirs-4.12.3
+collecting ... collected 12 items
+
+session21-final-project/backend/tests/test_bookings.py::test_health_and_database_ready PASSED [  8%]
+session21-final-project/backend/tests/test_bookings.py::test_rooms_and_empty_list PASSED [ 16%]
+session21-final-project/backend/tests/test_bookings.py::test_create_get_and_list PASSED [ 25%]
+session21-final-project/backend/tests/test_bookings.py::test_double_booking_is_rejected PASSED [ 33%]
+session21-final-project/backend/tests/test_bookings.py::test_another_room_can_use_same_hour PASSED [ 41%]
+session21-final-project/backend/tests/test_bookings.py::test_update_changes_booking PASSED [ 50%]
+session21-final-project/backend/tests/test_bookings.py::test_conflicting_update_keeps_original_slot PASSED [ 58%]
+session21-final-project/backend/tests/test_bookings.py::test_delete_frees_slot PASSED [ 66%]
+session21-final-project/backend/tests/test_bookings.py::test_missing_booking PASSED [ 75%]
+session21-final-project/backend/tests/test_bookings.py::test_capacity_validation PASSED [ 83%]
+session21-final-project/backend/tests/test_bookings.py::test_invalid_hour_and_roll_number PASSED [ 91%]
+session21-final-project/backend/tests/test_bookings.py::test_metrics_and_request_id PASSED [100%]
+
+============================== 12 passed in 1.17s ==============================
+
+Exit code: 0

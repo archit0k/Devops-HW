@@ -1,0 +1,58 @@
++ kubectl run lab-client --image=busybox:1.36 --restart=Never -- sleep 7200
+pod/lab-client created
++ kubectl wait --for=condition=Ready pod/lab-client --timeout=120s
+pod/lab-client condition met
++ case "$lab" in
++ cd session11-kubernetes-services
++ kubectl apply -f 01-clusterip/
+deployment.apps/web-app-clusterip created
+pod/curl-client created
+service/web-service-clusterip created
++ kubectl rollout status deployment/web-app-clusterip --timeout=180s
+Waiting for deployment "web-app-clusterip" rollout to finish: 0 of 3 updated replicas are available...
+Waiting for deployment "web-app-clusterip" rollout to finish: 1 of 3 updated replicas are available...
+Waiting for deployment "web-app-clusterip" rollout to finish: 2 of 3 updated replicas are available...
+deployment "web-app-clusterip" successfully rolled out
++ client wget -qO- http://web-service-clusterip:8080
++ kubectl exec lab-client -- wget -qO- http://web-service-clusterip:8080
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
++ client nslookup web-service-clusterip.default.svc.cluster.local
++ kubectl exec lab-client -- nslookup web-service-clusterip.default.svc.cluster.local
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	web-service-clusterip.default.svc.cluster.local
+Address: 10.96.199.227
+
+
++ kubectl apply -f 02-nodeport/
+deployment.apps/web-app-nodeport created
+service/web-service-nodeport created
++ kubectl rollout status deployment/web-app-nodeport --timeout=180s
+Waiting for deployment "web-app-nodeport" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "web-app-nodeport" rollout to finish: 1 of 2 updated replicas are available...
+deployment "web-app-nodeport" successfully rolled out
++ docker exec assignment-control-plane curl -fsS http://localhost:30080
+curl: (7) Failed to connect to localhost port 30080 after 0 ms: Could not connect to server

@@ -1,0 +1,8 @@
+Recorded: 2026-10-07T17:52:46.656071+00:00
+Command: terraform -chdir=session18-terraform/terraform-s3-demo output -no-color
+
+bucket_arn = "arn:aws:s3:::archit-24bcs10194-devops-hw18-20261007"
+bucket_name = "archit-24bcs10194-devops-hw18-20261007"
+bucket_region = "us-east-1"
+
+Exit code: 0
