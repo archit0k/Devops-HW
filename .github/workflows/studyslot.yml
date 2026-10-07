@@ -110,6 +110,18 @@ jobs:
         with:
           name: studyslot-image-scans
           path: scan-results
+      - name: Compose integration and non-root check
+        working-directory: session21-final-project
+        run: |
+          export POSTGRES_PASSWORD="$(openssl rand -hex 16)"
+          trap 'docker compose down -v' EXIT
+          docker compose up --build -d
+          docker compose ps -a
+          docker compose exec -T backend id
+          docker compose exec -T frontend id
+          curl --retry 10 --retry-connrefused --retry-delay 2 -fsS http://localhost:3000/frontend-health
+          curl -fsS http://localhost:3000/api/rooms
+          curl -fsS http://localhost:8000/ready
       - name: Publish SHA-tagged images only after all gates pass
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         env:
