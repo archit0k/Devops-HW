@@ -1,4 +1,4 @@
-"""Check the live EKS app through its loopback Ingress port-forward."""
+"""Check the live classroom app through its loopback Ingress port-forward."""
 import json
 import urllib.error
 import urllib.request
@@ -18,7 +18,7 @@ def request(method, path, data=None, expected=200):
     assert code == expected, (code, raw)
     return json.loads(raw) if raw else None
 
-print("Archit Kulkarni | 24BCS10194 | TaskBoard EKS CRUD")
+print("Archit Kulkarni | 24BCS10194 | TaskBoard Ingress CRUD")
 with urllib.request.urlopen(base, timeout=20) as response:
     assert response.status == 200 and b'<div id="root">' in response.read()
 print("GET /: React frontend HTTP 200")

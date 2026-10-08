@@ -1,5 +1,6 @@
 """Assert live Prometheus samples rather than just a dashboard configuration."""
 import json
+import math
 import time
 import urllib.parse
 import urllib.request
@@ -17,10 +18,11 @@ for label, query in queries.items():
         url = "http://localhost:9090/api/v1/query?" + urllib.parse.urlencode({"query":query})
         result = json.load(urllib.request.urlopen(url, timeout=20))
         samples = result["data"]["result"]
-        if samples:
+        if samples and all(math.isfinite(float(sample["value"][1])) for sample in samples):
             break
         time.sleep(5)
     assert result["status"] == "success" and samples, (label, result)
+    assert all(math.isfinite(float(sample["value"][1])) for sample in samples), (label, samples)
     print(label, json.dumps(samples))
     if label in ("TaskBoard scrape UP", "HTTP requests", "Available backend replicas"):
         assert float(samples[0]["value"][1]) > 0

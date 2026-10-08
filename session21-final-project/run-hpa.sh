@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "$0")/kube-lib.sh"
 cd "$(dirname "$0")/taskboard"
-[[ $(kubectl config current-context) == taskboard-lab ]]
 set -x
 helm upgrade taskboard ./helm/taskboard -n taskboard --reuse-values \
   --set replicaCount=2 --set hpa.enabled=true --wait --timeout 180s

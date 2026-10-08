@@ -14,6 +14,33 @@ spec:
       imagePullSecrets:
 {{ toYaml . | indent 8 }}
       {{- end }}
+      initContainers:
+        - name: wait-for-postgres
+          image: "{{ .Values.backend.image }}:{{ .Values.backend.tag }}"
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.existingSecret }}
+                  key: database-url
+          command: ["python", "-c"]
+          args:
+            - |
+              import os, time
+              from sqlalchemy import create_engine, text
+              from sqlalchemy.exc import SQLAlchemyError
+              engine = create_engine(os.environ["DATABASE_URL"], connect_args={"connect_timeout": 3})
+              for attempt in range(60):
+                  try:
+                      with engine.connect() as connection:
+                          connection.execute(text("SELECT 1"))
+                      print("PostgreSQL is ready.", flush=True)
+                      break
+                  except SQLAlchemyError:
+                      print("Waiting for PostgreSQL.", flush=True)
+                      time.sleep(5)
+              else:
+                  raise SystemExit("PostgreSQL did not become ready in time.")
       containers:
         - name: backend
           image: "{{ .Values.backend.image }}:{{ .Values.backend.tag }}"
@@ -24,13 +51,20 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.postgres.existingSecret }}
                   key: database-url
+          startupProbe:
+            httpGet: {path: /health, port: 8000}
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 60
           readinessProbe:
             httpGet: {path: /ready, port: 8000}
             initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 5
           livenessProbe:
             httpGet: {path: /health, port: 8000}
             initialDelaySeconds: 20
             periodSeconds: 15
+            timeoutSeconds: 5
           resources:
 {{ toYaml .Values.resources | indent 12 }}

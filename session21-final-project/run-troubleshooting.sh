@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "$0")/kube-lib.sh"
 cd "$(dirname "$0")/taskboard"
-[[ $(kubectl config current-context) == taskboard-lab ]]
 set -x
 kubectl apply -f troubleshooting/broken-image.yaml
 for attempt in $(seq 1 24); do

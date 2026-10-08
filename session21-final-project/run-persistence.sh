@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-[[ $(kubectl config current-context) == taskboard-lab ]]
+source "$(dirname "$0")/kube-lib.sh"
 set -x
 kubectl -n taskboard get pvc taskboard-postgres-data
 kubectl -n taskboard exec deploy/taskboard-postgres -- psql -U taskboard -d taskboard \
