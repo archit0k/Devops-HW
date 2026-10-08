@@ -1,6 +1,6 @@
-Recorded: 2026-10-08T11:11:57.486989+00:00
+Recorded: 2026-10-08T11:18:23.071926+00:00
 Command: python scripts/audit-readmes.py
 
-Checked 142 local Markdown links
+Checked 149 local Markdown links
 
 Exit code: 0

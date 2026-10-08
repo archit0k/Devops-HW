@@ -55,6 +55,20 @@ Swagger requests: [create — 201](evidence/swagger-create.jpg), [read — 200](
 
 ![Grafana TaskBoard dashboard with actual metrics](evidence/grafana-taskboard.jpg)
 
+## Saved command-output screenshots
+
+These screenshots show the published, unedited execution records on GitHub after the lab. They are not live terminal captures. The full text records linked in the table contain the commands, timestamps and exit codes.
+
+![PostgreSQL Pod replacement with the same task before and after](evidence/database-persistence.jpg)
+
+![CPU load at 501 percent and six Ready backend replicas](evidence/hpa-scaling.jpg)
+
+![Ready Pods, Services, Bound PVC, Ingress and HPA back at two replicas](evidence/kubernetes-state.jpg)
+
+Broken image: [failure and events](evidence/troubleshooting-image-before.jpg), [Ready replacement and successful readiness request](evidence/troubleshooting-image-after.jpg).
+
+Broken Service: [empty endpoints, labels and selector/port correction](evidence/troubleshooting-service-before.jpg), [populated endpoints, health response and cleanup](evidence/troubleshooting-service-after.jpg).
+
 ## Re-running the completed checks
 
 From the repository root on Linux/WSL:
