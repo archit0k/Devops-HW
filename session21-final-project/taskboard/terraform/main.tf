@@ -22,6 +22,16 @@ module "eks" {
   subnet_ids                               = module.vpc.private_subnets
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = false
+  node_security_group_additional_rules = {
+    ingress_metrics_server = {
+      description                   = "Control plane to Metrics Server"
+      protocol                      = "tcp"
+      from_port                     = 10251
+      to_port                       = 10251
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
+  }
   eks_managed_node_groups = {
     main = {
       instance_types = ["t3.medium"]
@@ -63,6 +73,12 @@ resource "aws_eks_addon" "ebs_csi" {
   service_account_role_arn    = aws_iam_role.ebs_csi.arn
   resolve_conflicts_on_create = "OVERWRITE"
   depends_on                  = [module.eks, aws_iam_role_policy_attachment.ebs_csi]
+}
+
+resource "aws_eks_addon" "metrics_server" {
+  cluster_name = module.eks.cluster_name
+  addon_name   = "metrics-server"
+  depends_on   = [module.eks]
 }
 
 data "aws_caller_identity" "current" {}

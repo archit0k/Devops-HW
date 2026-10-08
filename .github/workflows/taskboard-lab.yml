@@ -83,3 +83,42 @@ jobs:
         with:
           name: taskboard-lab-evidence
           path: lab-evidence
+  deploy:
+    needs: images
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v7.0.0
+        with:
+          name: taskboard-tested-images
+      - name: Install verified cluster tools
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 -o /tmp/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64
+          curl -fsSL --retry 3 -o /tmp/kind.sha256sum https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64.sha256sum
+          curl -fsSL --retry 3 -o /tmp/helm.tar.gz https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz
+          curl -fsSL --retry 3 -o /tmp/helm.sha256sum https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz.sha256sum
+          cd /tmp
+          echo "$(cut -d ' ' -f 1 kind.sha256sum)  kind" | sha256sum -c -
+          echo "$(cut -d ' ' -f 1 helm.sha256sum)  helm.tar.gz" | sha256sum -c -
+          chmod +x kind
+          tar -xzf helm.tar.gz
+          sudo install linux-amd64/helm /usr/local/bin/helm
+          helm version --short
+          kind create cluster --name taskboard-ci --image kindest/node:v1.35.8@sha256:07b2536e30b803ed61d1677a79df6115f798ce64c80f9e22f6ed45afd09323c0 --wait 120s
+      - name: Deploy and check the tested images
+        run: |
+          set -euo pipefail
+          mkdir -p lab-evidence
+          docker load -i taskboard-images.tar.gz
+          /tmp/kind load docker-image "ghcr.io/archit0k/taskboard-backend:${GITHUB_SHA}" "ghcr.io/archit0k/taskboard-frontend:${GITHUB_SHA}" --name taskboard-ci
+          bash session21-final-project/run-ci-deploy.sh "$GITHUB_SHA" 2>&1 | tee lab-evidence/kubernetes.txt
+      - uses: actions/upload-artifact@v7.0.1
+        if: always()
+        with:
+          name: taskboard-kubernetes-evidence
+          path: lab-evidence
+      - name: Remove the runner cluster
+        if: always()
+        run: /tmp/kind delete cluster --name taskboard-ci
