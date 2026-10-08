@@ -3,8 +3,8 @@ alertmanager:
   enabled: false
 grafana:
   resources:
-    requests: {cpu: 50m, memory: 128Mi}
-    limits: {cpu: 200m, memory: 512Mi}
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: 1, memory: 1Gi}
 prometheus:
   prometheusSpec:
     retention: 2h

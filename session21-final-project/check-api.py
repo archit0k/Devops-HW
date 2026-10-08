@@ -33,8 +33,11 @@ assert request("GET", f"/api/tasks/{task_id}")["assignee"] == "Archit Kulkarni"
 print(json.dumps(request("GET", "/api/tasks/stats"), indent=2))
 request("DELETE", f"/api/tasks/{task_id}", expected=204)
 request("GET", f"/api/tasks/{task_id}", expected=404)
-saved = request("POST", "/api/tasks", {"title":"Verify TaskBoard PVC - 24BCS10194",
-                "assignee":"Archit Kulkarni", "description":"Must remain after PostgreSQL Pod replacement"}, expected=201)
+saved = next((task for task in request("GET", "/api/tasks")
+              if task["title"] == "Verify TaskBoard PVC - 24BCS10194"), None)
+if saved is None:
+    saved = request("POST", "/api/tasks", {"title":"Verify TaskBoard PVC - 24BCS10194",
+                    "assignee":"Archit Kulkarni", "description":"Must remain after PostgreSQL Pod replacement"}, expected=201)
 print("Persistence test row:", json.dumps(saved))
 for endpoint in ("health", "ready", "docs", "metrics"):
     with urllib.request.urlopen(f"http://localhost:8000/{endpoint}", timeout=20) as response:

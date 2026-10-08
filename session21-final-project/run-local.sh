@@ -3,7 +3,7 @@ set -euo pipefail
 source "$(dirname "$0")/kube-lib.sh"
 [[ "$lab_context" == minikube ]]
 cd "$(dirname "$0")/taskboard"
-tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f
+tag=${TASKBOARD_TAG:-09c8dec70b4652578823881ce4c51e73bfd945a4}
 kubectl get nodes -o wide
 kubectl apply -f k8s/namespace.yaml
 minikube image load postgres:16-alpine
