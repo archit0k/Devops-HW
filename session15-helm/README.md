@@ -30,3 +30,5 @@ The bad tag is deliberate. `helm upgrade` without `--wait` can report a deployed
 `Chart.yaml` describes the chart; `values.yaml` provides defaults; `templates/` contains parameterized resources. A repository indexes downloadable charts. `--set` overrides a value for one command; `-f` loads a values file, which is easier to keep in Git.
 
 The [clean runner recheck](https://github.com/archit0k/Devops-HW/actions/runs/37660532394) also passed; its [full Helm/Kubernetes output](evidence/runner/commands.txt) is saved separately from the local Minikube record.
+
+![Successful rollback and three healthy Pods in the saved output](evidence/rollback.jpg)

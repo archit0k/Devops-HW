@@ -40,3 +40,5 @@ For the persistence check, write `Student: Archit Kulkarni` to `/data/student.tx
 The [storage/probe command output](evidence/commands.txt) shows `emptyDir` resetting after Pod replacement, `hostPath` retaining the file, a static PV/PVC binding, a dynamically provisioned PVC, and the probe/mini-project resources. The static PVC explicitly names its PV and uses an empty StorageClass so the default dynamic provisioner cannot silently satisfy that test instead.
 
 The [local HPA and persistence record](evidence/hpa-and-persistence.txt) shows the file surviving Pod deletion, metrics-server readings, CPU rising to 152% against a 50% target, and the app scaling from two to five Pods. After the load stopped, CPU fell to 1% and the Deployment returned to two ready Pods. HPA status briefly lagged the Deployment's replica count; the final Pod listing and assertion verify the actual two replicas. The lab namespace was removed afterward.
+
+![HPA measurements in the saved local output](evidence/hpa.jpg)

@@ -47,3 +47,5 @@ The [actual GitOps run](https://github.com/archit0k/Devops-HW/actions/runs/37657
 12. Changing two to three in Git causes Argo CD to update the Deployment; Kubernetes creates the additional Pod.
 
 For an incident I would check target health first, then CPU/memory/request latency, application logs and traces. The mini project produces real Nginx access logs; distributed tracing here is research, not an unimplemented claim of a trace backend.
+
+![Manual replica drift restored by Argo CD in the saved runner output](evidence/gitops-self-heal.jpg)

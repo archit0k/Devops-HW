@@ -29,3 +29,5 @@ The repository also deploys the required three application types in [`../05-dock
 ## Actual check
 
 The multi-stage image was built, started with `8080:8080`, inspected with `docker ps` and `docker history`, and tested over HTTP. The [saved output](../05-docker-hello-apps/evidence/commands.txt) contains the real Hello World response and port mapping. The container was removed afterward.
+
+![Runtime image layers in the saved runner output](evidence/image-history.jpg)

@@ -38,3 +38,5 @@ The first local attempt also hit a real laptop DNS problem while pulling a valid
 The script removes only its `homework14` namespace at the end.
 
 The [clean runner recheck](https://github.com/archit0k/Devops-HW/actions/runs/37660525939) passed with pipeline failure propagation enabled. [Runner output](evidence/runner/commands.txt) preserves the independent break/fix tests.
+
+![Healthy Pods after the fixes in the saved runner output](evidence/fixed-pods.jpg)

@@ -83,3 +83,5 @@ For a three-replica Deployment, `maxSurge: 1` permits a fourth Pod during the up
 The [command record](evidence/commands.txt) covers all twelve lifecycle cases, completed-job logs, shutdown handling, ReplicaSet replacement, DaemonSet placement, MySQL StatefulSet/PVCs, and all four deployment strategies. The [Linux runner](https://github.com/archit0k/Devops-HW/actions/runs/37658242308) used a real disposable Kubernetes cluster.
 
 Rolling update includes an actual rollback; blue-green includes HTTP checks before/after switching the Service selector; canary starts with nine stable and one canary Pod, samples sixty requests, then scales to five each. Replica ratios approximate traffic share, not an exact percentage guarantee. Recreate records the old/new Pods and events. Likewise `maxUnavailable: 0` is a rollout policy, not proof of zero downtime under every possible failure.
+
+![StatefulSet, DaemonSet and Bound PVCs in the saved runner output](evidence/controllers.jpg)

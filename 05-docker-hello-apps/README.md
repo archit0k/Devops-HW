@@ -16,3 +16,5 @@ Use `curl http://localhost:<port>` to verify the Hello World response after star
 ## Verification
 
 All six images were built and started on a clean Linux runner. HTTP checks passed for Node.js, Python, Java, Apache, React and Nginx; the React check also downloaded the built JavaScript asset. [Complete command output](evidence/commands.txt) and the [actual run](https://github.com/archit0k/Devops-HW/actions/runs/37658269060) show the builds, responses and cleanup. The same run checked the multi-stage app on port 8080.
+
+![Running containers in the saved runner output](evidence/containers.jpg)

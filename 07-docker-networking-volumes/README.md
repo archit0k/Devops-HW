@@ -64,3 +64,5 @@ docker rm -f apache-host
 ## Executed checks
 
 [check-networking.sh](../scripts/check-networking.sh) starts the three containers, inspects the backend's two networks, pings both peers, checks MySQL's port, and verifies that the frontend cannot resolve the isolated database. It then edits the mounted page to include my name/roll number and checks that the container start time is unchanged. Finally it installs Apache on the Linux host and reaches port 80 from an Alpine container using `--network host`. The [successful live run](https://github.com/archit0k/Devops-HW/actions/runs/37664384256) preserves those checks and cleanup. Overlay networking is a research exercise here, not a claim of a deployed multi-host Swarm.
+
+![Bind-mount update and unchanged start time in the saved output](evidence/bind-mount.jpg)

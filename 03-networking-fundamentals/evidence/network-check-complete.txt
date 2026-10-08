@@ -1,0 +1,62 @@
+Recorded: 2026-10-08T08:06:46.257342+00:00
+Command: pwsh -NoProfile -File 03-networking-fundamentals/check-network.ps1
+
+Archit Kulkarni | 24BCS10194 | Networking checks
+2026-10-08T13:36:46.9589387+05:30
+IPv4 address and default route
+
+InterfaceAlias IPAddress       PrefixLength
+-------------- ---------       ------------
+Wi-Fi          100.129.164.156           20
+
+
+
+InterfaceAlias NextHop       RouteMetric
+-------------- -------       -----------
+Wi-Fi          100.129.160.1           0
+
+
+DNS lookup through the configured resolver
+Non-authoritative answer:
+
+Server:  wifi.height8tech.com
+Address:  100.129.160.1
+
+Name:    github.com
+Address:  20.207.73.82
+
+Bounded route trace (eight hops, no reverse lookup)
+
+Tracing route to 1.1.1.1 over a maximum of 8 hops
+
+  1     9 ms     3 ms     3 ms  100.129.160.1 
+  2    12 ms     2 ms     2 ms  202.131.133.5 
+  3     8 ms     6 ms     *     115.117.125.189 
+  4    21 ms     9 ms     8 ms  172.31.167.58 
+  5    22 ms     9 ms     9 ms  14.141.123.226 
+  6     *        *        *     Request timed out.
+  7     *        *        *     Request timed out.
+  8    10 ms    10 ms    10 ms  162.158.52.35 
+
+Trace complete.
+HTTPS response through Ubuntu WSL
+HTTPS status: 200
+Listening TCP sockets (first ten)
+
+LocalAddress LocalPort  State
+------------ ---------  -----
+::1              65479 Listen
+::1              58266 Listen
+::               50131 Listen
+::               49670 Listen
+::               49669 Listen
+::               49668 Listen
+::               49667 Listen
+::               49666 Listen
+::               49665 Listen
+::               49664 Listen
+
+
+A timeout in the route trace means that hop did not answer; it is not proof that HTTPS is broken.
+
+Exit code: 0

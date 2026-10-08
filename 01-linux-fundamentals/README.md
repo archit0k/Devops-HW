@@ -57,3 +57,7 @@ Practice each command in a disposable directory and read `man <command>` before 
 ## Recorded exercise
 
 [Actual command output](evidence/foundations.txt) records inode equality, the dangling soft link, two disposable user accounts, journal queries and command practice. The lab deletes only the two accounts it has just created. It does not alter existing accounts. `adduser` is the distribution's higher-level helper; its implementation language is not the reason to choose it.
+
+Screenshot of the saved command record on GitHub:
+
+![Hard and soft link results](evidence/links-output.jpg)

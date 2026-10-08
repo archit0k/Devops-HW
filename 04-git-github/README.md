@@ -30,3 +30,5 @@ The `cherry-pick-evidence.md` file is created on the lab branch and then cherry-
 ## Fresh verification
 
 [Real Git transcript](evidence/git-lab.txt) repeats both exercises in an isolated temporary repository without rewriting published history. Main gets three initial commits, the practice branch gets three commits, and only its second commit is cherry-picked. Assertions check that the other two branch-only files are absent from main. The record also shows `-m` refusing unstaged changes and `-am` refusing an untracked file.
+
+![Cherry-pick result in the saved transcript](evidence/cherry-pick.jpg)

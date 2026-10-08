@@ -9,3 +9,7 @@ A local address identifies an interface; the subnet mask/prefix identifies its n
 Troubleshooting order: check the interface/address, route, name resolution, listening socket and then the application response. A failed ping alone does not prove the web service is down; ICMP can be filtered.
 
 Modern networks use CIDR, not classful allocation. Private IPv4 ranges are `10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`. `127.0.0.0/8` is loopback, and `169.254.0.0/16` is link-local.
+
+## Recheck
+
+[Windows/WSL command output](evidence/network-check-complete.txt) records the Wi-Fi address/prefix, default gateway, DNS lookup, listening TCP ports, an eight-hop route trace and HTTPS status 200. Some hops did not answer the trace; the HTTPS check still worked. [check-network.ps1](check-network.ps1) repeats these read-only checks without changing DNS settings.
