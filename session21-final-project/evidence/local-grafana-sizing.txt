@@ -1,0 +1,6 @@
+Recorded: 2026-10-08T10:47:22.009768+00:00
+Command: wsl.exe -d Ubuntu -u root -- /root/.minikube/cache/linux/amd64/v1.37.0/kubectl --context=minikube -n monitoring set resources deployment/kube-prometheus-stack-grafana -c grafana --requests=cpu=100m,memory=256Mi --limits=cpu=1,memory=1Gi
+
+deployment.apps/kube-prometheus-stack-grafana resource requirements updated
+
+Exit code: 0

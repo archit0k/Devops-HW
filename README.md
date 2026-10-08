@@ -30,7 +30,7 @@ Each assignment is kept in its own folder. Commands, implementation files, Docke
 
 ## Verification
 
-The labs use Docker Engine in Ubuntu WSL; Docker Desktop is not needed. Local Kubernetes commands use `minikube kubectl --` to match the cluster's version. Sessions 1–20 have execution records and screenshots linked from their READMEs; the local link check passed. Session 21 also has a passing test/build/scan/publish/deploy pipeline and a successful EKS Terraform apply followed by cleanup. Its live Ingress, HPA, monitoring and troubleshooting checks are still unfinished. Work is paused for a non-root AWS access decision; the Session 21 README lists the remaining checks.
+The labs use Docker Engine in Ubuntu WSL; Docker Desktop is not needed. Local Kubernetes commands use a kubectl version matched to Minikube. Sessions 1–20 have execution records and screenshots linked from their READMEs. Session 21's classroom walkthrough is also recorded: application and Swagger CRUD, PostgreSQL persistence, Ingress, real HPA scaling, Prometheus/Grafana and both troubleshooting cases. Its test/build/scan/publish/deploy pipeline passed. The EKS Terraform apply and destroy succeeded, but AWS application access was rejected for the root account; the README does not claim a successful application deployment on AWS. The classroom Kubernetes checks ran on Minikube instead.
 
 The separate [StudySlot project](project/README.md) is paused. Its code and existing checks are preserved in `project/`; it is not the Session 21 assignment. Assignment verification records are linked from the individual READMEs.
 
@@ -38,4 +38,4 @@ The separate [StudySlot project](project/README.md) is paused. Its code and exis
 
 Requirements come from the instructor's [devops-heros repository](https://github.com/Nency-Ravaliya/devops-heros) and its linked official homework document. Personal notes are reference material, not extra assignment titles.
 
-The [Section A form](https://forms.gle/ydjAJcwxjpjBXgxB8) asks for GitHub links to the individual README files. Nothing has been submitted. Cloud resources are temporary and the homework spending cap is $30.
+The [Section A form](https://forms.gle/ydjAJcwxjpjBXgxB8) asks for GitHub links to the individual README files. No form was submitted by this workflow. Cloud resources are temporary and the homework spending cap is $30. The lab resources have been cleaned up; local homework services are stopped.

@@ -1,0 +1,7 @@
+Recorded: 2026-10-08T10:10:58.643190+00:00
+Command: wsl.exe -d Ubuntu -u root -- docker load -i private-evidence/taskboard-09c8dec-images/taskboard-images.tar.gz
+
+Loaded image: ghcr.io/archit0k/taskboard-backend:09c8dec70b4652578823881ce4c51e73bfd945a4
+Loaded image: ghcr.io/archit0k/taskboard-frontend:09c8dec70b4652578823881ce4c51e73bfd945a4
+
+Exit code: 0

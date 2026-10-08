@@ -1,0 +1,12 @@
+Recorded: 2026-10-08T09:55:50.211083+00:00
+Command: wsl.exe -d Ubuntu -u root -- helm --kube-context=minikube upgrade --install taskboard ./session21-final-project/taskboard/helm/taskboard -n taskboard -f ./session21-final-project/taskboard/helm/taskboard/values-dev.yaml --set ingress.host=localhost --set backend.tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f --set frontend.tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f --wait --timeout 300s
+
+Release "taskboard" does not exist. Installing it now.
+NAME: taskboard
+LAST DEPLOYED: Thu Oct  8 09:55:53 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+
+Exit code: 0

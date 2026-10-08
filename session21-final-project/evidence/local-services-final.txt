@@ -1,0 +1,15 @@
+Recorded: 2026-10-08T11:11:09.635048+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash session21-final-project/stop-local-services.sh
+
++ systemctl stop docker.socket docker.service containerd.service
++ systemctl is-active docker.service containerd.service
+inactive
+inactive
++ true
++ pgrep -af '^bash session21-final-project/forward-local.sh$'
++ true
++ ss -ltnp
++ awk 'NR == 1 || $4 ~ /:(3000|3001|8000|9090)$/'
+State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess                                  
+
+Exit code: 0

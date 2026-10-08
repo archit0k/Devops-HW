@@ -1,0 +1,34 @@
+Recorded: 2026-10-08T10:49:58.952421+00:00
+Command: wsl.exe -d Ubuntu -u root -- /root/.minikube/cache/linux/amd64/v1.37.0/kubectl --context=minikube -n taskboard get deployments,pods,svc,pvc,ingress,hpa,servicemonitors
+
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/taskboard-frontend            2/2     2            2           54m
+deployment.apps/taskboard-postgres            1/1     1            1           54m
+deployment.apps/taskboard-taskboard-backend   2/2     2            2           54m
+
+NAME                                              READY   STATUS    RESTARTS   AGE
+pod/taskboard-frontend-5cf4c4b55f-cj8zw           1/1     Running   0          4m37s
+pod/taskboard-frontend-5cf4c4b55f-nk8wm           1/1     Running   0          4m26s
+pod/taskboard-postgres-67fcbb7c8b-dxpz9           1/1     Running   0          46m
+pod/taskboard-taskboard-backend-d67459775-5f5b7   1/1     Running   0          4m17s
+pod/taskboard-taskboard-backend-d67459775-hg2wb   1/1     Running   0          4m37s
+
+NAME                                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/backend                       ClusterIP   10.101.32.101   <none>        8000/TCP   54m
+service/taskboard-frontend            ClusterIP   10.111.106.16   <none>        80/TCP     54m
+service/taskboard-postgres            ClusterIP   10.108.124.92   <none>        5432/TCP   54m
+service/taskboard-taskboard-backend   ClusterIP   10.106.96.9     <none>        8000/TCP   54m
+
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/taskboard-postgres-data   Bound    pvc-fde6142a-f10c-4f1f-81f2-66e054cc25a1   5Gi        RWO            standard       <unset>                 54m
+
+NAME                                  CLASS   HOSTS       ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/taskboard   nginx   localhost   192.168.49.2   80      54m
+
+NAME                                                    REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 6%/60%   2         6         2          45m
+
+NAME                                                               AGE
+servicemonitor.monitoring.coreos.com/taskboard-taskboard-backend   54m
+
+Exit code: 0

@@ -1,0 +1,14 @@
+Recorded: 2026-10-08T11:01:07.680439+00:00
+Command: wsl.exe -d Ubuntu -u root -- python3 session21-final-project/check-monitoring.py
+
+TaskBoard scrape UP [{"metric": {}, "value": [1791457268.158, "2"]}]
+HTTP requests [{"metric": {}, "value": [1791457268.168, "452"]}]
+Available backend replicas [{"metric": {"__name__": "kube_deployment_status_replicas_available", "container": "kube-state-metrics", "deployment": "taskboard-taskboard-backend", "endpoint": "http", "instance": "10.244.0.7:8080", "job": "kube-state-metrics", "namespace": "taskboard", "pod": "kube-prometheus-stack-kube-state-metrics-5f9495df99-zwqvc", "service": "kube-prometheus-stack-kube-state-metrics"}, "value": [1791457268.178, "2"]}]
+Backend CPU rate [{"metric": {}, "value": [1791457268.188, "0.007329435526962287"]}]
+Request latency p95 [{"metric": {}, "value": [1791457268.198, "0.095"]}]
+5xx error rate [{"metric": {}, "value": [1791457268.208, "0"]}]
+Scrape target: http://10.244.0.25:8000/metrics up lastError: 
+Scrape target: http://10.244.0.28:8000/metrics up lastError: 
+Grafana health: {"database": "ok", "version": "12.1.1", "commit": "df5de8219b41d1e639e003bf5f3a85913761d167"}
+
+Exit code: 0

@@ -2,6 +2,8 @@
 alertmanager:
   enabled: false
 grafana:
+  image:
+    tag: 12.1.1
   resources:
     requests: {cpu: 100m, memory: 256Mi}
     limits: {cpu: 1, memory: 1Gi}

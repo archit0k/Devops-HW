@@ -4,6 +4,7 @@ source "$(dirname "$0")/kube-lib.sh"
 [[ "$lab_context" == minikube ]]
 cd "$(dirname "$0")/taskboard"
 tag=${TASKBOARD_TAG:-09c8dec70b4652578823881ce4c51e73bfd945a4}
+frontend_tag=${TASKBOARD_FRONTEND_TAG:-be43b5c6c0a627713132ca8fab8e86318b4d17a4}
 kubectl get nodes -o wide
 kubectl apply -f k8s/namespace.yaml
 minikube image load postgres:16-alpine
@@ -36,7 +37,7 @@ kubectl apply -f ../grafana-dashboard.yaml
 helm lint helm/taskboard
 helm upgrade --install taskboard ./helm/taskboard -n taskboard --create-namespace \
   -f helm/taskboard/values-dev.yaml --set ingress.host=localhost \
-  --set "backend.tag=$tag" --set "frontend.tag=$tag" --wait --timeout 300s
+  --set "backend.tag=$tag" --set "frontend.tag=$frontend_tag" --wait --timeout 300s
 kubectl -n taskboard get deployments,pods,svc,pvc,ingress,servicemonitors
 kubectl -n taskboard exec deploy/taskboard-taskboard-backend -- id
 kubectl -n taskboard exec deploy/taskboard-postgres -- psql -U taskboard -d taskboard -c 'SELECT version();'

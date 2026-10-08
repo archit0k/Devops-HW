@@ -1,0 +1,12 @@
+Recorded: 2026-10-08T10:58:00.146626+00:00
+Command: wsl.exe -d Ubuntu -u root -- /root/.minikube/cache/linux/amd64/v1.37.0/kubectl --context=minikube -n taskboard exec deployment/taskboard-postgres -- psql -U taskboard -d taskboard -c 'SELECT id,title,status,assignee FROM tasks ORDER BY id;'
+
+ id |                  title                  | status |    assignee     
+----+-----------------------------------------+--------+-----------------
+  2 | Verify TaskBoard PVC - 24BCS10194       | TODO   | Archit Kulkarni
+  5 | Finish Session 21 lab - 24BCS10194      | TODO   | Archit Kulkarni
+  6 | Check monitoring dashboard - 24BCS10194 | DONE   | Archit Kulkarni
+(3 rows)
+
+
+Exit code: 0

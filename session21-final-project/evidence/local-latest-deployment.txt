@@ -1,0 +1,12 @@
+Recorded: 2026-10-08T10:45:20.015119+00:00
+Command: wsl.exe -d Ubuntu -u root -- helm --kube-context=minikube upgrade taskboard ./session21-final-project/taskboard/helm/taskboard -n taskboard --reuse-values --set backend.tag=09c8dec70b4652578823881ce4c51e73bfd945a4 --set frontend.tag=09c8dec70b4652578823881ce4c51e73bfd945a4 --wait --timeout 300s
+
+Release "taskboard" has been upgraded. Happy Helming!
+NAME: taskboard
+LAST DEPLOYED: Thu Oct  8 10:45:21 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 4
+TEST SUITE: None
+
+Exit code: 0

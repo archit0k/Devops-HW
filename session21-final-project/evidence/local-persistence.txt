@@ -1,0 +1,45 @@
+Recorded: 2026-10-08T10:03:40.844992+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash session21-final-project/run-persistence.sh
+
++ kubectl -n taskboard get pvc taskboard-postgres-data
+NAME                      STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+taskboard-postgres-data   Bound    pvc-fde6142a-f10c-4f1f-81f2-66e054cc25a1   5Gi        RWO            standard       <unset>                 7m48s
++ kubectl -n taskboard exec deploy/taskboard-postgres -- psql -U taskboard -d taskboard -c 'SELECT id,title,status,assignee FROM tasks ORDER BY id;'
+ id |               title               | status |    assignee     
+----+-----------------------------------+--------+-----------------
+  2 | Verify TaskBoard PVC - 24BCS10194 | TODO   | Archit Kulkarni
+(1 row)
+
+++ kubectl -n taskboard get pod -l app=taskboard-postgres -o 'jsonpath={.items[0].metadata.name}'
++ old_pod=taskboard-postgres-67fcbb7c8b-q2nzx
+++ kubectl -n taskboard get pod taskboard-postgres-67fcbb7c8b-q2nzx -o 'jsonpath={.metadata.uid}'
++ old_uid=c52cb1d6-31ce-4e75-a7f5-d9552018ae0d
++ kubectl -n taskboard delete pod taskboard-postgres-67fcbb7c8b-q2nzx --wait=true
+pod "taskboard-postgres-67fcbb7c8b-q2nzx" deleted from taskboard namespace
++ kubectl -n taskboard rollout status deploy/taskboard-postgres --timeout=300s
+Waiting for deployment "taskboard-postgres" rollout to finish: 0 of 1 updated replicas are available...
+deployment "taskboard-postgres" successfully rolled out
+++ kubectl -n taskboard get pod -l app=taskboard-postgres -o 'jsonpath={.items[0].metadata.uid}'
++ new_uid=0ef603b3-8893-4482-bcc0-da1622c20ee9
++ test c52cb1d6-31ce-4e75-a7f5-d9552018ae0d '!=' 0ef603b3-8893-4482-bcc0-da1622c20ee9
++ kubectl -n taskboard exec deploy/taskboard-postgres -- psql -U taskboard -d taskboard -c 'SELECT id,title,status,assignee FROM tasks ORDER BY id;'
+ id |               title               | status |    assignee     
+----+-----------------------------------+--------+-----------------
+  2 | Verify TaskBoard PVC - 24BCS10194 | TODO   | Archit Kulkarni
+(1 row)
+
+++ kubectl -n taskboard exec deploy/taskboard-postgres -- psql -U taskboard -d taskboard -At -c 'SELECT count(*) FROM tasks WHERE title='\''Verify TaskBoard PVC - 24BCS10194'\'';'
++ count=1
++ test 1 = 1
++ curl --fail --max-time 20 http://localhost:8000/ready
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0
+100     18 100     18   0      0    481      0                              0
+100     18 100     18   0      0    480      0                              0
+100     18 100     18   0      0    478      0                              0
+{"status":"READY"}The row survived a different PostgreSQL Pod UID using the same Bound PVC.
++ echo 'The row survived a different PostgreSQL Pod UID using the same Bound PVC.'
+
+Exit code: 0

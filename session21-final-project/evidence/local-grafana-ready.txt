@@ -1,0 +1,24 @@
+Recorded: 2026-10-08T10:53:46.205815+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash session21-final-project/refresh-grafana.sh
+
++ docker save grafana/grafana:12.1.1
++ docker exec -i minikube ctr -n k8s.io images import -
+docker.io/grafana/grafana:12.1.1        	saved	
+application/vnd.docker.distribution.manifest.list.v2+json sha256:a1701c2180249361737a99a01bc770db39381640e4d631825d38ff4535efa47d
+Importing	elapsed: 39.2s	total:   0.0 B	(0.0 B/s)	
++ kubectl -n monitoring set image deployment/kube-prometheus-stack-grafana grafana=grafana/grafana:12.1.1
+deployment.apps/kube-prometheus-stack-grafana image updated
++ kubectl -n monitoring rollout status deployment/kube-prometheus-stack-grafana --timeout=180s
+Waiting for deployment "kube-prometheus-stack-grafana" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "kube-prometheus-stack-grafana" rollout to finish: 1 old replicas are pending termination...
+deployment "kube-prometheus-stack-grafana" successfully rolled out
++ kubectl -n monitoring get pods
+NAME                                                        READY   STATUS        RESTARTS      AGE
+kube-prometheus-stack-grafana-648b6b8bb-fbvws               3/3     Terminating   0             7m40s
+kube-prometheus-stack-grafana-66bc6684b8-x64st              3/3     Running       0             34s
+kube-prometheus-stack-kube-state-metrics-5f9495df99-zwqvc   1/1     Running       1 (56m ago)   62m
+kube-prometheus-stack-operator-5d8fc774fd-l792j             1/1     Running       2 (54m ago)   62m
+kube-prometheus-stack-prometheus-node-exporter-lqdrw        1/1     Running       0             62m
+prometheus-kube-prometheus-stack-prometheus-0               2/2     Running       0             61m
+
+Exit code: 0

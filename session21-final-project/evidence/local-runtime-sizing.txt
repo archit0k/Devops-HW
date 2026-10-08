@@ -1,0 +1,6 @@
+Recorded: 2026-10-08T10:00:05.847209+00:00
+Command: wsl.exe -d Ubuntu -u root -- docker update --memory 4g --memory-swap 6g --cpus 4 minikube
+
+minikube
+
+Exit code: 0

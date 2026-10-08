@@ -1,0 +1,103 @@
+Recorded: 2026-10-08T09:51:54.162540+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash session21-final-project/run-local.sh
+
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION                              CONTAINER-RUNTIME
+minikube   Ready    control-plane   17d   v1.37.0   192.168.49.2   <none>        Debian GNU/Linux 12 (bookworm)   6.18.33.1-microsoft-standard-WSL2 (amd64)   containerd://2.3.4
+namespace/taskboard unchanged
+namespace/monitoring unchanged
+Reusing existing taskboard/taskboard-postgres Secret (values not displayed).
+Reusing existing monitoring/taskboard-grafana Secret (values not displayed).
+++ helm env HELM_REPOSITORY_CACHE
+++ command helm --kube-context=minikube env HELM_REPOSITORY_CACHE
++ monitoring_chart=/root/.cache/helm/repository/kube-prometheus-stack-89.2.0.tgz
++ [[ ! -f /root/.cache/helm/repository/kube-prometheus-stack-89.2.0.tgz ]]
++ helm upgrade --install kube-prometheus-stack /root/.cache/helm/repository/kube-prometheus-stack-89.2.0.tgz --version 89.2.0 -n monitoring -f monitoring/prometheus-values.yaml -f monitoring/values-lab.yaml --set grafana.admin.existingSecret=taskboard-grafana --wait --timeout 600s
++ command helm --kube-context=minikube upgrade --install kube-prometheus-stack /root/.cache/helm/repository/kube-prometheus-stack-89.2.0.tgz --version 89.2.0 -n monitoring -f monitoring/prometheus-values.yaml -f monitoring/values-lab.yaml --set grafana.admin.existingSecret=taskboard-grafana --wait --timeout 600s
+Release "kube-prometheus-stack" does not exist. Installing it now.
+NAME: kube-prometheus-stack
+LAST DEPLOYED: Thu Oct  8 09:52:32 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=kube-prometheus-stack"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace monitoring get secrets kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=kube-prometheus-stack" -oname)
+  kubectl --namespace monitoring port-forward $POD_NAME 3000
+
+Get your grafana admin user password by running:
+
+  kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo
+
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
++ kubectl apply -f ../grafana-dashboard.yaml
+configmap/archit-taskboard-dashboard created
++ helm lint helm/taskboard
++ command helm --kube-context=minikube lint helm/taskboard
+==> Linting helm/taskboard
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
++ helm upgrade --install taskboard ./helm/taskboard -n taskboard --create-namespace -f helm/taskboard/values-dev.yaml --set ingress.host=localhost --set backend.tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f --set frontend.tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f --wait --timeout 300s
++ command helm --kube-context=minikube upgrade --install taskboard ./helm/taskboard -n taskboard --create-namespace -f helm/taskboard/values-dev.yaml --set ingress.host=localhost --set backend.tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f --set frontend.tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f --wait --timeout 300s
+Release "taskboard" has been upgraded. Happy Helming!
+NAME: taskboard
+LAST DEPLOYED: Thu Oct  8 10:01:35 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 2
+TEST SUITE: None
++ kubectl -n taskboard get deployments,pods,svc,pvc,ingress,servicemonitors
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/taskboard-frontend            1/1     1            1           6m18s
+deployment.apps/taskboard-postgres            1/1     1            1           6m18s
+deployment.apps/taskboard-taskboard-backend   1/1     1            1           6m18s
+
+NAME                                               READY   STATUS        RESTARTS       AGE
+pod/taskboard-frontend-7558dd6844-s48c8            1/1     Running       1 (2m2s ago)   6m18s
+pod/taskboard-postgres-67fcbb7c8b-q2nzx            1/1     Running       0              36s
+pod/taskboard-taskboard-backend-7ccf75bdcf-8r8br   1/1     Terminating   2 (95s ago)    6m18s
+pod/taskboard-taskboard-backend-db69777df-vphcf    1/1     Running       0              36s
+
+NAME                                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/backend                       ClusterIP   10.101.32.101   <none>        8000/TCP   6m18s
+service/taskboard-frontend            ClusterIP   10.111.106.16   <none>        80/TCP     6m18s
+service/taskboard-postgres            ClusterIP   10.108.124.92   <none>        5432/TCP   6m18s
+service/taskboard-taskboard-backend   ClusterIP   10.106.96.9     <none>        8000/TCP   6m18s
+
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/taskboard-postgres-data   Bound    pvc-fde6142a-f10c-4f1f-81f2-66e054cc25a1   5Gi        RWO            standard       <unset>                 6m19s
+
+NAME                                  CLASS   HOSTS       ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/taskboard   nginx   localhost   192.168.49.2   80      6m18s
+
+NAME                                                               AGE
+servicemonitor.monitoring.coreos.com/taskboard-taskboard-backend   6m17s
++ kubectl -n taskboard exec deploy/taskboard-taskboard-backend -- id
+Defaulted container "backend" out of: backend, wait-for-postgres (init)
+uid=10001(appuser) gid=10001(appuser) groups=10001(appuser)
++ kubectl -n taskboard exec deploy/taskboard-postgres -- psql -U taskboard -d taskboard -c 'SELECT version();'
+                                         version                                          
+------------------------------------------------------------------------------------------
+ PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+(1 row)
+
++ kubectl top nodes
+NAME       CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+minikube   834m         6%       2999Mi          43%         
++ helm list -A
++ command helm --kube-context=minikube list -A
+NAME                 	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART                       	APP VERSION
+kube-prometheus-stack	monitoring	1       	2026-10-08 09:52:32.798099252 +0000 UTC	deployed	kube-prometheus-stack-89.2.0	v0.93.1    
+taskboard            	taskboard 	2       	2026-10-08 10:01:35.387731779 +0000 UTC	deployed	taskboard-1.0.0             	1.0.0      
+
+Exit code: 0

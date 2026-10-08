@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 tag=${TASKBOARD_TAG:-09c8dec70b4652578823881ce4c51e73bfd945a4}
+frontend_tag=${TASKBOARD_FRONTEND_TAG:-be43b5c6c0a627713132ca8fab8e86318b4d17a4}
 start_args=(--driver=docker --memory=4096 --cpus=4)
 if [[ $(id -u) = 0 ]]; then start_args+=(--force); fi
 minikube start "${start_args[@]}"
@@ -10,7 +11,9 @@ minikube kubectl -- config use-context minikube
 minikube addons enable metrics-server
 minikube addons enable ingress
 for app in backend frontend; do
-  image="ghcr.io/archit0k/taskboard-$app:$tag"
+  image_tag=$tag
+  if [[ "$app" == frontend ]]; then image_tag=$frontend_tag; fi
+  image="ghcr.io/archit0k/taskboard-$app:$image_tag"
   if ! minikube image ls | grep -Fxq "$image"; then minikube image load "$image"; fi
 done
 minikube kubectl -- --context=minikube get nodes -o wide

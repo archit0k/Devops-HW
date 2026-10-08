@@ -1,0 +1,6 @@
+Recorded: 2026-10-08T10:08:59.769884+00:00
+Command: wsl.exe -d Ubuntu -u root -- docker load -i private-evidence/taskboard-09c8dec-images/taskboard-images.tar.gz
+
+open private-evidence/taskboard-09c8dec-images/taskboard-images.tar.gz: no such file or directory
+
+Exit code: 1

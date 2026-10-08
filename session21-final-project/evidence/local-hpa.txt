@@ -1,0 +1,333 @@
+Recorded: 2026-10-08T10:04:38.817985+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash session21-final-project/run-hpa.sh
+
++ helm upgrade taskboard ./helm/taskboard -n taskboard --reuse-values --set replicaCount=2 --set hpa.enabled=true --wait --timeout 180s
++ command helm --kube-context=minikube upgrade taskboard ./helm/taskboard -n taskboard --reuse-values --set replicaCount=2 --set hpa.enabled=true --wait --timeout 180s
+Release "taskboard" has been upgraded. Happy Helming!
+NAME: taskboard
+LAST DEPLOYED: Thu Oct  8 10:04:41 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 3
+TEST SUITE: None
++ kubectl -n taskboard patch hpa taskboard-backend --type=merge -p '{"spec":{"behavior":{"scaleDown":{"stabilizationWindowSeconds":60}}}}'
+horizontalpodautoscaler.autoscaling/taskboard-backend patched
++ kubectl -n taskboard rollout status deploy/taskboard-taskboard-backend --timeout=180s
+deployment "taskboard-taskboard-backend" successfully rolled out
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 7%/60%   2         6         2          24s
++ kubectl top pods -n taskboard
+NAME                                          CPU(cores)   MEMORY(bytes)   
+taskboard-frontend-7558dd6844-s48c8           1m           16Mi            
+taskboard-postgres-67fcbb7c8b-dxpz9           25m          21Mi            
+taskboard-taskboard-backend-db69777df-vphcf   7m           83Mi            
++ mapfile -t pods
+++ kubectl -n taskboard get pods -l app=taskboard-backend -o 'jsonpath={range .items[*]}{.metadata.name}{"\n"}{end}'
++ load_pids=()
++ for pod in "${pods[@]}"
++ load_pids+=("$!")
++ for pod in "${pods[@]}"
++ load_pids+=("$!")
++ kubectl -n taskboard exec taskboard-taskboard-backend-db69777df-h7d5g -- python -c $'import hashlib,time; end=time.monotonic()+180\nwhile time.monotonic()<end: hashlib.pbkdf2_hmac("sha256", b"classroom", b"24BCS10194", 50000)'
++ kubectl -n taskboard exec taskboard-taskboard-backend-db69777df-vphcf -- python -c $'import hashlib,time; end=time.monotonic()+180\nwhile time.monotonic()<end: hashlib.pbkdf2_hmac("sha256", b"classroom", b"24BCS10194", 50000)'
++ scaled=0
+++ seq 1 14
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+Defaulted container "backend" out of: backend, wait-for-postgres (init)
+Defaulted container "backend" out of: backend, wait-for-postgres (init)
+NAME                REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 7%/60%   2         6         2          25s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   2/2     2            2           9m14s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=2
++ ((  count >= 4  ))
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 7%/60%   2         6         2          42s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   2/2     2            2           9m30s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=2
++ ((  count >= 4  ))
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 13%/60%   2         6         2          58s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   2/2     2            2           9m47s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=2
++ ((  count >= 4  ))
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 13%/60%   2         6         2          75s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   2/2     2            2           10m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=2
++ ((  count >= 4  ))
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 13%/60%   2         6         2          91s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   2/2     2            2           10m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=2
++ ((  count >= 4  ))
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 501%/60%   2         6         2          108s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   2/6     6            2           10m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 501%/60%   2         6         6          2m5s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   2/6     6            2           10m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 501%/60%   2         6         6          2m21s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   6/6     6            6           11m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 500%/60%   2         6         6          2m38s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   6/6     6            6           11m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 500%/60%   2         6         6          2m54s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   6/6     6            6           11m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 500%/60%   2         6         6          3m11s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   6/6     6            6           12m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 500%/60%   2         6         6          3m28s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   6/6     6            6           12m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 335%/60%   2         6         6          3m44s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   6/6     6            6           12m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for attempt in $(seq 1 14)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 335%/60%   2         6         6          4m1s
++ kubectl -n taskboard get deploy taskboard-taskboard-backend
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+taskboard-taskboard-backend   6/6     6            6           12m
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count >= 4  ))
++ scaled=1
++ sleep 15
++ for pid in "${load_pids[@]}"
++ wait 12554
++ for pid in "${load_pids[@]}"
++ wait 12555
++ test 1 = 1
++ kubectl -n taskboard describe hpa taskboard-backend
+Name:                                                  taskboard-backend
+Namespace:                                             taskboard
+Labels:                                                app.kubernetes.io/managed-by=Helm
+Annotations:                                           meta.helm.sh/release-name: taskboard
+                                                       meta.helm.sh/release-namespace: taskboard
+CreationTimestamp:                                     Thu, 08 Oct 2026 10:04:42 +0000
+Reference:                                             Deployment/taskboard-taskboard-backend
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  335% (335m) / 60%
+Min replicas:                                          2
+Max replicas:                                          6
+Behavior:
+  Scale Up:
+    Stabilization Window: 0 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Pods     Value: 4    Period: 15 seconds
+      - Type: Percent  Value: 100  Period: 15 seconds
+  Scale Down:
+    Stabilization Window: 60 seconds
+    Select Policy: Max
+    Policies:
+      - Type: Percent  Value: 100  Period: 15 seconds
+Deployment pods:       6 current / 6 desired
+Conditions:
+  Type            Status  Reason            Message
+  ----            ------  ------            -------
+  AbleToScale     True    ReadyForNewScale  recommended size matches current size
+  ScalingActive   True    ValidMetricFound  the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooManyReplicas   the desired replica count is more than the maximum replica count
+  ScaledToZero    False   NotScaledToZero   the HPA controller did not scale the workload to zero
+Events:
+  Type    Reason             Age    From                       Message
+  ----    ------             ----   ----                       -------
+  Normal  SuccessfulRescale  2m33s  horizontal-pod-autoscaler  New size: 6; reason: cpu resource utilization (percentage of request) above target
++ recovered=0
+++ seq 1 24
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 335%/60%   2         6         6          4m18s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 27%/60%   2         6         6          4m34s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 27%/60%   2         6         6          4m50s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 27%/60%   2         6         6          5m6s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=6
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 27%/60%   2         6         6          5m22s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=3
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 5%/60%   2         6         3          5m38s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=3
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 5%/60%   2         6         3          5m54s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=3
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 5%/60%   2         6         3          6m10s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=3
++ ((  count == 2  ))
++ sleep 15
++ for attempt in $(seq 1 24)
++ kubectl -n taskboard get hpa
+NAME                REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 5%/60%   2         6         3          6m26s
+++ kubectl -n taskboard get deploy taskboard-taskboard-backend -o 'jsonpath={.spec.replicas}'
++ count=2
++ ((  count == 2  ))
++ recovered=1
++ break
++ test 1 = 1
++ kubectl -n taskboard rollout status deploy/taskboard-taskboard-backend --timeout=180s
+deployment "taskboard-taskboard-backend" successfully rolled out
++ kubectl -n taskboard get pods,hpa
+NAME                                              READY   STATUS    RESTARTS      AGE
+pod/taskboard-frontend-7558dd6844-s48c8           1/1     Running   1 (11m ago)   15m
+pod/taskboard-frontend-7558dd6844-vn685           1/1     Running   0             6m28s
+pod/taskboard-postgres-67fcbb7c8b-dxpz9           1/1     Running   0             7m26s
+pod/taskboard-taskboard-backend-db69777df-h7d5g   1/1     Running   0             6m28s
+pod/taskboard-taskboard-backend-db69777df-vphcf   1/1     Running   0             9m34s
+
+NAME                                                    REFERENCE                                TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/taskboard-backend   Deployment/taskboard-taskboard-backend   cpu: 5%/60%   2         6         3          6m28s
++ echo 'HPA scaled above two replicas under bounded CPU load and recovered to two.'
+HPA scaled above two replicas under bounded CPU load and recovered to two.
+
+Exit code: 0

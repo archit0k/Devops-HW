@@ -1,0 +1,36 @@
+Recorded: 2026-10-08T10:49:15.731124+00:00
+Command: wsl.exe -d Ubuntu -u root -- python3 session21-final-project/check-api.py
+
+Archit Kulkarni | 24BCS10194 | TaskBoard Ingress CRUD
+GET /: React frontend HTTP 200
+GET /api/tasks: HTTP 200
+POST /api/tasks: HTTP 201
+{
+  "title": "Check CRUD - 24BCS10194",
+  "description": "Temporary API check",
+  "priority": "HIGH",
+  "status": "TODO",
+  "assignee": "Archit Kulkarni",
+  "id": 4,
+  "created_at": "2026-10-08T10:49:16.365518Z"
+}
+PUT /api/tasks/4: HTTP 200
+GET /api/tasks/4: HTTP 200
+GET /api/tasks/stats: HTTP 200
+{
+  "total": 2,
+  "todo": 1,
+  "inProgress": 0,
+  "done": 1
+}
+DELETE /api/tasks/4: HTTP 204
+GET /api/tasks/4: HTTP 404
+GET /api/tasks: HTTP 200
+Persistence test row: {"title": "Verify TaskBoard PVC - 24BCS10194", "description": "Must remain after PostgreSQL Pod replacement", "priority": "MEDIUM", "status": "TODO", "assignee": "Archit Kulkarni", "id": 2, "created_at": "2026-10-08T10:03:29.457880Z"}
+Backend /health: HTTP 200
+Backend /ready: HTTP 200
+Backend /docs: HTTP 200
+Backend /metrics: HTTP 200
+CRUD and API checks passed.
+
+Exit code: 0
