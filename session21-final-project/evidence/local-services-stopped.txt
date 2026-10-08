@@ -1,0 +1,10 @@
+Recorded: 2026-10-08T08:47:14.140859+00:00
+Command: wsl.exe -d Ubuntu -u root -- systemctl show docker.service docker.socket containerd.service -p ActiveState
+
+ActiveState=inactive
+
+ActiveState=inactive
+
+ActiveState=inactive
+
+Exit code: 0

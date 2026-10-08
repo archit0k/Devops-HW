@@ -1,0 +1,60 @@
+namespace/taskboard created
+secret/taskboard-postgres created
++ helm upgrade --install taskboard ./helm/taskboard -n taskboard --create-namespace --set backend.tag=95a2aa7980d9ed9d8ff11aedd4eb18a851492c0d --set frontend.tag=95a2aa7980d9ed9d8ff11aedd4eb18a851492c0d --set replicaCount=1 --set hpa.enabled=false --set monitoring.serviceMonitor.enabled=false --wait --timeout 240s
+Release "taskboard" does not exist. Installing it now.
+NAME: taskboard
+LAST DEPLOYED: Thu Oct  8 08:16:29 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
++ kubectl -n taskboard get deployments,pods,svc,pvc
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/taskboard-frontend            1/1     1            1           34s
+deployment.apps/taskboard-postgres            1/1     1            1           34s
+deployment.apps/taskboard-taskboard-backend   1/1     1            1           34s
+
+NAME                                              READY   STATUS    RESTARTS      AGE
+pod/taskboard-frontend-64b66666-ztdxp             1/1     Running   0             34s
+pod/taskboard-postgres-5c4567ddcb-lgmx9           1/1     Running   0             34s
+pod/taskboard-taskboard-backend-7677f854c-9m2xf   1/1     Running   2 (24s ago)   34s
+
+NAME                                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/backend                       ClusterIP   10.96.6.72      <none>        8000/TCP   34s
+service/taskboard-frontend            ClusterIP   10.96.221.231   <none>        80/TCP     34s
+service/taskboard-postgres            ClusterIP   10.96.37.151    <none>        5432/TCP   34s
+service/taskboard-taskboard-backend   ClusterIP   10.96.205.45    <none>        8000/TCP   34s
+
+NAME                                            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/taskboard-postgres-data   Bound    pvc-e07c99cb-6395-44c9-ba60-21d13f0d1bea   5Gi        RWO            standard       <unset>                 34s
++ backend_pid=12407
++ kubectl -n taskboard port-forward svc/taskboard-taskboard-backend 8000:8000
++ frontend_pid=12408
++ kubectl -n taskboard port-forward svc/taskboard-frontend 8080:80
++ trap 'kill "$backend_pid" "$frontend_pid" 2>/dev/null || true' EXIT
+++ seq 1 30
++ for attempt in $(seq 1 30)
++ curl -fsS http://localhost:8000/ready
+curl: (7) Failed to connect to localhost port 8000 after 0 ms: Couldn't connect to server
++ sleep 2
++ for attempt in $(seq 1 30)
++ curl -fsS http://localhost:8000/ready
+{"status":"READY"}+ break
++ curl -fsS http://localhost:8080
++ grep '<div id="root">'
+</head><body><div id="root"></div></body></html>
++ python3 -
+Created on Kubernetes: {'title': 'CI deployment check - 24BCS10194', 'description': '', 'priority': 'MEDIUM', 'status': 'TODO', 'assignee': 'Archit Kulkarni', 'id': 1, 'created_at': '2026-10-08T08:17:05.446187Z'}
+Kubernetes deployment and database-backed API checks passed.
++ helm status taskboard -n taskboard
+NAME: taskboard
+LAST DEPLOYED: Thu Oct  8 08:16:29 2026
+NAMESPACE: taskboard
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
++ helm uninstall taskboard -n taskboard
+release "taskboard" uninstalled
++ kubectl delete namespace taskboard --wait=true
+namespace "taskboard" deleted
++ kill 12407 12408

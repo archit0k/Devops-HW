@@ -22,6 +22,7 @@ module "eks" {
   subnet_ids                               = module.vpc.private_subnets
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = false
+  depends_on                               = [module.vpc]
   node_security_group_additional_rules = {
     ingress_metrics_server = {
       description                   = "Control plane to Metrics Server"
@@ -99,11 +100,16 @@ resource "aws_iam_role" "lab_access" {
     Version = "2012-10-17"
     Statement = [{
       Effect    = "Allow"
-      Principal = { AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root" }
+      Principal = { AWS = coalesce(var.kubectl_principal_arn, data.aws_caller_identity.current.arn) }
       Action    = "sts:AssumeRole"
-      Condition = { ArnEquals = { "aws:PrincipalArn" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root" } }
     }]
   })
+  lifecycle {
+    precondition {
+      condition     = var.kubectl_principal_arn != null || !endswith(data.aws_caller_identity.current.arn, ":root")
+      error_message = "AWS root cannot assume the kubectl role. Set kubectl_principal_arn to an approved non-root IAM identity before creating the lab."
+    }
+  }
 }
 
 resource "aws_iam_role_policy" "describe_cluster" {

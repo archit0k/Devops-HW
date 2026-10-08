@@ -1,0 +1,23 @@
+Recorded: 2026-10-08T08:13:27.622953+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash '/mnt/c/Users/archi/Github Projects/Devops-HW/session21-final-project/run-eks.sh'
+
+Added new context taskboard-lab to /root/.kube/config
+Switched to context "taskboard-lab".
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+E1008 08:13:47.624316    1520 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://03C5C8DCF3440AB70F296FE1E69488BB.yl4.ap-south-1.eks.amazonaws.com/api?timeout=32s\": getting credentials: exec: executable aws failed with exit code 254"
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+E1008 08:13:51.011721    1520 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://03C5C8DCF3440AB70F296FE1E69488BB.yl4.ap-south-1.eks.amazonaws.com/api?timeout=32s\": getting credentials: exec: executable aws failed with exit code 254"
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+E1008 08:13:52.323723    1520 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://03C5C8DCF3440AB70F296FE1E69488BB.yl4.ap-south-1.eks.amazonaws.com/api?timeout=32s\": getting credentials: exec: executable aws failed with exit code 254"
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+E1008 08:13:59.620095    1520 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://03C5C8DCF3440AB70F296FE1E69488BB.yl4.ap-south-1.eks.amazonaws.com/api?timeout=32s\": getting credentials: exec: executable aws failed with exit code 254"
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+E1008 08:14:04.921674    1520 memcache.go:265] "Unhandled Error" err="couldn't get current server API group list: Get \"https://03C5C8DCF3440AB70F296FE1E69488BB.yl4.ap-south-1.eks.amazonaws.com/api?timeout=32s\": getting credentials: exec: executable aws failed with exit code 254"
+Unable to connect to the server: getting credentials: exec: executable aws failed with exit code 254
+
+Exit code: 1

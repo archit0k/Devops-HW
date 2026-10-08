@@ -30,7 +30,7 @@ Each assignment is kept in its own folder. Commands, implementation files, Docke
 
 ## Verification
 
-The labs use Docker Engine in Ubuntu WSL; Docker Desktop is not needed. Local Kubernetes commands use `minikube kubectl --` to match the cluster's version. Each assignment has a README with commands and verification records. Work is paused: Sessions 1–20 have execution records, but their final screenshot/link audit is unfinished. Session 21 has passed application, CI and security checks; its TaskBoard Kubernetes, monitoring and troubleshooting checks remain. The Session 21 README records that distinction.
+The labs use Docker Engine in Ubuntu WSL; Docker Desktop is not needed. Local Kubernetes commands use `minikube kubectl --` to match the cluster's version. Sessions 1–20 have execution records and screenshots linked from their READMEs; the local link check passed. Session 21 also has a passing test/build/scan/publish/deploy pipeline and a successful EKS Terraform apply followed by cleanup. Its live Ingress, HPA, monitoring and troubleshooting checks are still unfinished. Work is paused for a non-root AWS access decision; the Session 21 README lists the remaining checks.
 
 The separate [StudySlot project](project/README.md) is paused. Its code and existing checks are preserved in `project/`; it is not the Session 21 assignment. Assignment verification records are linked from the individual READMEs.
 

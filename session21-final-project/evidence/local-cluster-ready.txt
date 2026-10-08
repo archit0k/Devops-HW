@@ -1,0 +1,80 @@
+Recorded: 2026-10-08T08:18:31.351122+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash '/mnt/c/Users/archi/Github Projects/Devops-HW/session21-final-project/prepare-local-cluster.sh'
+
+* minikube v1.39.0 on Ubuntu 26.04 (kvm/amd64)
+! minikube skips various validations when --force is supplied; this may lead to unexpected behavior
+* Using the docker driver based on existing profile
+* The "docker" driver should not be used with root privileges. If you wish to continue as root, use --force.
+* If you are running minikube within a VM, consider using --driver=none:
+*   https://minikube.sigs.k8s.io/docs/reference/drivers/none/
+* Tip: To remove this root owned cluster, run: sudo minikube delete
+* Starting "minikube" primary control-plane node in "minikube" cluster
+* Pulling base image v0.0.51 ...
+* Preparing Kubernetes v1.37.0 on containerd 2.3.4 ...
+* Verifying Kubernetes components...
+  - Using image gcr.io/k8s-minikube/storage-provisioner:v5
+  - Using image registry.k8s.io/metrics-server/metrics-server:v0.9.0
+* Enabled addons: storage-provisioner, metrics-server, default-storageclass
+
+! /usr/local/bin/kubectl is version 1.35.9, which may have incompatibilities with Kubernetes 1.37.0.
+  - Want kubectl v1.37.0? Try 'minikube kubectl -- get pods -A'
+* To connect to this cluster, use:  --context=minikube
+* metrics-server is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
+You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
+  - Using image registry.k8s.io/metrics-server/metrics-server:v0.9.0
+* The 'metrics-server' addon is enabled
+* ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
+You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+  - Using image registry.k8s.io/ingress-nginx/controller:v1.15.1
+* Verifying ingress addon...
+* The 'ingress' addon is enabled
+E1008 08:29:11.244673    6065 memcache.go:381] "Couldn't get current server API group list" err=<
+	Get "https://127.0.0.1:32771/api?timeout=32s": getting credentials: exec: executable aws not found
+	
+	It looks like you are trying to use a client-go credential plugin that is not installed.
+	
+	To learn more about this feature, consult the documentation available at:
+	      https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+ >
+E1008 08:29:11.343703    6065 memcache.go:381] "Couldn't get current server API group list" err=<
+	Get "https://127.0.0.1:32771/api?timeout=32s": getting credentials: exec: executable aws not found
+	
+	It looks like you are trying to use a client-go credential plugin that is not installed.
+	
+	To learn more about this feature, consult the documentation available at:
+	      https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+ >
+E1008 08:29:11.447885    6065 memcache.go:381] "Couldn't get current server API group list" err=<
+	Get "https://127.0.0.1:32771/api?timeout=32s": getting credentials: exec: executable aws not found
+	
+	It looks like you are trying to use a client-go credential plugin that is not installed.
+	
+	To learn more about this feature, consult the documentation available at:
+	      https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+ >
+E1008 08:29:11.557320    6065 memcache.go:381] "Couldn't get current server API group list" err=<
+	Get "https://127.0.0.1:32771/api?timeout=32s": getting credentials: exec: executable aws not found
+	
+	It looks like you are trying to use a client-go credential plugin that is not installed.
+	
+	To learn more about this feature, consult the documentation available at:
+	      https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+ >
+E1008 08:29:11.660393    6065 memcache.go:381] "Couldn't get current server API group list" err=<
+	Get "https://127.0.0.1:32771/api?timeout=32s": getting credentials: exec: executable aws not found
+	
+	It looks like you are trying to use a client-go credential plugin that is not installed.
+	
+	To learn more about this feature, consult the documentation available at:
+	      https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+ >
+Unable to connect to the server: getting credentials: exec: executable aws not found
+
+It looks like you are trying to use a client-go credential plugin that is not installed.
+
+To learn more about this feature, consult the documentation available at:
+      https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins
+
+Exit code: 1

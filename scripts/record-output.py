@@ -4,6 +4,9 @@ import datetime
 import pathlib
 import shlex
 import subprocess
+import sys
+
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("output", type=pathlib.Path)
@@ -20,7 +23,7 @@ with args.output.open("w", encoding="utf-8") as output:
     output.write(header)
     output.flush()
     print(header, end="", flush=True)
-    with subprocess.Popen(command, cwd=args.cwd, text=True, stdout=subprocess.PIPE,
+    with subprocess.Popen(command, cwd=args.cwd, text=True, encoding="utf-8", errors="replace", stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT, bufsize=1) as process:
         for line in process.stdout:
             output.write(line)

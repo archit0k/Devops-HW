@@ -13,3 +13,5 @@ Modern networks use CIDR, not classful allocation. Private IPv4 ranges are `10.0
 ## Recheck
 
 [Windows/WSL command output](evidence/network-check-complete.txt) records the Wi-Fi address/prefix, default gateway, DNS lookup, listening TCP ports, an eight-hop route trace and HTTPS status 200. Some hops did not answer the trace; the HTTPS check still worked. [check-network.ps1](check-network.ps1) repeats these read-only checks without changing DNS settings.
+
+![Route trace and HTTPS check in the saved command record](evidence/network-check.jpg)

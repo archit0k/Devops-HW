@@ -6,8 +6,9 @@ tag=25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f
 account=$(aws sts get-caller-identity --profile devops-homework --query Account --output text)
 registry="$account.dkr.ecr.ap-south-1.amazonaws.com"
 role="arn:aws:iam::$account:role/archit-taskboard-lab-access"
-aws eks update-kubeconfig --profile devops-homework --region ap-south-1 \
-  --name taskboard-eks --role-arn "$role" --alias taskboard-lab
+access_profile=${TASKBOARD_ACCESS_PROFILE:?set an approved non-root AWS CLI profile}
+aws eks update-kubeconfig --profile "$access_profile" --region ap-south-1 \
+  --name taskboard-eks --assume-role-arn "$role" --role-arn "$role" --alias taskboard-lab
 kubectl config use-context taskboard-lab
 kubectl wait --for=condition=Ready nodes --all --timeout=300s
 kubectl get nodes -o wide
