@@ -3,9 +3,9 @@ set -euo pipefail
 tag=${1:?Pass a tested SHA}
 [[ "$tag" =~ ^[0-9a-f]{40}$ ]]
 if ! minikube status >/dev/null 2>&1; then
-  minikube start --driver=docker --memory=4096 --cpus=4 --force
+  minikube start --driver=docker --memory=5120 --cpus=6 --force
 fi
-docker update --memory 4g --memory-swap 6g --cpus 4 minikube
+docker update --memory 5g --memory-swap 7g --cpus 6 minikube
 export PATH="/root/.minikube/cache/linux/amd64/v1.37.0:$PATH"
 kubectl config use-context minikube
 minikube addons enable ingress
