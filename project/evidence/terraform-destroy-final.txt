@@ -1,0 +1,887 @@
+Recorded: 2026-10-16T11:50:11.356684+00:00
+Command: wsl -d Ubuntu -u root -- bash project/scripts/terraform-lab.sh destroy
+
+data.aws_eks_addon_version.metrics: Reading...
+data.aws_eks_addon_version.ebs: Reading...
+data.aws_availability_zones.available: Reading...
+data.aws_caller_identity.current: Reading...
+aws_iam_openid_connect_provider.github[0]: Refreshing state... [id=arn:aws:iam::731372490400:oidc-provider/token.actions.githubusercontent.com]
+aws_iam_role.cluster: Refreshing state... [id=studyslot-eks-control-plane]
+data.aws_eks_addon_version.pod_identity: Reading...
+aws_iam_role.node: Refreshing state... [id=studyslot-eks-workers]
+aws_vpc.lab: Refreshing state... [id=vpc-09363c7f725b28c28]
+aws_iam_role.ebs: Refreshing state... [id=studyslot-ebs-driver]
+data.aws_caller_identity.current: Read complete after 0s [id=731372490400]
+aws_iam_role.github_deploy: Refreshing state... [id=studyslot-github-deploy]
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]: Refreshing state... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]: Refreshing state... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]: Refreshing state... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+aws_iam_role_policy_attachment.cluster: Refreshing state... [id=studyslot-eks-control-plane/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+aws_iam_role_policy_attachment.ebs: Refreshing state... [id=studyslot-ebs-driver/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy]
+data.aws_availability_zones.available: Read complete after 7s [id=us-east-1]
+aws_internet_gateway.lab: Refreshing state... [id=igw-00b677275b686836e]
+aws_subnet.public[0]: Refreshing state... [id=subnet-06e32e1e3d0233426]
+aws_subnet.public[1]: Refreshing state... [id=subnet-0bdfe1bfdb26e9b15]
+aws_route_table.public: Refreshing state... [id=rtb-096513fa48cb73c2d]
+aws_eks_cluster.lab: Refreshing state... [id=archit-studyslot]
+aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-09e21fce50225c935]
+aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-08dd0709748521bfb]
+data.aws_eks_addon_version.metrics: Still reading... [00m10s elapsed]
+data.aws_eks_addon_version.ebs: Still reading... [00m10s elapsed]
+data.aws_eks_addon_version.pod_identity: Still reading... [00m10s elapsed]
+data.aws_eks_addon_version.metrics: Read complete after 11s [id=metrics-server]
+aws_iam_role_policy.describe_ci: Refreshing state... [id=studyslot-github-deploy:terraform-d43f1040505d7f113e724f14e7]
+aws_eks_access_entry.ci: Refreshing state... [id=archit-studyslot:arn:aws:iam::731372490400:role/studyslot-github-deploy]
+aws_eks_pod_identity_association.ebs: Refreshing state... [id=a-frolkumyql7hhnhxg]
+aws_eks_node_group.lab: Refreshing state... [id=archit-studyslot:classroom]
+data.aws_eks_addon_version.ebs: Read complete after 11s [id=aws-ebs-csi-driver]
+data.aws_eks_addon_version.pod_identity: Read complete after 11s [id=eks-pod-identity-agent]
+aws_eks_addon.metrics: Refreshing state... [id=archit-studyslot:metrics-server]
+aws_eks_addon.pod_identity: Refreshing state... [id=archit-studyslot:eks-pod-identity-agent]
+aws_eks_access_policy_association.ci: Refreshing state... [id=archit-studyslot#arn:aws:iam::731372490400:role/studyslot-github-deploy#arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy]
+aws_eks_addon.ebs: Refreshing state... [id=archit-studyslot:aws-ebs-csi-driver]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_eks_access_entry.ci will be destroyed
+  - resource "aws_eks_access_entry" "ci" {
+      - access_entry_arn  = "arn:aws:eks:us-east-1:731372490400:access-entry/archit-studyslot/role/731372490400/studyslot-github-deploy/88d0a22d-1989-8bf6-5e5b-6ad97e52d955" -> null
+      - cluster_name      = "archit-studyslot" -> null
+      - created_at        = "2026-10-16T10:55:24Z" -> null
+      - id                = "archit-studyslot:arn:aws:iam::731372490400:role/studyslot-github-deploy" -> null
+      - kubernetes_groups = [
+          - "studyslot-deploy",
+        ] -> null
+      - modified_at       = "2026-10-16T11:38:10Z" -> null
+      - principal_arn     = "arn:aws:iam::731372490400:role/studyslot-github-deploy" -> null
+      - region            = "us-east-1" -> null
+      - tags              = {} -> null
+      - tags_all          = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - type              = "STANDARD" -> null
+      - user_name         = "arn:aws:sts::731372490400:assumed-role/studyslot-github-deploy/{{SessionName}}" -> null
+    }
+
+  # aws_eks_access_policy_association.ci will be destroyed
+  - resource "aws_eks_access_policy_association" "ci" {
+      - associated_at = "2026-10-16 11:40:36.244 +0000 UTC" -> null
+      - cluster_name  = "archit-studyslot" -> null
+      - id            = "archit-studyslot#arn:aws:iam::731372490400:role/studyslot-github-deploy#arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy" -> null
+      - modified_at   = "2026-10-16 11:40:36.244 +0000 UTC" -> null
+      - policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy" -> null
+      - principal_arn = "arn:aws:iam::731372490400:role/studyslot-github-deploy" -> null
+      - region        = "us-east-1" -> null
+
+      - access_scope {
+          - namespaces = [
+              - "studyslot",
+            ] -> null
+          - type       = "namespace" -> null
+        }
+    }
+
+  # aws_eks_addon.ebs will be destroyed
+  - resource "aws_eks_addon" "ebs" {
+      - addon_name               = "aws-ebs-csi-driver" -> null
+      - addon_version            = "v1.67.0-eksbuild.1" -> null
+      - arn                      = "arn:aws:eks:us-east-1:731372490400:addon/archit-studyslot/aws-ebs-csi-driver/48d0a22e-26a0-37e1-b504-9515cc8c5cea" -> null
+      - cluster_name             = "archit-studyslot" -> null
+      - created_at               = "2026-10-16T10:57:42Z" -> null
+      - id                       = "archit-studyslot:aws-ebs-csi-driver" -> null
+      - modified_at              = "2026-10-16T10:58:13Z" -> null
+      - region                   = "us-east-1" -> null
+      - tags                     = {} -> null
+      - tags_all                 = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+    }
+
+  # aws_eks_addon.metrics will be destroyed
+  - resource "aws_eks_addon" "metrics" {
+      - addon_name               = "metrics-server" -> null
+      - addon_version            = "v0.9.0-eksbuild.13" -> null
+      - arn                      = "arn:aws:eks:us-east-1:731372490400:addon/archit-studyslot/metrics-server/22d0a22d-e62c-bf9e-e654-6f1ff26875be" -> null
+      - cluster_name             = "archit-studyslot" -> null
+      - created_at               = "2026-10-16T10:57:09Z" -> null
+      - id                       = "archit-studyslot:metrics-server" -> null
+      - modified_at              = "2026-10-16T10:57:44Z" -> null
+      - region                   = "us-east-1" -> null
+      - tags                     = {} -> null
+      - tags_all                 = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+    }
+
+  # aws_eks_addon.pod_identity will be destroyed
+  - resource "aws_eks_addon" "pod_identity" {
+      - addon_name               = "eks-pod-identity-agent" -> null
+      - addon_version            = "v1.4.0-eksbuild.4" -> null
+      - arn                      = "arn:aws:eks:us-east-1:731372490400:addon/archit-studyslot/eks-pod-identity-agent/cad0a22d-e62e-cff4-3b6e-31de5fd3c519" -> null
+      - cluster_name             = "archit-studyslot" -> null
+      - created_at               = "2026-10-16T10:57:09Z" -> null
+      - id                       = "archit-studyslot:eks-pod-identity-agent" -> null
+      - modified_at              = "2026-10-16T10:57:25Z" -> null
+      - region                   = "us-east-1" -> null
+      - tags                     = {} -> null
+      - tags_all                 = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+        # (2 unchanged attributes hidden)
+
+      - namespace_config {
+          - namespace = "kube-system" -> null
+        }
+    }
+
+  # aws_eks_cluster.lab will be destroyed
+  - resource "aws_eks_cluster" "lab" {
+      - arn                           = "arn:aws:eks:us-east-1:731372490400:cluster/archit-studyslot" -> null
+      - bootstrap_self_managed_addons = true -> null
+      - certificate_authority         = [
+          - {
+              - data = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURNVENDQWhtZ0F3SUJBZ0lRWStLYXFQSjV3ZlJaN2lybm1hZ25wakFOQmdrcWhraUc5dzBCQVFzRkFEQW4KTVJBd0RnWURWUVFLRXdkQlYxTWdSVXRUTVJNd0VRWURWUVFERXdwcmRXSmxjbTVsZEdWek1CNFhEVEkyTVRBeApOakV3TkRRMU1sb1hEVE14TVRBeE5URXdORFExTWxvd0p6RVFNQTRHQTFVRUNoTUhRVmRUSUVWTFV6RVRNQkVHCkExVUVBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUIKQU0xck5ETU83UzNaY0xYOWVGV3BFZHBMWHFtTTZVaWZOWFdwQ24raWRiRktrMENJYTdtMjNHVFRrcURlejJEcwo0bHBLcXdXM2I2TVMxdHcxU1IyTHUxcjhxTFk1eno2TDZyMTRkMlhPV2xEZDFuaTJMaDBKVWU5dEM3cXgxOUJrCnlCcGIrUzdXYjFPMnVkVGRkN3FWS21mNFNTdnQ2K1p5Qm1Sa004WFM4a1MyOTRMQXhkL3JxRVZNT0ZzZ1VaVzkKN1U4RmVPVUIrRE0vSWRmOWs3YzZMQjZCK3FjOU4zbUxBN2tWbGsyMnkzaFpBR29vWk5QeU1QMmRPWFdFT3NIMQo1S3JyRCsvelp2dnVSZTR5QmpHUGNxcjdjakNQMEZaRVJhR0N6MFFPMG11emh4c2xRZnNGWld0bkU2eGxXbC95CnVjU2ZGTDFNUnQrR2dkcVh4RjVCdDkwQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWQKRXdFQi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZMVVRLM0Zuc0ZEc3RzQWhQRTFtN1hLOFN0LzZNQlVHQTFVZApFUVFPTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBRWt3TDlUNXkrTGNyRHZMCjZaWmhXelppd2NhSk9ObGpxdnB6ZmQxRmg5SlNrYlI0SkVWd2pZdERrUEd4dFJ5WVoxenE2ejR1bk4wamYzaGgKQUJXWmZVK3c4L1gvNWZHYWpqdXhmVGljZm1GeWJrYnpTSDd6c1RpdERYWWtJdHhjTjNpdVZSeGhRaDZsMFRhZgpiWUhqTFJrUUptM05IWFlxVXc1K3ordzZFT0Z4a0YvY3pJK0drSmc2K3U3ZFkwejVOdGtUclBlUHU4a0pJdUtQClJVd216NFR4OGRCcU42WE9tdnFreDQ4ME5Sck1hcFFtYkVvMXdqb21VRUY3Z1paWGNoVHVZWUIyRHdPSENPNy8KVE5Jbk1zajdENVJWOS9mWHZ5L0t1U1dxN2M3VG5oeC9XY0JFU0dqNE5ZS251Ylk3MU1Jalg0QkxVM2hxeGFVYgpyNEZKTU5nPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+            },
+        ] -> null
+      - created_at                    = "2026-10-16T10:44:34Z" -> null
+      - deletion_protection           = false -> null
+      - enabled_cluster_log_types     = [] -> null
+      - endpoint                      = "https://3561FE18CC9387C57B9C10CD9748C5F1.gr7.us-east-1.eks.amazonaws.com" -> null
+      - id                            = "archit-studyslot" -> null
+      - identity                      = [
+          - {
+              - oidc = [
+                  - {
+                      - issuer = "https://oidc.eks.us-east-1.amazonaws.com/id/3561FE18CC9387C57B9C10CD9748C5F1"
+                    },
+                ]
+            },
+        ] -> null
+      - name                          = "archit-studyslot" -> null
+      - platform_version              = "eks.24" -> null
+      - region                        = "us-east-1" -> null
+      - role_arn                      = "arn:aws:iam::731372490400:role/studyslot-eks-control-plane" -> null
+      - status                        = "ACTIVE" -> null
+      - tags                          = {} -> null
+      - tags_all                      = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - version                       = "1.35" -> null
+
+      - access_config {
+          - authentication_mode                         = "API" -> null
+          - bootstrap_cluster_creator_admin_permissions = false -> null
+        }
+
+      - compute_config {
+          - enabled       = false -> null
+          - node_pools    = [] -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - control_plane_scaling_config {
+          - tier = "standard" -> null
+        }
+
+      - kube_api_server_config {
+          - event_ttl = "60m" -> null
+
+          - service_node_port_range {
+              - max_port = 32767 -> null
+              - min_port = 30000 -> null
+            }
+        }
+
+      - kube_controller_manager_config {
+          - horizontal_pod_autoscaler_controller_config {
+              - horizontal_pod_autoscaler_sync_period = "15s" -> null
+            }
+          - pod_gc_controller_config {
+              - terminated_pod_gc_threshold = 12500 -> null
+            }
+        }
+
+      - kube_scheduler_config {
+          - node_resources_fit {
+              - scoring_strategy {
+                  - type = "LeastAllocated" -> null
+
+                  - resource {
+                      - name   = "cpu" -> null
+                      - weight = 1 -> null
+                    }
+                  - resource {
+                      - name   = "memory" -> null
+                      - weight = 1 -> null
+                    }
+                }
+            }
+        }
+
+      - kubernetes_network_config {
+          - ip_family         = "ipv4" -> null
+          - service_ipv4_cidr = "172.20.0.0/16" -> null
+            # (1 unchanged attribute hidden)
+
+          - elastic_load_balancing {
+              - enabled = false -> null
+            }
+        }
+
+      - storage_config {
+          - block_storage {
+              - enabled = false -> null
+            }
+        }
+
+      - upgrade_policy {
+          - support_type = "EXTENDED" -> null
+        }
+
+      - vpc_config {
+          - cluster_security_group_id = "sg-0f962be2c6267f989" -> null
+          - control_plane_egress_mode = "AWS_MANAGED" -> null
+          - endpoint_private_access   = true -> null
+          - endpoint_public_access    = true -> null
+          - public_access_cidrs       = [
+              - "0.0.0.0/0",
+            ] -> null
+          - security_group_ids        = [] -> null
+          - subnet_ids                = [
+              - "subnet-06e32e1e3d0233426",
+              - "subnet-0bdfe1bfdb26e9b15",
+            ] -> null
+          - vpc_id                    = "vpc-09363c7f725b28c28" -> null
+        }
+    }
+
+  # aws_eks_node_group.lab will be destroyed
+  - resource "aws_eks_node_group" "lab" {
+      - ami_type               = "AL2023_x86_64_STANDARD" -> null
+      - arn                    = "arn:aws:eks:us-east-1:731372490400:nodegroup/archit-studyslot/classroom/c0d0a22d-198b-e73f-b0f7-f052e0fe198f" -> null
+      - capacity_type          = "ON_DEMAND" -> null
+      - cluster_name           = "archit-studyslot" -> null
+      - disk_size              = 20 -> null
+      - id                     = "archit-studyslot:classroom" -> null
+      - instance_types         = [
+          - "t3.medium",
+        ] -> null
+      - labels                 = {} -> null
+      - node_group_name        = "classroom" -> null
+      - node_role_arn          = "arn:aws:iam::731372490400:role/studyslot-eks-workers" -> null
+      - region                 = "us-east-1" -> null
+      - release_version        = "1.35.8-20261012" -> null
+      - resources              = [
+          - {
+              - autoscaling_groups              = [
+                  - {
+                      - name = "eks-classroom-c0d0a22d-198b-e73f-b0f7-f052e0fe198f"
+                    },
+                ]
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - status                 = "ACTIVE" -> null
+      - subnet_ids             = [
+          - "subnet-06e32e1e3d0233426",
+          - "subnet-0bdfe1bfdb26e9b15",
+        ] -> null
+      - tags                   = {} -> null
+      - tags_all               = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - version                = "1.35" -> null
+        # (1 unchanged attribute hidden)
+
+      - scaling_config {
+          - desired_size = 2 -> null
+          - max_size     = 2 -> null
+          - min_size     = 2 -> null
+        }
+
+      - update_config {
+          - max_unavailable            = 1 -> null
+          - max_unavailable_percentage = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # aws_eks_pod_identity_association.ebs will be destroyed
+  - resource "aws_eks_pod_identity_association" "ebs" {
+      - association_arn      = "arn:aws:eks:us-east-1:731372490400:podidentityassociation/archit-studyslot/a-frolkumyql7hhnhxg" -> null
+      - association_id       = "a-frolkumyql7hhnhxg" -> null
+      - cluster_name         = "archit-studyslot" -> null
+      - disable_session_tags = false -> null
+      - id                   = "a-frolkumyql7hhnhxg" -> null
+      - namespace            = "kube-system" -> null
+      - region               = "us-east-1" -> null
+      - role_arn             = "arn:aws:iam::731372490400:role/studyslot-ebs-driver" -> null
+      - service_account      = "ebs-csi-controller-sa" -> null
+      - tags_all             = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+    }
+
+  # aws_iam_openid_connect_provider.github[0] will be destroyed
+  - resource "aws_iam_openid_connect_provider" "github" {
+      - arn             = "arn:aws:iam::731372490400:oidc-provider/token.actions.githubusercontent.com" -> null
+      - client_id_list  = [
+          - "sts.amazonaws.com",
+        ] -> null
+      - id              = "arn:aws:iam::731372490400:oidc-provider/token.actions.githubusercontent.com" -> null
+      - tags            = {} -> null
+      - tags_all        = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - thumbprint_list = [
+          - "ab9d0263244dd0326eb67015705a667e79cfe998",
+        ] -> null
+      - url             = "token.actions.githubusercontent.com" -> null
+    }
+
+  # aws_iam_role.cluster will be destroyed
+  - resource "aws_iam_role" "cluster" {
+      - arn                   = "arn:aws:iam::731372490400:role/studyslot-eks-control-plane" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "eks.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-10-16T10:43:57Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "studyslot-eks-control-plane" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "studyslot-eks-control-plane" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - unique_id             = "AROA2USJSR2QKGKI4UEGU" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role.ebs will be destroyed
+  - resource "aws_iam_role" "ebs" {
+      - arn                   = "arn:aws:iam::731372490400:role/studyslot-ebs-driver" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = [
+                          - "sts:AssumeRole",
+                          - "sts:TagSession",
+                        ]
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "pods.eks.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-10-16T10:43:57Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "studyslot-ebs-driver" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "studyslot-ebs-driver" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - unique_id             = "AROA2USJSR2QD6MS3OP5A" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role.github_deploy will be destroyed
+  - resource "aws_iam_role" "github_deploy" {
+      - arn                   = "arn:aws:iam::731372490400:role/studyslot-github-deploy" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRoleWithWebIdentity"
+                      - Condition = {
+                          - StringEquals = {
+                              - "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+                              - "token.actions.githubusercontent.com:sub" = "repo:archit0k@178862175/Devops-HW@1356256990:ref:refs/heads/main"
+                            }
+                        }
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Federated = "arn:aws:iam::731372490400:oidc-provider/token.actions.githubusercontent.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-10-16T10:43:58Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "studyslot-github-deploy" -> null
+      - managed_policy_arns   = [] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "studyslot-github-deploy" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - unique_id             = "AROA2USJSR2QCHKBEJL7Q" -> null
+        # (3 unchanged attributes hidden)
+
+      - inline_policy {
+          - name   = "terraform-d43f1040505d7f113e724f14e7" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = [
+                              - "eks:DescribeCluster",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:eks:us-east-1:731372490400:cluster/archit-studyslot"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+    }
+
+  # aws_iam_role.node will be destroyed
+  - resource "aws_iam_role" "node" {
+      - arn                   = "arn:aws:iam::731372490400:role/studyslot-eks-workers" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-10-16T10:43:57Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "studyslot-eks-workers" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+          - "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+          - "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "studyslot-eks-workers" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - unique_id             = "AROA2USJSR2QM7UZ4PFXR" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role_policy.describe_ci will be destroyed
+  - resource "aws_iam_role_policy" "describe_ci" {
+      - id          = "studyslot-github-deploy:terraform-d43f1040505d7f113e724f14e7" -> null
+      - name        = "terraform-d43f1040505d7f113e724f14e7" -> null
+      - name_prefix = "terraform-" -> null
+      - policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "eks:DescribeCluster",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:eks:us-east-1:731372490400:cluster/archit-studyslot"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - role        = "studyslot-github-deploy" -> null
+    }
+
+  # aws_iam_role_policy_attachment.cluster will be destroyed
+  - resource "aws_iam_role_policy_attachment" "cluster" {
+      - id         = "studyslot-eks-control-plane/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy" -> null
+      - role       = "studyslot-eks-control-plane" -> null
+    }
+
+  # aws_iam_role_policy_attachment.ebs will be destroyed
+  - resource "aws_iam_role_policy_attachment" "ebs" {
+      - id         = "studyslot-ebs-driver/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy" -> null
+      - role       = "studyslot-ebs-driver" -> null
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "node" {
+      - id         = "studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly" -> null
+      - role       = "studyslot-eks-workers" -> null
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "node" {
+      - id         = "studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy" -> null
+      - role       = "studyslot-eks-workers" -> null
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"] will be destroyed
+  - resource "aws_iam_role_policy_attachment" "node" {
+      - id         = "studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy" -> null
+      - role       = "studyslot-eks-workers" -> null
+    }
+
+  # aws_internet_gateway.lab will be destroyed
+  - resource "aws_internet_gateway" "lab" {
+      - arn      = "arn:aws:ec2:us-east-1:731372490400:internet-gateway/igw-00b677275b686836e" -> null
+      - id       = "igw-00b677275b686836e" -> null
+      - owner_id = "731372490400" -> null
+      - region   = "us-east-1" -> null
+      - tags     = {} -> null
+      - tags_all = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - vpc_id   = "vpc-09363c7f725b28c28" -> null
+    }
+
+  # aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:us-east-1:731372490400:route-table/rtb-096513fa48cb73c2d" -> null
+      - id               = "rtb-096513fa48cb73c2d" -> null
+      - owner_id         = "731372490400" -> null
+      - propagating_vgws = [] -> null
+      - region           = "us-east-1" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-00b677275b686836e"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {} -> null
+      - tags_all         = {
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+      - vpc_id           = "vpc-09363c7f725b28c28" -> null
+    }
+
+  # aws_route_table_association.public[0] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-08dd0709748521bfb" -> null
+      - region         = "us-east-1" -> null
+      - route_table_id = "rtb-096513fa48cb73c2d" -> null
+      - subnet_id      = "subnet-06e32e1e3d0233426" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_route_table_association.public[1] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-09e21fce50225c935" -> null
+      - region         = "us-east-1" -> null
+      - route_table_id = "rtb-096513fa48cb73c2d" -> null
+      - subnet_id      = "subnet-0bdfe1bfdb26e9b15" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_subnet.public[0] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:731372490400:subnet/subnet-06e32e1e3d0233426" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1a" -> null
+      - availability_zone_id                           = "use1-az1" -> null
+      - cidr_block                                     = "10.42.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-06e32e1e3d0233426" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "731372490400" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "us-east-1" -> null
+      - tags                                           = {
+          - "Name"                   = "studyslot-public-1"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Name"                   = "studyslot-public-1"
+          - "Owner"                  = "Archit-Kulkarni"
+          - "Project"                = "studyslot-homework"
+          - "Roll"                   = "24BCS10194"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-09363c7f725b28c28" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_subnet.public[1] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:us-east-1:731372490400:subnet/subnet-0bdfe1bfdb26e9b15" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "us-east-1b" -> null
+      - availability_zone_id                           = "use1-az2" -> null
+      - cidr_block                                     = "10.42.2.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0bdfe1bfdb26e9b15" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "731372490400" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "us-east-1" -> null
+      - tags                                           = {
+          - "Name"                   = "studyslot-public-2"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - tags_all                                       = {
+          - "Name"                   = "studyslot-public-2"
+          - "Owner"                  = "Archit-Kulkarni"
+          - "Project"                = "studyslot-homework"
+          - "Roll"                   = "24BCS10194"
+          - "kubernetes.io/role/elb" = "1"
+        } -> null
+      - vpc_id                                         = "vpc-09363c7f725b28c28" -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_vpc.lab will be destroyed
+  - resource "aws_vpc" "lab" {
+      - arn                                  = "arn:aws:ec2:us-east-1:731372490400:vpc/vpc-09363c7f725b28c28" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.42.0.0/16" -> null
+      - default_network_acl_id               = "acl-088393e18884c0a8d" -> null
+      - default_route_table_id               = "rtb-0b4636581ca931d54" -> null
+      - default_security_group_id            = "sg-0cf82c9b7341040f3" -> null
+      - dhcp_options_id                      = "dopt-0eef858bdbf9ca507" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-09363c7f725b28c28" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-0b4636581ca931d54" -> null
+      - owner_id                             = "731372490400" -> null
+      - region                               = "us-east-1" -> null
+      - tags                                 = {
+          - "Name" = "studyslot-vpc"
+        } -> null
+      - tags_all                             = {
+          - "Name"    = "studyslot-vpc"
+          - "Owner"   = "Archit-Kulkarni"
+          - "Project" = "studyslot-homework"
+          - "Roll"    = "24BCS10194"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 26 to destroy.
+
+Changes to Outputs:
+  - cluster_name           = "archit-studyslot" -> null
+  - github_deploy_role_arn = "arn:aws:iam::731372490400:role/studyslot-github-deploy" -> null
+  - public_subnet_ids      = [
+      - "subnet-06e32e1e3d0233426",
+      - "subnet-0bdfe1bfdb26e9b15",
+    ] -> null
+  - vpc_id                 = "vpc-09363c7f725b28c28" -> null
+aws_iam_role_policy.describe_ci: Destroying... [id=studyslot-github-deploy:terraform-d43f1040505d7f113e724f14e7]
+aws_eks_addon.ebs: Destroying... [id=archit-studyslot:aws-ebs-csi-driver]
+aws_eks_addon.metrics: Destroying... [id=archit-studyslot:metrics-server]
+aws_eks_access_policy_association.ci: Destroying... [id=archit-studyslot#arn:aws:iam::731372490400:role/studyslot-github-deploy#arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy]
+aws_eks_access_policy_association.ci: Destruction complete after 1s
+aws_eks_access_entry.ci: Destroying... [id=archit-studyslot:arn:aws:iam::731372490400:role/studyslot-github-deploy]
+aws_eks_access_entry.ci: Destruction complete after 1s
+aws_iam_role_policy.describe_ci: Destruction complete after 4s
+aws_iam_role.github_deploy: Destroying... [id=studyslot-github-deploy]
+aws_iam_role.github_deploy: Destruction complete after 1s
+aws_iam_openid_connect_provider.github[0]: Destroying... [id=arn:aws:iam::731372490400:oidc-provider/token.actions.githubusercontent.com]
+aws_iam_openid_connect_provider.github[0]: Destruction complete after 0s
+aws_eks_addon.metrics: Destruction complete after 6s
+aws_eks_addon.ebs: Destruction complete after 9s
+aws_iam_role_policy_attachment.ebs: Destroying... [id=studyslot-ebs-driver/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy]
+aws_eks_pod_identity_association.ebs: Destroying... [id=a-frolkumyql7hhnhxg]
+aws_eks_addon.pod_identity: Destroying... [id=archit-studyslot:eks-pod-identity-agent]
+aws_iam_role_policy_attachment.ebs: Destruction complete after 0s
+aws_eks_pod_identity_association.ebs: Destruction complete after 1s
+aws_iam_role.ebs: Destroying... [id=studyslot-ebs-driver]
+aws_eks_addon.pod_identity: Destruction complete after 1s
+aws_eks_node_group.lab: Destroying... [id=archit-studyslot:classroom]
+aws_iam_role.ebs: Destruction complete after 1s
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 00m10s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 00m20s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 00m30s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 00m40s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 00m50s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 01m00s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 01m10s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 01m20s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 01m30s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 01m40s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 01m50s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 02m00s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 02m10s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 02m20s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 02m30s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 02m40s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 02m50s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 03m00s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 03m11s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 03m21s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 03m31s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 03m41s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 03m51s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 04m01s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 04m11s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 04m21s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 04m31s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 04m41s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 04m51s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 05m01s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 05m11s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 05m21s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 05m31s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 05m41s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 05m51s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 06m01s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 06m11s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 06m21s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 06m31s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 06m41s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 06m51s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 07m01s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 07m11s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 07m21s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 07m31s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 07m41s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 07m51s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 08m01s elapsed]
+aws_eks_node_group.lab: Still destroying... [id=archit-studyslot:classroom, 08m11s elapsed]
+aws_eks_node_group.lab: Destruction complete after 8m15s
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]: Destroying... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+aws_route_table_association.public[1]: Destroying... [id=rtbassoc-09e21fce50225c935]
+aws_route_table_association.public[0]: Destroying... [id=rtbassoc-08dd0709748521bfb]
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]: Destroying... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]: Destroying... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+aws_eks_cluster.lab: Destroying... [id=archit-studyslot]
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]: Destruction complete after 2s
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]: Destruction complete after 2s
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]: Destruction complete after 2s
+aws_iam_role.node: Destroying... [id=studyslot-eks-workers]
+aws_route_table_association.public[0]: Destruction complete after 2s
+aws_route_table_association.public[1]: Destruction complete after 2s
+aws_route_table.public: Destroying... [id=rtb-096513fa48cb73c2d]
+aws_iam_role.node: Destruction complete after 1s
+aws_route_table.public: Destruction complete after 2s
+aws_internet_gateway.lab: Destroying... [id=igw-00b677275b686836e]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 00m10s elapsed]
+aws_internet_gateway.lab: Destruction complete after 6s
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 00m20s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 00m30s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 00m40s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 00m50s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 01m00s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 01m10s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 01m20s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 01m30s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 01m40s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 01m50s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 02m00s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 02m10s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 02m20s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 02m30s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 02m40s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 02m50s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 03m00s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 03m10s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 03m20s elapsed]
+aws_eks_cluster.lab: Still destroying... [id=archit-studyslot, 03m30s elapsed]
+aws_eks_cluster.lab: Destruction complete after 3m37s
+aws_iam_role_policy_attachment.cluster: Destroying... [id=studyslot-eks-control-plane/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+aws_subnet.public[0]: Destroying... [id=subnet-06e32e1e3d0233426]
+aws_subnet.public[1]: Destroying... [id=subnet-0bdfe1bfdb26e9b15]
+aws_iam_role_policy_attachment.cluster: Destruction complete after 5s
+aws_iam_role.cluster: Destroying... [id=studyslot-eks-control-plane]
+aws_iam_role.cluster: Destruction complete after 1s
+aws_subnet.public[0]: Destruction complete after 8s
+aws_subnet.public[1]: Destruction complete after 8s
+aws_vpc.lab: Destroying... [id=vpc-09363c7f725b28c28]
+aws_vpc.lab: Destruction complete after 6s
+
+Destroy complete! Resources: 26 destroyed.
+
+Exit code: 0

@@ -1,0 +1,244 @@
+Recorded: 2026-10-16T11:50:24.269540+00:00
+Command: C:/Users/archi/AppData/Local/DevOpsHomeworkTools/gh-2.102.0/bin/gh.exe run view 38896048655 --repo archit0k/Devops-HW --log
+
+aws_lab	Set up job	﻿2026-10-16T11:46:59.2251680Z Current runner version: '2.337.0'
+aws_lab	Set up job	2026-10-16T11:46:59.2270234Z ##[group]Runner Image Provisioner
+aws_lab	Set up job	2026-10-16T11:46:59.2270791Z Hosted Compute Agent
+aws_lab	Set up job	2026-10-16T11:46:59.2271221Z Version: 20261012.601
+aws_lab	Set up job	2026-10-16T11:46:59.2271646Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+aws_lab	Set up job	2026-10-16T11:46:59.2272078Z Build Date: 2026-10-12T17:48:21Z
+aws_lab	Set up job	2026-10-16T11:46:59.2272541Z Worker ID: {8553ccb9-aa96-4958-84f5-c12936785a5f}
+aws_lab	Set up job	2026-10-16T11:46:59.2272961Z Region: centralus
+aws_lab	Set up job	2026-10-16T11:46:59.2273331Z Cloud: Azure
+aws_lab	Set up job	2026-10-16T11:46:59.2273705Z ##[endgroup]
+aws_lab	Set up job	2026-10-16T11:46:59.2274779Z ##[group]Operating System
+aws_lab	Set up job	2026-10-16T11:46:59.2275211Z Ubuntu
+aws_lab	Set up job	2026-10-16T11:46:59.2275536Z 24.04.5
+aws_lab	Set up job	2026-10-16T11:46:59.2275880Z LTS
+aws_lab	Set up job	2026-10-16T11:46:59.2276260Z ##[endgroup]
+aws_lab	Set up job	2026-10-16T11:46:59.2276594Z ##[group]Runner Image
+aws_lab	Set up job	2026-10-16T11:46:59.2276999Z Image: ubuntu-24.04
+aws_lab	Set up job	2026-10-16T11:46:59.2277351Z Version: 20261012.334.1
+aws_lab	Set up job	2026-10-16T11:46:59.2277977Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+aws_lab	Set up job	2026-10-16T11:46:59.2279095Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+aws_lab	Set up job	2026-10-16T11:46:59.2279700Z ##[endgroup]
+aws_lab	Set up job	2026-10-16T11:46:59.2280425Z ##[group]GITHUB_TOKEN Permissions
+aws_lab	Set up job	2026-10-16T11:46:59.2281859Z Contents: read
+aws_lab	Set up job	2026-10-16T11:46:59.2282216Z Metadata: read
+aws_lab	Set up job	2026-10-16T11:46:59.2282862Z Packages: read
+aws_lab	Set up job	2026-10-16T11:46:59.2283203Z ##[endgroup]
+aws_lab	Set up job	2026-10-16T11:46:59.2284754Z Secret source: Actions
+aws_lab	Set up job	2026-10-16T11:46:59.2285339Z Cache mode: write
+aws_lab	Set up job	2026-10-16T11:46:59.2285786Z Prepare workflow directory
+aws_lab	Set up job	2026-10-16T11:46:59.2524432Z Prepare all required actions
+aws_lab	Set up job	2026-10-16T11:46:59.2555502Z Getting action download info
+aws_lab	Set up job	2026-10-16T11:46:59.4890629Z Download action repository 'actions/checkout@v7.0.1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+aws_lab	Set up job	2026-10-16T11:46:59.5855529Z Download action repository 'aws-actions/configure-aws-credentials@v6.3.0' (SHA:e1253824e5c10ff9df46874f81ed3ec929e19cfd)
+aws_lab	Set up job	2026-10-16T11:46:59.9383586Z Download action repository 'actions/upload-artifact@v7.0.2' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+aws_lab	Set up job	2026-10-16T11:47:00.4852275Z Complete job name: aws_lab
+aws_lab	Run actions/checkout@v7.0.1	﻿2026-10-16T11:47:00.5316104Z ##[group]Run actions/checkout@v7.0.1
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5316577Z with:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5316822Z   repository: archit0k/Devops-HW
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5318789Z   token: ***
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5319026Z   ssh-strict: true
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5319270Z   ssh-user: git
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5319518Z   persist-credentials: true
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5319785Z   clean: true
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5320032Z   sparse-checkout-cone-mode: true
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5320315Z   fetch-depth: 1
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5320552Z   fetch-tags: false
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5320798Z   show-progress: true
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5321043Z   lfs: false
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5321269Z   submodules: false
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5321536Z   set-safe-directory: true
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5321816Z   allow-unsafe-pr-checkout: false
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.5322172Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6004005Z Syncing repository: archit0k/Devops-HW
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6005907Z ##[group]Getting Git version info
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6006513Z Working directory is '/home/runner/work/Devops-HW/Devops-HW'
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6007558Z [command]/usr/bin/git version
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6052126Z git version 2.55.0
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6065121Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6073152Z Temporarily overriding HOME='/home/runner/work/_temp/92544249-dc76-44a2-aa75-69b0dd2bf37f' before making global git config changes
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6074656Z Adding repository directory to the temporary git global config as a safe directory
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6077455Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Devops-HW/Devops-HW
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6117232Z Deleting the contents of '/home/runner/work/Devops-HW/Devops-HW'
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6119768Z ##[group]Determining repository object format
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6120934Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6121589Z ##[group]Initializing the repository
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6124555Z [command]/usr/bin/git init /home/runner/work/Devops-HW/Devops-HW
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6223455Z hint: Using 'master' as the name for the initial branch. This default branch name
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6224848Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6225625Z hint: to use in all of your new repositories, which will suppress this warning,
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6226163Z hint: call:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6226385Z hint:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6226686Z hint: 	git config --global init.defaultBranch <name>
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6227023Z hint:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6227334Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6227836Z hint: 'development'. The just-created branch can be renamed via this command:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6228227Z hint:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6228455Z hint: 	git branch -m <name>
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6228712Z hint:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6229279Z hint: Disable this message with "git config set advice.defaultBranchName false"
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6233294Z Initialized empty Git repository in /home/runner/work/Devops-HW/Devops-HW/.git/
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6248512Z [command]/usr/bin/git remote add origin https://github.com/archit0k/Devops-HW
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6288242Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6288694Z ##[group]Disabling automatic garbage collection
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6291118Z [command]/usr/bin/git config --local gc.auto 0
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6318728Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6319307Z ##[group]Setting up auth
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6319702Z Removing SSH command configuration
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6323232Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6353220Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6646803Z Removing HTTP extra header
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6650460Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6678200Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6846778Z Removing includeIf entries pointing to credentials config files
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6850369Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.6882481Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7055769Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7086874Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git.path /home/runner/work/_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7114312Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7145355Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7172839Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7198205Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7198634Z ##[group]Fetching the repository
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:00.7202434Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d2a9d66ff661067130ea04e8e0dc72269f3df76c:refs/remotes/origin/main
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6865288Z From https://github.com/archit0k/Devops-HW
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6866705Z  * [new ref]         d2a9d66ff661067130ea04e8e0dc72269f3df76c -> origin/main
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6873972Z [command]/usr/bin/git branch --list --remote origin/main
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6898781Z   origin/main
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6904901Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6926847Z d2a9d66ff661067130ea04e8e0dc72269f3df76c
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6931482Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6932494Z ##[group]Determining the checkout info
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6933646Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6934558Z [command]/usr/bin/git sparse-checkout disable
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.6979140Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.7006657Z ##[group]Checking out the ref
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.7008856Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.7379913Z Switched to a new branch 'main'
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.7384062Z branch 'main' set up to track 'origin/main'.
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.7392715Z ##[endgroup]
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.7432694Z [command]/usr/bin/git log -1 --format=%H
+aws_lab	Run actions/checkout@v7.0.1	2026-10-16T11:47:01.7457150Z d2a9d66ff661067130ea04e8e0dc72269f3df76c
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	﻿2026-10-16T11:47:01.7746096Z ##[group]Run aws-actions/configure-aws-credentials@v6.3.0
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:01.7746900Z with:
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:01.7747576Z   role-to-assume: arn:aws:iam::731372490400:role/studyslot-github-deploy
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:01.7748457Z   aws-region: us-east-1
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:01.7749016Z   role-session-name: StudySlot-Lab
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:01.7749657Z   audience: sts.amazonaws.com
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:01.7750227Z ##[endgroup]
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:02.0047784Z Assuming role with OIDC
+aws_lab	Run aws-actions/configure-aws-credentials@v6.3.0	2026-10-16T11:47:02.1430133Z Authenticated as assumedRoleId AROA2USJSR2QCHKBEJL7Q:StudySlot-Lab
+aws_lab	Install verified Helm	﻿2026-10-16T11:47:02.3243310Z ##[group]Run curl -fsSL --retry 3 -o /tmp/helm.tar.gz https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3243815Z ^[[36;1mcurl -fsSL --retry 3 -o /tmp/helm.tar.gz https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz^[[0m
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3244447Z ^[[36;1mcurl -fsSL --retry 3 -o /tmp/helm.sha256sum https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz.sha256sum^[[0m
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3244738Z ^[[36;1mcd /tmp^[[0m
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3244928Z ^[[36;1mecho "$(cut -d ' ' -f 1 helm.sha256sum)  helm.tar.gz" | sha256sum -c -^[[0m
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3245157Z ^[[36;1mtar -xzf helm.tar.gz^[[0m
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3245338Z ^[[36;1msudo install linux-amd64/helm /usr/local/bin/helm^[[0m
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3465959Z shell: /usr/bin/bash -e {0}
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3466140Z env:
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3466267Z   AWS_DEFAULT_REGION: us-east-1
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3466418Z   AWS_REGION: us-east-1
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3466770Z   AWS_ACCESS_KEY_ID: ***
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3466972Z   AWS_SECRET_ACCESS_KEY: ***
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3469365Z   AWS_SESSION_TOKEN: ***
+aws_lab	Install verified Helm	2026-10-16T11:47:02.3469533Z ##[endgroup]
+aws_lab	Install verified Helm	2026-10-16T11:47:02.5629499Z helm.tar.gz: OK
+aws_lab	Connect to the project cluster	﻿2026-10-16T11:47:02.8719998Z ##[group]Run aws eks update-kubeconfig --name archit-studyslot --region us-east-1
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8720381Z ^[[36;1maws eks update-kubeconfig --name archit-studyslot --region us-east-1^[[0m
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8772920Z shell: /usr/bin/bash -e {0}
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8773079Z env:
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8773204Z   AWS_DEFAULT_REGION: us-east-1
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8773359Z   AWS_REGION: us-east-1
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8773612Z   AWS_ACCESS_KEY_ID: ***
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8773806Z   AWS_SECRET_ACCESS_KEY: ***
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8776258Z   AWS_SESSION_TOKEN: ***
+aws_lab	Connect to the project cluster	2026-10-16T11:47:02.8776395Z ##[endgroup]
+aws_lab	Connect to the project cluster	2026-10-16T11:47:03.9176595Z Added new context arn:aws:eks:us-east-1:731372490400:cluster/archit-studyslot to /home/runner/.kube/config
+aws_lab	Run the requested lab action	﻿2026-10-16T11:47:04.0055654Z ##[group]Run set -euo pipefail
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0055946Z ^[[36;1mset -euo pipefail^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0056148Z ^[[36;1m[[ "$TESTED_SHA" =~ ^[0-9a-f]{40}$ ]]^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0056332Z ^[[36;1mmkdir -p project-evidence^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0056637Z ^[[36;1mif [[ "$LAB_ACTION" == bootstrap ]]; then^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0056935Z ^[[36;1m  bash project/scripts/bootstrap-aws.sh "$TESTED_SHA" 2>&1 | tee project-evidence/aws-bootstrap.txt^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0057244Z ^[[36;1melif [[ "$LAB_ACTION" == configure-access ]]; then^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0057477Z ^[[36;1m  kubectl apply -f project/k8s/ci-monitoring-rbac.yaml^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0057693Z ^[[36;1m  kubectl -n studyslot get role,rolebinding^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0057881Z ^[[36;1melif [[ "$LAB_ACTION" == verify ]]; then^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0058132Z ^[[36;1m  bash project/scripts/verify-aws.sh 2>&1 | tee project-evidence/aws-verify.txt^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0058383Z ^[[36;1melif [[ "$LAB_ACTION" == cleanup ]]; then^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0058603Z ^[[36;1m  helm uninstall studyslot -n studyslot --wait^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0058833Z ^[[36;1m  kubectl -n studyslot delete pvc -l app=studyslot-postgres^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0059125Z ^[[36;1m  kubectl -n studyslot delete pvc data-postgres-0 --ignore-not-found=true --wait=true^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0059387Z ^[[36;1m  kubectl -n studyslot get pods,pvc^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0059550Z ^[[36;1mfi^[[0m
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0112620Z shell: /usr/bin/bash -e {0}
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0112784Z env:
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0112909Z   AWS_DEFAULT_REGION: us-east-1
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0113082Z   AWS_REGION: us-east-1
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0113356Z   AWS_ACCESS_KEY_ID: ***
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0113554Z   AWS_SECRET_ACCESS_KEY: ***
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0116267Z   AWS_SESSION_TOKEN: ***
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0116404Z   LAB_ACTION: cleanup
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0116575Z   TESTED_SHA: 1c56857fa3de1eaa43eb8e17c285361d171dae30
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0117972Z   REGISTRY_TOKEN: ***
+aws_lab	Run the requested lab action	2026-10-16T11:47:04.0118106Z ##[endgroup]
+aws_lab	Run the requested lab action	2026-10-16T11:47:06.1463435Z release "studyslot" uninstalled
+aws_lab	Run the requested lab action	2026-10-16T11:47:09.2989095Z persistentvolumeclaim "data-postgres-0" deleted from studyslot namespace
+aws_lab	Run the requested lab action	2026-10-16T11:47:10.7385331Z No resources found in studyslot namespace.
+aws_lab	Run actions/upload-artifact@v7.0.2	﻿2026-10-16T11:47:10.7450575Z ##[group]Run actions/upload-artifact@v7.0.2
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7450749Z with:
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7450877Z   name: studyslot-aws-evidence
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451031Z   path: project-evidence
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451169Z   if-no-files-found: warn
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451307Z   compression-level: 6
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451436Z   overwrite: false
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451563Z   include-hidden-files: false
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451704Z   archive: true
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451817Z env:
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7451935Z   AWS_DEFAULT_REGION: us-east-1
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7452082Z   AWS_REGION: us-east-1
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7452441Z   AWS_ACCESS_KEY_ID: ***
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7452633Z   AWS_SECRET_ACCESS_KEY: ***
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7455116Z   AWS_SESSION_TOKEN: ***
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.7455248Z ##[endgroup]
+aws_lab	Run actions/upload-artifact@v7.0.2	2026-10-16T11:47:10.8399473Z ##[warning]No files were found with the provided path: project-evidence. No artifacts will be uploaded.
+aws_lab	Post Run aws-actions/configure-aws-credentials@v6.3.0	﻿2026-10-16T11:47:10.8587906Z Post job cleanup.
+aws_lab	Post Run actions/checkout@v7.0.1	﻿2026-10-16T11:47:10.9126832Z Post job cleanup.
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9696138Z [command]/usr/bin/git version
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9727668Z git version 2.55.0
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9755646Z Temporarily overriding HOME='/home/runner/work/_temp/00bbd0da-01fc-4511-b8ac-b1cf6ec8ec06' before making global git config changes
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9756400Z Adding repository directory to the temporary git global config as a safe directory
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9759278Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Devops-HW/Devops-HW
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9785855Z Removing SSH command configuration
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9789973Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:10.9845736Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0004790Z Removing HTTP extra header
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0009039Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0043010Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0231675Z Removing includeIf entries pointing to credentials config files
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0237136Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0265247Z includeif.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0265885Z includeif.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git/worktrees/*.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0266522Z includeif.gitdir:/github/workspace/.git.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0266919Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0272041Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0294078Z /home/runner/work/_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0308196Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-193c1514\-a7b7\-4f31\-8cde\-e968ae9a84b1\.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0333415Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git/worktrees/*.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0356457Z /home/runner/work/_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0362544Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/Devops-HW/Devops-HW/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-193c1514\-a7b7\-4f31\-8cde\-e968ae9a84b1\.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0392570Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0413891Z /github/runner_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0418669Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-193c1514\-a7b7\-4f31\-8cde\-e968ae9a84b1\.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0447188Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0468327Z /github/runner_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0473124Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-193c1514\-a7b7\-4f31\-8cde\-e968ae9a84b1\.config
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0502905Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+aws_lab	Post Run actions/checkout@v7.0.1	2026-10-16T11:47:11.0675118Z Removing credentials config '/home/runner/work/_temp/git-credentials-193c1514-a7b7-4f31-8cde-e968ae9a84b1.config'
+aws_lab	Complete job	﻿2026-10-16T11:47:11.0801646Z Cleaning up orphan processes
+
+Exit code: 0

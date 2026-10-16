@@ -1,0 +1,583 @@
+Recorded: 2026-10-16T10:39:54.015404+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash project/scripts/terraform-lab.sh plan
+
+data.aws_availability_zones.available: Reading...
+data.aws_eks_addon_version.pod_identity: Reading...
+data.aws_eks_addon_version.ebs: Reading...
+data.aws_eks_addon_version.metrics: Reading...
+data.aws_caller_identity.current: Reading...
+data.aws_caller_identity.current: Read complete after 1s [id=731372490400]
+data.aws_eks_addon_version.pod_identity: Read complete after 7s [id=eks-pod-identity-agent]
+data.aws_eks_addon_version.ebs: Read complete after 7s [id=aws-ebs-csi-driver]
+data.aws_eks_addon_version.metrics: Read complete after 7s [id=metrics-server]
+data.aws_availability_zones.available: Still reading... [00m10s elapsed]
+data.aws_availability_zones.available: Still reading... [00m20s elapsed]
+data.aws_availability_zones.available: Read complete after 20s [id=us-east-1]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_eks_access_entry.ci will be created
+  + resource "aws_eks_access_entry" "ci" {
+      + access_entry_arn  = (known after apply)
+      + cluster_name      = "archit-studyslot"
+      + created_at        = (known after apply)
+      + id                = (known after apply)
+      + kubernetes_groups = (known after apply)
+      + modified_at       = (known after apply)
+      + principal_arn     = (known after apply)
+      + region            = "us-east-1"
+      + tags_all          = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + type              = "STANDARD"
+      + user_name         = (known after apply)
+    }
+
+  # aws_eks_access_policy_association.ci will be created
+  + resource "aws_eks_access_policy_association" "ci" {
+      + associated_at = (known after apply)
+      + cluster_name  = "archit-studyslot"
+      + id            = (known after apply)
+      + modified_at   = (known after apply)
+      + policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      + principal_arn = (known after apply)
+      + region        = "us-east-1"
+
+      + access_scope {
+          + type = "cluster"
+        }
+    }
+
+  # aws_eks_addon.ebs will be created
+  + resource "aws_eks_addon" "ebs" {
+      + addon_name           = "aws-ebs-csi-driver"
+      + addon_version        = "v1.67.0-eksbuild.1"
+      + arn                  = (known after apply)
+      + cluster_name         = "archit-studyslot"
+      + configuration_values = (known after apply)
+      + created_at           = (known after apply)
+      + id                   = (known after apply)
+      + modified_at          = (known after apply)
+      + region               = "us-east-1"
+      + tags_all             = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+
+      + namespace_config (known after apply)
+    }
+
+  # aws_eks_addon.metrics will be created
+  + resource "aws_eks_addon" "metrics" {
+      + addon_name           = "metrics-server"
+      + addon_version        = "v0.9.0-eksbuild.13"
+      + arn                  = (known after apply)
+      + cluster_name         = "archit-studyslot"
+      + configuration_values = (known after apply)
+      + created_at           = (known after apply)
+      + id                   = (known after apply)
+      + modified_at          = (known after apply)
+      + region               = "us-east-1"
+      + tags_all             = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+
+      + namespace_config (known after apply)
+    }
+
+  # aws_eks_addon.pod_identity will be created
+  + resource "aws_eks_addon" "pod_identity" {
+      + addon_name           = "eks-pod-identity-agent"
+      + addon_version        = "v1.4.0-eksbuild.4"
+      + arn                  = (known after apply)
+      + cluster_name         = "archit-studyslot"
+      + configuration_values = (known after apply)
+      + created_at           = (known after apply)
+      + id                   = (known after apply)
+      + modified_at          = (known after apply)
+      + region               = "us-east-1"
+      + tags_all             = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+
+      + namespace_config (known after apply)
+    }
+
+  # aws_eks_cluster.lab will be created
+  + resource "aws_eks_cluster" "lab" {
+      + arn                           = (known after apply)
+      + bootstrap_self_managed_addons = true
+      + certificate_authority         = (known after apply)
+      + cluster_id                    = (known after apply)
+      + created_at                    = (known after apply)
+      + deletion_protection           = (known after apply)
+      + endpoint                      = (known after apply)
+      + id                            = (known after apply)
+      + identity                      = (known after apply)
+      + name                          = "archit-studyslot"
+      + platform_version              = (known after apply)
+      + region                        = "us-east-1"
+      + role_arn                      = (known after apply)
+      + status                        = (known after apply)
+      + tags_all                      = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + version                       = "1.35"
+
+      + access_config {
+          + authentication_mode                         = "API"
+          + bootstrap_cluster_creator_admin_permissions = false
+        }
+
+      + compute_config (known after apply)
+
+      + control_plane_scaling_config (known after apply)
+
+      + kube_api_server_config (known after apply)
+
+      + kube_controller_manager_config (known after apply)
+
+      + kube_scheduler_config (known after apply)
+
+      + kubernetes_network_config (known after apply)
+
+      + storage_config (known after apply)
+
+      + upgrade_policy (known after apply)
+
+      + vpc_config {
+          + cluster_security_group_id = (known after apply)
+          + control_plane_egress_mode = (known after apply)
+          + endpoint_private_access   = true
+          + endpoint_public_access    = true
+          + public_access_cidrs       = (known after apply)
+          + subnet_ids                = (known after apply)
+          + vpc_id                    = (known after apply)
+        }
+    }
+
+  # aws_eks_node_group.lab will be created
+  + resource "aws_eks_node_group" "lab" {
+      + ami_type               = "AL2023_x86_64_STANDARD"
+      + arn                    = (known after apply)
+      + capacity_type          = (known after apply)
+      + cluster_name           = "archit-studyslot"
+      + disk_size              = 20
+      + id                     = (known after apply)
+      + instance_types         = [
+          + "t3.medium",
+        ]
+      + node_group_name        = "classroom"
+      + node_group_name_prefix = (known after apply)
+      + node_role_arn          = (known after apply)
+      + region                 = "us-east-1"
+      + release_version        = (known after apply)
+      + resources              = (known after apply)
+      + status                 = (known after apply)
+      + subnet_ids             = (known after apply)
+      + tags_all               = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + version                = (known after apply)
+
+      + node_repair_config (known after apply)
+
+      + scaling_config {
+          + desired_size = 2
+          + max_size     = 2
+          + min_size     = 2
+        }
+
+      + update_config {
+          + max_unavailable = 1
+        }
+    }
+
+  # aws_eks_pod_identity_association.ebs will be created
+  + resource "aws_eks_pod_identity_association" "ebs" {
+      + association_arn      = (known after apply)
+      + association_id       = (known after apply)
+      + cluster_name         = "archit-studyslot"
+      + disable_session_tags = false
+      + external_id          = (known after apply)
+      + id                   = (known after apply)
+      + namespace            = "kube-system"
+      + region               = "us-east-1"
+      + role_arn             = (known after apply)
+      + service_account      = "ebs-csi-controller-sa"
+      + tags_all             = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+    }
+
+  # aws_iam_openid_connect_provider.github[0] will be created
+  + resource "aws_iam_openid_connect_provider" "github" {
+      + arn             = (known after apply)
+      + client_id_list  = [
+          + "sts.amazonaws.com",
+        ]
+      + id              = (known after apply)
+      + tags_all        = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + thumbprint_list = (known after apply)
+      + url             = "https://token.actions.githubusercontent.com"
+    }
+
+  # aws_iam_role.cluster will be created
+  + resource "aws_iam_role" "cluster" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "eks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "studyslot-eks-control-plane"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role.ebs will be created
+  + resource "aws_iam_role" "ebs" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "sts:AssumeRole",
+                          + "sts:TagSession",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "pods.eks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "studyslot-ebs-driver"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role.github_deploy will be created
+  + resource "aws_iam_role" "github_deploy" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = (known after apply)
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "studyslot-github-deploy"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role.node will be created
+  + resource "aws_iam_role" "node" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "studyslot-eks-workers"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role_policy.describe_ci will be created
+  + resource "aws_iam_role_policy" "describe_ci" {
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + name_prefix = (known after apply)
+      + policy      = (known after apply)
+      + role        = (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.cluster will be created
+  + resource "aws_iam_role_policy_attachment" "cluster" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+      + role       = "studyslot-eks-control-plane"
+    }
+
+  # aws_iam_role_policy_attachment.ebs will be created
+  + resource "aws_iam_role_policy_attachment" "ebs" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+      + role       = "studyslot-ebs-driver"
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"] will be created
+  + resource "aws_iam_role_policy_attachment" "node" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+      + role       = "studyslot-eks-workers"
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"] will be created
+  + resource "aws_iam_role_policy_attachment" "node" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+      + role       = "studyslot-eks-workers"
+    }
+
+  # aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"] will be created
+  + resource "aws_iam_role_policy_attachment" "node" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+      + role       = "studyslot-eks-workers"
+    }
+
+  # aws_internet_gateway.lab will be created
+  + resource "aws_internet_gateway" "lab" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + region   = "us-east-1"
+      + tags_all = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # aws_route_table.public will be created
+  + resource "aws_route_table" "public" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + gateway_id                 = (known after apply)
+                # (12 unchanged attributes hidden)
+            },
+        ]
+      + tags_all         = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table_association.public[0] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.public[1] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_subnet.public[0] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.42.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Name"                   = "studyslot-public-1"
+          + "kubernetes.io/role/elb" = "1"
+        }
+      + tags_all                                       = {
+          + "Name"                   = "studyslot-public-1"
+          + "Owner"                  = "Archit-Kulkarni"
+          + "Project"                = "studyslot-homework"
+          + "Roll"                   = "24BCS10194"
+          + "kubernetes.io/role/elb" = "1"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.public[1] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.42.2.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = true
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Name"                   = "studyslot-public-2"
+          + "kubernetes.io/role/elb" = "1"
+        }
+      + tags_all                                       = {
+          + "Name"                   = "studyslot-public-2"
+          + "Owner"                  = "Archit-Kulkarni"
+          + "Project"                = "studyslot-homework"
+          + "Roll"                   = "24BCS10194"
+          + "kubernetes.io/role/elb" = "1"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_vpc.lab will be created
+  + resource "aws_vpc" "lab" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.42.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags                                 = {
+          + "Name" = "studyslot-vpc"
+        }
+      + tags_all                             = {
+          + "Name"    = "studyslot-vpc"
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+    }
+
+Plan: 26 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + github_deploy_role_arn = (known after apply)
+  + public_subnet_ids      = [
+      + (known after apply),
+      + (known after apply),
+    ]
+  + vpc_id                 = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: project.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "project.tfplan"
+
+Exit code: 0

@@ -1,0 +1,12 @@
+Recorded: 2026-10-16T11:01:05.393682+00:00
+Command: wsl.exe -d Ubuntu -u root -- env PATH=/root/.minikube/cache/linux/amd64/v1.37.0:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin helm upgrade --install studyslot project/helm/studyslot -n studyslot --take-ownership --set imageTag=ea51f5a57bcb2fd435a33cc64a91730c17b824f3 --set ingress.host=localhost --set monitoring.serviceMonitor=true --wait --timeout 300s
+
+Release "studyslot" does not exist. Installing it now.
+NAME: studyslot
+LAST DEPLOYED: Fri Oct 16 11:01:06 2026
+NAMESPACE: studyslot
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+
+Exit code: 0

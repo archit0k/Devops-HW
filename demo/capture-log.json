@@ -12,7 +12,7 @@
     "section": "Presentation",
     "start": "00:00:12.00",
     "seconds": 12,
-    "caption": "Presentation 2/10 \u00e2\u20ac\u201d StudySlot, Archit Kulkarni, 24BCS10194",
+    "caption": "Presentation 2/10 \u2014 StudySlot, Archit Kulkarni, 24BCS10194",
     "capturedAt": "2026-10-16T11:40:14.331Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "860c03f99f0ecd2d563d74abb03baca30c0b9da9d602be146797058ffe14691f"
@@ -21,7 +21,7 @@
     "section": "Presentation",
     "start": "00:00:24.00",
     "seconds": 12,
-    "caption": "Presentation 3/10 \u00e2\u20ac\u201d StudySlot, Archit Kulkarni, 24BCS10194",
+    "caption": "Presentation 3/10 \u2014 StudySlot, Archit Kulkarni, 24BCS10194",
     "capturedAt": "2026-10-16T11:40:14.760Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "bda51c173d5910d2abc325e3a736b2d52f20b1e2c4d799f46d8a6da926160ae6"
@@ -30,7 +30,7 @@
     "section": "Presentation",
     "start": "00:00:36.00",
     "seconds": 12,
-    "caption": "Presentation 4/10 \u00e2\u20ac\u201d StudySlot, Archit Kulkarni, 24BCS10194",
+    "caption": "Presentation 4/10 \u2014 StudySlot, Archit Kulkarni, 24BCS10194",
     "capturedAt": "2026-10-16T11:40:15.224Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "36965d245bdc3b2c7f61450f91d94ef30a914da903fabb9e52a8155251bc47ed"
@@ -39,7 +39,7 @@
     "section": "Presentation",
     "start": "00:00:48.00",
     "seconds": 12,
-    "caption": "Presentation 5/10 \u00e2\u20ac\u201d StudySlot, Archit Kulkarni, 24BCS10194",
+    "caption": "Presentation 5/10 \u2014 StudySlot, Archit Kulkarni, 24BCS10194",
     "capturedAt": "2026-10-16T11:40:15.598Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "911dbdbd2cde6fec7e86631d245bd956d726aaf7f80769f4714563bf2040588a"
@@ -48,7 +48,7 @@
     "section": "Presentation",
     "start": "00:01:00.00",
     "seconds": 12,
-    "caption": "Presentation 6/10 \u00e2\u20ac\u201d StudySlot architecture and DevOps workflow",
+    "caption": "Presentation 6/10 \u2014 StudySlot architecture and DevOps workflow",
     "capturedAt": "2026-10-16T11:40:20.738Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "cd656671a7dcdd68733cf25ebe3e36f86bdc28246df25aea61b2e9eb9fa3dd85"
@@ -57,7 +57,7 @@
     "section": "Presentation",
     "start": "00:01:12.00",
     "seconds": 12,
-    "caption": "Presentation 7/10 \u00e2\u20ac\u201d StudySlot architecture and DevOps workflow",
+    "caption": "Presentation 7/10 \u2014 StudySlot architecture and DevOps workflow",
     "capturedAt": "2026-10-16T11:40:21.158Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "3a13fab9132076dc03ad4fb2a9e70c4189183f28dd33f66ee909f6805d345313"
@@ -66,7 +66,7 @@
     "section": "Presentation",
     "start": "00:01:24.00",
     "seconds": 12,
-    "caption": "Presentation 8/10 \u00e2\u20ac\u201d StudySlot architecture and DevOps workflow",
+    "caption": "Presentation 8/10 \u2014 StudySlot architecture and DevOps workflow",
     "capturedAt": "2026-10-16T11:40:21.546Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "c94639102e366d08e350fc530605d68dbba466f593781b382deaeee10330be94"
@@ -75,7 +75,7 @@
     "section": "Presentation",
     "start": "00:01:36.00",
     "seconds": 12,
-    "caption": "Presentation 9/10 \u00e2\u20ac\u201d StudySlot architecture and DevOps workflow",
+    "caption": "Presentation 9/10 \u2014 StudySlot architecture and DevOps workflow",
     "capturedAt": "2026-10-16T11:40:21.966Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "fe3e968aeae9033ff022fc10305bbea6849104c22294afb34c01667d85c9e456"
@@ -84,7 +84,7 @@
     "section": "Presentation",
     "start": "00:01:48.00",
     "seconds": 12,
-    "caption": "Presentation 10/10 \u00e2\u20ac\u201d StudySlot architecture and DevOps workflow",
+    "caption": "Presentation 10/10 \u2014 StudySlot architecture and DevOps workflow",
     "capturedAt": "2026-10-16T11:40:22.369Z",
     "sourceUrl": "http://localhost:8765/demo/slides.html",
     "captureSha256": "0220b27f76fca0d2f71e92dffeea920b7e5d065a46bf36b3218879eabb23b4f4"

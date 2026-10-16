@@ -1,0 +1,395 @@
+Recorded: 2026-10-16T10:29:44.241084+00:00
+Command: wsl.exe -d Ubuntu -u root -- env KEEP_RUNNING=1 SEED_DEMO=1 bash project/scripts/run-compose.sh
+
++ docker compose up --build -d --wait --wait-timeout 240
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.59kB done
+#1 DONE 0.0s
+
+#2 [migrate internal] load build definition from Dockerfile
+#2 transferring dockerfile: 30B 0.1s
+#2 ...
+
+#3 [frontend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 478B 0.1s done
+#3 DONE 0.3s
+
+#2 [migrate internal] load build definition from Dockerfile
+#2 transferring dockerfile: 643B 0.1s done
+#2 DONE 0.3s
+
+#4 [frontend internal] load metadata for docker.io/library/nginx:stable-alpine
+#4 ...
+
+#5 [migrate internal] load metadata for docker.io/library/python:3.14-alpine
+#5 ...
+
+#6 [frontend internal] load metadata for docker.io/library/node:24-alpine
+#6 ...
+
+#5 [backend internal] load metadata for docker.io/library/python:3.14-alpine
+#5 DONE 12.0s
+
+#7 [backend internal] load .dockerignore
+#7 transferring context: 101B 0.1s done
+#7 transferring context: 101B 0.1s done
+#7 DONE 0.1s
+
+#8 [migrate internal] load build context
+#8 ...
+
+#9 [migrate 1/8] FROM docker.io/library/python:3.14-alpine@sha256:f6a589d43c42b9e7f7dc67a12d37132491f362859a5d750607710cc56da3bc72
+#9 resolve docker.io/library/python:3.14-alpine@sha256:f6a589d43c42b9e7f7dc67a12d37132491f362859a5d750607710cc56da3bc72 0.1s done
+#9 DONE 0.1s
+
+#10 [migrate 2/8] WORKDIR /app
+#10 CACHED
+
+#8 [migrate internal] load build context
+#8 transferring context: 23.51kB 0.3s done
+#8 DONE 0.3s
+
+#11 [backend 3/8] RUN apk upgrade --no-cache     && addgroup -g 10001 studyslot && adduser -D -u 10001 -G studyslot studyslot
+#11 5.027 (1/2) Upgrading zlib (1.3.2-r0 -> 1.3.2-r1)
+#11 5.115 (2/2) Upgrading tzdata (2026d-r0 -> 2026e-r0)
+#11 5.450 OK: 12.1 MiB in 30 packages
+#11 DONE 5.9s
+
+#12 [migrate 4/8] COPY requirements.txt .
+#12 DONE 0.4s
+
+#13 [migrate 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#13 6.300 Requirement already satisfied: pip in /usr/local/lib/python3.14/site-packages (26.2.1)
+#13 ...
+
+#6 [frontend internal] load metadata for docker.io/library/node:24-alpine
+#6 DONE 26.3s
+
+#4 [frontend internal] load metadata for docker.io/library/nginx:stable-alpine
+#4 DONE 27.9s
+
+#13 [migrate 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#13 ...
+
+#14 [frontend internal] load .dockerignore
+#14 transferring context: 64B 0.1s done
+#14 DONE 0.1s
+
+#15 [frontend internal] load build context
+#15 DONE 0.0s
+
+#16 [frontend stage-1 1/4] FROM docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5
+#16 resolve docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5
+#16 resolve docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5 0.2s done
+#16 ...
+
+#15 [frontend internal] load build context
+#15 transferring context: 40.85kB 0.2s done
+#15 DONE 0.3s
+
+#17 [frontend build 1/7] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#17 resolve docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f 0.2s done
+#17 DONE 0.8s
+
+#13 [migrate 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#13 10.30 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#13 ...
+
+#17 [frontend build 1/7] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 9.44MB / 57.33MB 5.1s
+#17 sha256:862c5dc468d45e2429239f43ada1e4e4bba2fa8e215f39c3f2dcc558c65007b1 0B / 441B 5.1s
+#17 sha256:2af284e0bab394dd343f480c97a8438422f4a8f3aaae795457c6de5dfa89b3dd 0B / 1.26MB 5.0s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 12.58MB / 57.33MB 6.2s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 15.73MB / 57.33MB 7.2s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 18.87MB / 57.33MB 8.4s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 22.02MB / 57.33MB 9.2s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 25.17MB / 57.33MB 9.8s
+#17 sha256:862c5dc468d45e2429239f43ada1e4e4bba2fa8e215f39c3f2dcc558c65007b1 0B / 441B 10.2s
+#17 sha256:2af284e0bab394dd343f480c97a8438422f4a8f3aaae795457c6de5dfa89b3dd 0B / 1.26MB 10.1s
+#17 ...
+
+#16 [frontend stage-1 1/4] FROM docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5
+#16 sha256:28929cdf5be0fd764b759a1469570a6ca74c1eb000707f43dd8dc2d68657e8d0 15.73MB / 20.31MB 9.9s
+#16 ...
+
+#17 [frontend build 1/7] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 28.31MB / 57.33MB 10.7s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 32.51MB / 57.33MB 11.6s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 35.65MB / 57.33MB 12.3s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 38.80MB / 57.33MB 12.8s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 41.94MB / 57.33MB 13.4s
+#17 sha256:862c5dc468d45e2429239f43ada1e4e4bba2fa8e215f39c3f2dcc558c65007b1 441B / 441B 13.3s done
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 45.09MB / 57.33MB 13.8s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 48.23MB / 57.33MB 15.0s
+#17 sha256:2af284e0bab394dd343f480c97a8438422f4a8f3aaae795457c6de5dfa89b3dd 0B / 1.26MB 15.2s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 51.38MB / 57.33MB 16.4s
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 54.53MB / 57.33MB 17.0s
+#17 sha256:2af284e0bab394dd343f480c97a8438422f4a8f3aaae795457c6de5dfa89b3dd 1.05MB / 1.26MB 17.3s
+#17 ...
+
+#16 [frontend stage-1 1/4] FROM docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5
+#16 sha256:28929cdf5be0fd764b759a1469570a6ca74c1eb000707f43dd8dc2d68657e8d0 20.31MB / 20.31MB 11.6s done
+#16 sha256:9aab0913f3044d021b69c7b998f5373994336765dd510256c02e90e5ccc347de 1.40kB / 1.40kB 0.4s done
+#16 sha256:f6591080e8dd90768d164b2d35e440e00bf94dca94a6e429a57c4fddd19bb5d9 1.21kB / 1.21kB 0.3s done
+#16 sha256:7b5202971cfe9d7ea3d5e50c27042a2ebac63194d6691506cb9d3a8c0ea81e4c 404B / 404B 0.4s done
+#16 sha256:258d8d3acc3e2a26bba074c3994d9ded71ac95a550ff756983e12b7cc8c86025 964B / 964B 0.4s done
+#16 sha256:a9bafeab4f16557b40bed8af8bcb4e3d2a50a3ebf922d8a47552997a9c6a7d0a 628B / 628B 0.4s done
+#16 sha256:b40d04ac48f7946b98c936ccbb07daf62cd6b4c63c41bcba0196d02866163bbe 4.36MB / 4.36MB 3.4s done
+#16 extracting sha256:b40d04ac48f7946b98c936ccbb07daf62cd6b4c63c41bcba0196d02866163bbe 0.5s done
+#16 extracting sha256:a9bafeab4f16557b40bed8af8bcb4e3d2a50a3ebf922d8a47552997a9c6a7d0a 0.1s done
+#16 DONE 18.3s
+
+#17 [frontend build 1/7] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#17 ...
+
+#13 [migrate 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#13 26.41 Collecting fastapi==0.142.2 (from -r requirements.txt (line 1))
+#13 ...
+
+#16 [frontend stage-1 1/4] FROM docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5
+#16 extracting sha256:258d8d3acc3e2a26bba074c3994d9ded71ac95a550ff756983e12b7cc8c86025 0.1s done
+#16 extracting sha256:7b5202971cfe9d7ea3d5e50c27042a2ebac63194d6691506cb9d3a8c0ea81e4c 0.1s done
+#16 DONE 18.4s
+
+#16 [frontend stage-1 1/4] FROM docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5
+#16 extracting sha256:f6591080e8dd90768d164b2d35e440e00bf94dca94a6e429a57c4fddd19bb5d9 0.1s done
+#16 extracting sha256:9aab0913f3044d021b69c7b998f5373994336765dd510256c02e90e5ccc347de
+#16 extracting sha256:9aab0913f3044d021b69c7b998f5373994336765dd510256c02e90e5ccc347de 0.4s done
+#16 extracting sha256:28929cdf5be0fd764b759a1469570a6ca74c1eb000707f43dd8dc2d68657e8d0
+#16 extracting sha256:28929cdf5be0fd764b759a1469570a6ca74c1eb000707f43dd8dc2d68657e8d0 1.1s done
+#16 DONE 19.9s
+
+#17 [frontend build 1/7] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#17 sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 57.33MB / 57.33MB 18.0s done
+#17 sha256:2af284e0bab394dd343f480c97a8438422f4a8f3aaae795457c6de5dfa89b3dd 1.26MB / 1.26MB 17.9s done
+#17 extracting sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608
+#17 extracting sha256:c3fb422c2ba38fa35c8cca2a7872ca59ca302e4394e8edc96434c39b282b8608 3.3s done
+#17 DONE 22.2s
+
+#13 [migrate 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#13 30.75   Downloading fastapi-0.142.2-py3-none-any.whl.metadata (27 kB)
+#13 ...
+
+#17 [frontend build 1/7] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#17 extracting sha256:2af284e0bab394dd343f480c97a8438422f4a8f3aaae795457c6de5dfa89b3dd 0.1s done
+#17 extracting sha256:862c5dc468d45e2429239f43ada1e4e4bba2fa8e215f39c3f2dcc558c65007b1 0.1s done
+#17 DONE 22.4s
+
+#18 [frontend build 2/7] WORKDIR /app
+#18 DONE 0.8s
+
+#13 [migrate 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#13 32.21 Collecting uvicorn==0.54.0 (from -r requirements.txt (line 2))
+#13 32.36   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#13 ...
+
+#19 [frontend build 3/7] COPY package*.json ./
+#19 DONE 0.2s
+
+#20 [frontend build 4/7] RUN npm ci
+#20 ...
+
+#21 [frontend stage-1 2/4] RUN apk upgrade --no-cache && mkdir -p /tmp/nginx /var/cache/nginx     && chown -R nginx:nginx /var/cache/nginx /tmp/nginx
+#21 7.179 (1/1) Upgrading zlib (1.3.2-r0 -> 1.3.2-r1)
+#21 7.242 OK: 59.1 MiB in 71 packages
+#21 DONE 7.4s
+
+#22 [frontend stage-1 3/4] COPY nginx.conf /etc/nginx/nginx.conf
+#22 DONE 0.2s
+
+#13 [migrate 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#13 34.54 Collecting SQLAlchemy==2.1.3 (from -r requirements.txt (line 3))
+#13 34.63   Downloading sqlalchemy-2.1.3-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (9.7 kB)
+#13 34.83 Collecting psycopg==3.3.6 (from psycopg[binary]==3.3.6->-r requirements.txt (line 4))
+#13 34.86   Downloading psycopg-3.3.6-py3-none-any.whl.metadata (4.4 kB)
+#13 35.06 Collecting alembic==1.20.0 (from -r requirements.txt (line 5))
+#13 35.13   Downloading alembic-1.20.0-py3-none-any.whl.metadata (7.3 kB)
+#13 35.23 Collecting prometheus-client==0.26.0 (from -r requirements.txt (line 6))
+#13 35.27   Downloading prometheus_client-0.26.0-py3-none-any.whl.metadata (2.1 kB)
+#13 35.48 Collecting starlette>=0.46.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#13 35.54   Downloading starlette-1.8.0-py3-none-any.whl.metadata (6.6 kB)
+#13 36.36 Collecting pydantic>=2.9.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#13 36.45   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+#13 36.98 Collecting typing-extensions>=4.8.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#13 37.07   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#13 37.13 Collecting typing-inspection>=0.4.2 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#13 37.17   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#13 37.21 Collecting annotated-doc>=0.0.2 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#13 37.28   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#13 37.40 Collecting opentelemetry-api>=1.44.0 (from fastapi==0.142.2->-r requirements.txt (line 1))
+#13 37.48   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+#13 37.61 Collecting click>=7.0 (from uvicorn==0.54.0->-r requirements.txt (line 2))
+#13 37.68   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#13 37.79 Collecting h11>=0.8 (from uvicorn==0.54.0->-r requirements.txt (line 2))
+#13 37.83   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#13 38.01 Collecting Mako (from alembic==1.20.0->-r requirements.txt (line 5))
+#13 38.09   Downloading mako-1.4.3-py3-none-any.whl.metadata (2.9 kB)
+#13 39.11 Collecting psycopg-binary==3.3.6 (from psycopg[binary]==3.3.6->-r requirements.txt (line 4))
+#13 39.15   Downloading psycopg_binary-3.3.6-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (2.7 kB)
+#13 39.32 Collecting annotated-types>=0.6.0 (from pydantic>=2.9.0->fastapi==0.142.2->-r requirements.txt (line 1))
+#13 39.35   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#13 44.83 Collecting pydantic-core==2.50.1 (from pydantic>=2.9.0->fastapi==0.142.2->-r requirements.txt (line 1))
+#13 44.86   Downloading pydantic_core-2.50.1-cp314-cp314-musllinux_1_1_x86_64.whl.metadata (6.5 kB)
+#13 44.97 Collecting anyio<5,>=4.0.0 (from starlette>=0.46.0->fastapi==0.142.2->-r requirements.txt (line 1))
+#13 45.05   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#13 45.16 Collecting idna>=2.8 (from anyio<5,>=4.0.0->starlette>=0.46.0->fastapi==0.142.2->-r requirements.txt (line 1))
+#13 45.21   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#13 45.66 Collecting MarkupSafe>=2.0 (from Mako->alembic==1.20.0->-r requirements.txt (line 5))
+#13 45.70   Downloading markupsafe-3.0.4-cp314-cp314-musllinux_1_2_x86_64.whl.metadata (2.7 kB)
+#13 45.78 Downloading fastapi-0.142.2-py3-none-any.whl (144 kB)
+#13 46.18 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#13 46.60 Downloading sqlalchemy-2.1.3-cp314-cp314-musllinux_1_2_x86_64.whl (4.6 MB)
+#13 54.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.6/4.6 MB 611.2 kB/s  0:00:07
+#13 54.42 Downloading psycopg-3.3.6-py3-none-any.whl (215 kB)
+#13 54.71 Downloading alembic-1.20.0-py3-none-any.whl (268 kB)
+#13 55.03 Downloading prometheus_client-0.26.0-py3-none-any.whl (64 kB)
+#13 55.19 Downloading psycopg_binary-3.3.6-cp314-cp314-musllinux_1_2_x86_64.whl (4.3 MB)
+#13 62.29    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.3/4.3 MB 591.4 kB/s  0:00:07
+#13 62.37 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#13 62.40 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#13 62.60 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#13 62.80 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+#13 62.88 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+#13 63.41 Downloading pydantic_core-2.50.1-cp314-cp314-musllinux_1_1_x86_64.whl (2.5 MB)
+#13 66.76    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.5/2.5 MB 722.1 kB/s  0:00:03
+#13 66.80 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#13 66.90 Downloading starlette-1.8.0-py3-none-any.whl (79 kB)
+#13 67.07 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#13 67.29 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#13 67.38 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#13 67.41 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#13 67.71 Downloading mako-1.4.3-py3-none-any.whl (80 kB)
+#13 67.89 Downloading markupsafe-3.0.4-cp314-cp314-musllinux_1_2_x86_64.whl (23 kB)
+#13 68.53 Installing collected packages: typing-extensions, psycopg-binary, psycopg, prometheus-client, MarkupSafe, idna, h11, click, annotated-types, annotated-doc, uvicorn, typing-inspection, SQLAlchemy, pydantic-core, opentelemetry-api, Mako, anyio, starlette, pydantic, alembic, fastapi
+#13 81.53 
+#13 81.54 Successfully installed Mako-1.4.3 MarkupSafe-3.0.4 SQLAlchemy-2.1.3 alembic-1.20.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 click-8.5.0 fastapi-0.142.2 h11-0.16.0 idna-3.20 opentelemetry-api-1.45.1 prometheus-client-0.26.0 psycopg-3.3.6 psycopg-binary-3.3.6 pydantic-2.14.1 pydantic-core-2.50.1 starlette-1.8.0 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.54.0
+#13 81.54 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#13 86.84 Found existing installation: pip 26.2.1
+#13 86.97 Uninstalling pip-26.2.1:
+#13 87.74   Successfully uninstalled pip-26.2.1
+#13 87.79 WARNING: Skipping setuptools as it is not installed.
+#13 87.80 WARNING: Skipping wheel as it is not installed.
+#13 87.80 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#13 DONE 88.3s
+
+#23 [migrate 6/8] COPY --chown=studyslot:studyslot app ./app
+#23 DONE 0.3s
+
+#24 [backend 7/8] COPY --chown=studyslot:studyslot alembic ./alembic
+#24 DONE 0.3s
+
+#25 [backend 8/8] COPY --chown=studyslot:studyslot alembic.ini ./
+#25 DONE 0.2s
+
+#26 [migrate] exporting to image
+#26 exporting layers
+#26 exporting layers 6.0s done
+#26 exporting manifest sha256:1964976b434fe6aee4e614daf49e321d5d2da9fa8d23ad70f9ba55ef07c5e37f 0.1s done
+#26 exporting config sha256:77f888e935ead24504a7bf1a9a7e33a632b5359e8b2f0316bf58765709affb1b 0.1s done
+#26 exporting attestation manifest sha256:6caef1251060777d28c26e02ccab87c88b2eead7959bc106d73e38d2f96b14a7
+#26 exporting attestation manifest sha256:6caef1251060777d28c26e02ccab87c88b2eead7959bc106d73e38d2f96b14a7 0.2s done
+#26 exporting manifest list sha256:eec5c2e9327c63e88d1a96577c65f6ec4a99970900b7e69aae6065ea7eede1d9
+#26 exporting manifest list sha256:eec5c2e9327c63e88d1a96577c65f6ec4a99970900b7e69aae6065ea7eede1d9 0.1s done
+#26 naming to docker.io/library/studyslot-backend:local 0.0s done
+#26 unpacking to docker.io/library/studyslot-backend:local
+#26 unpacking to docker.io/library/studyslot-backend:local 2.4s done
+#26 DONE 8.9s
+
+#27 [backend] exporting to image
+#27 exporting layers 6.0s done
+#27 exporting manifest sha256:e910bec0b81863ae13a5eb7cecbabcbfa2a7ce99f5ca21068d69695fe68d629c 0.1s done
+#27 exporting config sha256:386f85a1054faf5be8551d36864450e40842436eb5cfcb9ee7c12cbd8db84f3f 0.1s done
+#27 exporting attestation manifest sha256:c9e4f3bedb54bc7970c7001f686a01431048e9ebf85c7d080e5c9ed999b69838 0.2s done
+#27 exporting manifest list sha256:e122d754940286c9b1b4ba8b3251ac7ccbadd1758915a03b66161093c95dfe1f 0.1s done
+#27 naming to docker.io/library/studyslot-backend:local 0.0s done
+#27 unpacking to docker.io/library/studyslot-backend:local 2.4s done
+#27 DONE 9.0s
+
+#20 [frontend build 4/7] RUN npm ci
+#20 65.27 
+#20 65.27 added 21 packages in 1m
+#20 65.27 
+#20 65.27 9 packages are looking for funding
+#20 65.27   run `npm fund` for details
+#20 65.27 npm notice
+#20 65.27 npm notice New major version of npm available! 11.19.1 -> 12.2.0
+#20 65.27 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#20 65.27 npm notice To update run: npm install -g npm@12.2.0
+#20 65.27 npm notice
+#20 ...
+
+#28 [migrate] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [backend] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#20 [frontend build 4/7] RUN npm ci
+#20 DONE 68.7s
+
+#30 [frontend build 5/7] COPY index.html vite.config.js ./
+#30 DONE 0.5s
+
+#31 [frontend build 6/7] COPY src ./src
+#31 DONE 0.2s
+
+#32 [frontend build 7/7] RUN npm run build
+#32 1.047 
+#32 1.047 > studyslot-frontend@1.0.0 build
+#32 1.047 > vite build
+#32 1.047 
+#32 1.806 vite v8.3.3 building client environment for production...
+#32 1.861 transforming...
+#32 2.079 ✓ 15 modules transformed.
+#32 2.174 rendering chunks...
+#32 2.302 computing gzip size...
+#32 2.315 dist/index.html                   0.45 kB │ gzip:  0.30 kB
+#32 2.315 dist/assets/index-CRcmMn4p.css    4.66 kB │ gzip:  1.64 kB
+#32 2.315 dist/assets/index-CKZAsdG3.js   226.50 kB │ gzip: 71.02 kB
+#32 2.315 
+#32 2.318 ✓ built in 500ms
+#32 DONE 2.7s
+
+#33 [frontend stage-1 4/4] COPY --from=build /app/dist /usr/share/nginx/html
+#33 DONE 0.5s
+
+#34 [frontend] exporting to image
+#34 exporting layers
+#34 exporting layers 2.1s done
+#34 exporting manifest sha256:96071c22d98e60470f90797345902b9db9d8e9130d8b18c79aa218fc117be414 0.1s done
+#34 exporting config sha256:42eef3170d267ec31c18425c4a30f49352abec5ba900a2b027c678c6ad5ed634
+#34 exporting config sha256:42eef3170d267ec31c18425c4a30f49352abec5ba900a2b027c678c6ad5ed634 0.1s done
+#34 exporting attestation manifest sha256:934cb606967d4d7391dafb01ad4e5a09969330e0c128c8bb3dc1db65dab7023c
+#34 exporting attestation manifest sha256:934cb606967d4d7391dafb01ad4e5a09969330e0c128c8bb3dc1db65dab7023c 0.2s done
+#34 exporting manifest list sha256:c13e7982ccd59e68e499229c8da3386accb837c92b91b89f784902ff4e9bd0d1
+#34 exporting manifest list sha256:c13e7982ccd59e68e499229c8da3386accb837c92b91b89f784902ff4e9bd0d1 0.1s done
+#34 naming to docker.io/library/studyslot-frontend:local
+#34 naming to docker.io/library/studyslot-frontend:local 0.0s done
+#34 unpacking to docker.io/library/studyslot-frontend:local
+#34 unpacking to docker.io/library/studyslot-frontend:local 0.4s done
+#34 DONE 3.2s
+
+#35 [frontend] resolving provenance for metadata file
+#35 DONE 0.0s
+ studyslot-backend:local  Built
+ studyslot-backend:local  Built
+ studyslot-frontend:local  Built
+ Container studyslot-postgres-1  Recreate
+ Container studyslot-postgres-1  Recreated
+ Container studyslot-migrate-1  Recreate
+ Container studyslot-migrate-1  Recreated
+ Container studyslot-backend-1  Recreate
+ Container studyslot-backend-1  Recreated
+ Container studyslot-frontend-1  Recreate
+ Container studyslot-frontend-1  Recreated
+ Container studyslot-postgres-1  Starting
+ Container studyslot-postgres-1  Started
+ Container studyslot-postgres-1  Waiting
+ Container studyslot-postgres-1  Healthy
+ Container studyslot-migrate-1  Starting
+ Container studyslot-migrate-1  Started
+ Container studyslot-migrate-1  Waiting
+ Container studyslot-migrate-1  service "migrate" didn't complete successfully: exit 1
+service "migrate" didn't complete successfully: exit 1
+
+Exit code: 1

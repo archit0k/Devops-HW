@@ -3,7 +3,7 @@
 Archit Kulkarni · 24BCS10194 · Section A
 
 - [Presentation](presentation.pptx) — ten slides covering the app, architecture, stack, tests, CI/CD, AWS, Kubernetes/GitOps, monitoring and learnings.
-- [Walkthrough video](walkthrough.mp4) — captioned MP4. Download it if GitHub does not show an inline player.
+- [Walkthrough video](walkthrough.mp4) — 7:39 captioned H.264 MP4. Download it if GitHub does not show an inline player.
 - [Captions](walkthrough.srt) and [capture log](capture-log.json).
 - [Slide preview](slides.html) — download this folder and open the HTML file locally, or open the individual images in `slides/`.
 

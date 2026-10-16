@@ -1,0 +1,23 @@
+Recorded: 2026-10-16T11:37:39.769271+00:00
+Command: wsl -d Ubuntu -u root -- bash project/scripts/terraform-lab.sh apply
+
+aws_eks_access_policy_association.ci: Destroying... [id=archit-studyslot#arn:aws:iam::731372490400:role/studyslot-github-deploy#arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy]
+aws_eks_access_policy_association.ci: Destruction complete after 2s
+aws_eks_access_entry.ci: Modifying... [id=archit-studyslot:arn:aws:iam::731372490400:role/studyslot-github-deploy]
+aws_eks_access_entry.ci: Modifications complete after 2s [id=archit-studyslot:arn:aws:iam::731372490400:role/studyslot-github-deploy]
+aws_eks_access_policy_association.ci: Creating...
+aws_eks_access_policy_association.ci: Creation complete after 1s [id=archit-studyslot#arn:aws:iam::731372490400:role/studyslot-github-deploy#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy]
+
+Apply complete! Resources: 1 added, 1 changed, 1 destroyed.
+
+Outputs:
+
+cluster_name = "archit-studyslot"
+github_deploy_role_arn = "arn:aws:iam::731372490400:role/studyslot-github-deploy"
+public_subnet_ids = [
+  "subnet-06e32e1e3d0233426",
+  "subnet-0bdfe1bfdb26e9b15",
+]
+vpc_id = "vpc-09363c7f725b28c28"
+
+Exit code: 0

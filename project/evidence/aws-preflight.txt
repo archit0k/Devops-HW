@@ -1,0 +1,40 @@
+Recorded: 2026-10-16T10:37:25.854874+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash project/scripts/aws-preflight.sh
+
+{
+    "UserId": "731372490400",
+    "Account": "731372490400",
+    "Arn": "arn:aws:iam::731372490400:root"
+}
+{
+    "clusters": []
+}
+[]
+[]
+{
+    "OpenIDConnectProviderList": []
+}
+[
+    {
+        "version": "1.35",
+        "status": "STANDARD_SUPPORT",
+        "endStandard": "2027-03-27T00:00:00+00:00"
+    }
+]
+[
+    {
+        "period": {
+            "Start": "2026-10-01",
+            "End": "2026-10-17"
+        },
+        "total": {
+            "UnblendedCost": {
+                "Amount": "-0.0000000298",
+                "Unit": "USD"
+            }
+        },
+        "estimated": true
+    }
+]
+
+Exit code: 0

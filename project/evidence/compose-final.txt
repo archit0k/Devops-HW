@@ -1,0 +1,298 @@
+Recorded: 2026-10-16T10:34:32.772179+00:00
+Command: wsl.exe -d Ubuntu -u root -- env KEEP_RUNNING=1 SEED_DEMO=1 bash project/scripts/run-compose.sh
+
++ docker compose up --build -d --wait --wait-timeout 240
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.61kB done
+#1 DONE 0.0s
+
+#2 [migrate internal] load build definition from Dockerfile
+#2 transferring dockerfile: 30B 0.1s
+#2 transferring dockerfile: 643B 0.2s done
+#2 DONE 0.2s
+
+#3 [frontend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 478B 0.1s done
+#3 DONE 0.2s
+
+#4 [migrate internal] load metadata for docker.io/library/python:3.14-alpine
+#4 ...
+
+#5 [frontend internal] load metadata for docker.io/library/node:24-alpine
+#5 DONE 4.3s
+
+#6 [frontend internal] load metadata for docker.io/library/nginx:stable-alpine
+#6 DONE 4.3s
+
+#7 [frontend internal] load .dockerignore
+#7 transferring context: 64B 0.1s done
+#7 DONE 0.2s
+
+#4 [migrate internal] load metadata for docker.io/library/python:3.14-alpine
+#4 DONE 4.5s
+
+#8 [frontend internal] load build context
+#8 DONE 0.0s
+
+#9 [migrate internal] load .dockerignore
+#9 transferring context: 101B 0.1s done
+#9 DONE 0.2s
+
+#10 [frontend build 1/7] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#10 resolve docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f 0.2s done
+#10 DONE 0.2s
+
+#11 [frontend stage-1 1/4] FROM docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5
+#11 resolve docker.io/library/nginx:stable-alpine@sha256:970364228b1e4f932abc22d321932816782cca8a20b85a77552a7cfe9acfb3b5 0.2s done
+#11 DONE 0.2s
+
+#12 [migrate internal] load build context
+#12 ...
+
+#13 [migrate 1/8] FROM docker.io/library/python:3.14-alpine@sha256:f6a589d43c42b9e7f7dc67a12d37132491f362859a5d750607710cc56da3bc72
+#13 resolve docker.io/library/python:3.14-alpine@sha256:f6a589d43c42b9e7f7dc67a12d37132491f362859a5d750607710cc56da3bc72 0.1s done
+#13 DONE 0.1s
+
+#12 [migrate internal] load build context
+#12 ...
+
+#8 [frontend internal] load build context
+#8 transferring context: 254B 0.3s done
+#8 DONE 0.4s
+
+#14 [frontend build 5/7] COPY index.html vite.config.js ./
+#14 CACHED
+
+#15 [frontend stage-1 2/4] RUN apk upgrade --no-cache && mkdir -p /tmp/nginx /var/cache/nginx     && chown -R nginx:nginx /var/cache/nginx /tmp/nginx
+#15 CACHED
+
+#16 [frontend build 4/7] RUN npm ci
+#16 CACHED
+
+#17 [frontend build 7/7] RUN npm run build
+#17 CACHED
+
+#18 [frontend build 3/7] COPY package*.json ./
+#18 CACHED
+
+#19 [frontend build 6/7] COPY src ./src
+#19 CACHED
+
+#20 [frontend stage-1 3/4] COPY nginx.conf /etc/nginx/nginx.conf
+#20 CACHED
+
+#21 [frontend build 2/7] WORKDIR /app
+#21 CACHED
+
+#22 [frontend stage-1 4/4] COPY --from=build /app/dist /usr/share/nginx/html
+#22 CACHED
+
+#12 [migrate internal] load build context
+#12 transferring context: 778B 0.4s done
+#12 DONE 0.6s
+
+#23 [backend 2/8] WORKDIR /app
+#23 CACHED
+
+#24 [backend 3/8] RUN apk upgrade --no-cache     && addgroup -g 10001 studyslot && adduser -D -u 10001 -G studyslot studyslot
+#24 CACHED
+
+#25 [backend 7/8] COPY --chown=studyslot:studyslot alembic ./alembic
+#25 CACHED
+
+#26 [backend 4/8] COPY requirements.txt .
+#26 CACHED
+
+#27 [backend 5/8] RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt     && pip uninstall -y pip setuptools wheel
+#27 CACHED
+
+#28 [backend 6/8] COPY --chown=studyslot:studyslot app ./app
+#28 CACHED
+
+#29 [backend 8/8] COPY --chown=studyslot:studyslot alembic.ini ./
+#29 CACHED
+
+#30 [backend] exporting to image
+#30 exporting layers 0.0s done
+#30 exporting manifest sha256:3efd116bb1d6e52d345ff2912fd8e27646f35f0ea823fb3ac6e0be79caf3405c 0.2s done
+#30 exporting config sha256:caea27df4c78c8814eca46452bbbcf46d8f2de68db7e271c694abe48f9858b77
+#30 exporting config sha256:caea27df4c78c8814eca46452bbbcf46d8f2de68db7e271c694abe48f9858b77 0.2s done
+#30 exporting attestation manifest sha256:365b8a8bacc4c84c8911cec72138442abbd9b01c5b95a72bc7fb97c2c394b4ec
+#30 exporting attestation manifest sha256:365b8a8bacc4c84c8911cec72138442abbd9b01c5b95a72bc7fb97c2c394b4ec 0.5s done
+#30 exporting manifest list sha256:402c038e97e00a76d96b6c5a908f72331dacd55b5ee8ed53cb6af9d8c44732aa
+#30 ...
+
+#31 [frontend] exporting to image
+#31 exporting layers 0.0s done
+#31 exporting manifest sha256:98efb2dc1c7a61170cad160a9596ea0eef7997e57e25919548102d1fe516ef90 0.1s done
+#31 exporting config sha256:f281916968e3482320e93636f0e20bf90ed57cedf5969869ac9faef898de4a2d 0.2s done
+#31 exporting attestation manifest sha256:c8033da28977a79b1942ada7b9a6cea8cc3c0c4a88272497bf69189ada98e1df 0.5s done
+#31 exporting manifest list sha256:023040088858c0eaa021f2ff0e0de21b31fc0002d1ea65cc0205b10802230719 0.3s done
+#31 naming to docker.io/library/studyslot-frontend:local 0.1s done
+#31 unpacking to docker.io/library/studyslot-frontend:local 0.1s done
+#31 DONE 1.6s
+
+#30 [backend] exporting to image
+#30 exporting manifest list sha256:402c038e97e00a76d96b6c5a908f72331dacd55b5ee8ed53cb6af9d8c44732aa 0.1s done
+#30 naming to docker.io/library/studyslot-backend:local 0.0s done
+#30 unpacking to docker.io/library/studyslot-backend:local
+#30 unpacking to docker.io/library/studyslot-backend:local 0.1s done
+#30 DONE 1.4s
+
+#32 [migrate] exporting to image
+#32 exporting layers done
+#32 exporting manifest sha256:ba79ef49785160ff639e01a4cf35908a939e70b8c6d524f05f716e8073c6157c 0.2s done
+#32 exporting config sha256:b828ac7a0bb22a87599ce030e72f80cb69bef4bc1d8d02e453e9877b6df43f45 0.2s done
+#32 exporting attestation manifest sha256:9cdd7b49d2484c4dd29652b8d55ccca708bd158319510729356d631f187d0c38 0.4s done
+#32 exporting manifest list sha256:7df891d96725a8fca9d1c0a1a456eb940d2366e8973250c11ba8de74d6dfc948 0.1s done
+#32 naming to docker.io/library/studyslot-backend:local 0.1s done
+#32 unpacking to docker.io/library/studyslot-backend:local 0.1s done
+#32 DONE 1.5s
+
+#33 [frontend] resolving provenance for metadata file
+#33 ...
+
+#34 [backend] resolving provenance for metadata file
+#34 DONE 0.2s
+
+#33 [frontend] resolving provenance for metadata file
+#33 DONE 0.3s
+
+#35 [migrate] resolving provenance for metadata file
+#35 DONE 0.0s
+ studyslot-backend:local  Built
+ studyslot-backend:local  Built
+ studyslot-frontend:local  Built
+ Network studyslot-verify_web  Creating
+ Network studyslot-verify_web  Created
+ Network studyslot-verify_private  Creating
+ Network studyslot-verify_private  Created
+ Volume studyslot-verify_bookings-data  Creating
+ Volume studyslot-verify_bookings-data  Created
+ Container studyslot-verify-postgres-1  Creating
+ Container studyslot-verify-postgres-1  Created
+ Container studyslot-verify-migrate-1  Creating
+ Container studyslot-verify-migrate-1  Created
+ Container studyslot-verify-backend-1  Creating
+ Container studyslot-verify-backend-1  Created
+ Container studyslot-verify-frontend-1  Creating
+ Container studyslot-verify-frontend-1  Created
+ Container studyslot-verify-postgres-1  Starting
+ Container studyslot-verify-postgres-1  Started
+ Container studyslot-verify-postgres-1  Waiting
+ Container studyslot-verify-postgres-1  Healthy
+ Container studyslot-verify-migrate-1  Starting
+ Container studyslot-verify-migrate-1  Started
+ Container studyslot-verify-migrate-1  Waiting
+ Container studyslot-verify-migrate-1  Exited
+ Container studyslot-verify-backend-1  Starting
+ Container studyslot-verify-backend-1  Started
+ Container studyslot-verify-backend-1  Waiting
+ Container studyslot-verify-backend-1  Healthy
+ Container studyslot-verify-frontend-1  Starting
+ Container studyslot-verify-frontend-1  Started
+ Container studyslot-verify-postgres-1  Waiting
+ Container studyslot-verify-migrate-1  Waiting
+ Container studyslot-verify-backend-1  Waiting
+ Container studyslot-verify-frontend-1  Waiting
+ Container studyslot-verify-frontend-1  Healthy
+ Container studyslot-verify-migrate-1  Exited
+ Container studyslot-verify-backend-1  Healthy
+ Container studyslot-verify-postgres-1  Healthy
++ docker compose ps -a
+NAME                          IMAGE                      COMMAND                  SERVICE    CREATED          STATUS                      PORTS
+studyslot-verify-backend-1    studyslot-backend:local    "uvicorn app.main:ap…"   backend    37 seconds ago   Up 14 seconds (healthy)     127.0.0.1:8000->8000/tcp
+studyslot-verify-frontend-1   studyslot-frontend:local   "/docker-entrypoint.…"   frontend   36 seconds ago   Up 2 seconds                80/tcp, 127.0.0.1:3000->8080/tcp
+studyslot-verify-migrate-1    studyslot-backend:local    "alembic upgrade head"   migrate    37 seconds ago   Exited (0) 14 seconds ago   
+studyslot-verify-postgres-1   postgres:17-alpine         "docker-entrypoint.s…"   postgres   37 seconds ago   Up 35 seconds (healthy)     5432/tcp
++ docker compose exec -T backend id
+uid=10001(studyslot) gid=10001(studyslot) groups=10001(studyslot)
++ docker compose exec -T frontend id
+uid=101(nginx) gid=101(nginx) groups=101(nginx)
++ python3 scripts/check-api.py
+GET /health -> 200: {"status":"ok","app":"StudySlot","student":"Archit Kulkarni"}
+GET /ready -> 200: {"status":"ready"}
+GET / -> 200: <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#23423c" />
+    <title>StudySlot | Campus room bookings</title>
+    <script type="module" crossorigin src="/assets/index-CKZAsdG3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CRcmMn4p.css">
+  </head>
+  <body><div id="root"></div></body>
+</html>
+
+GET /api/rooms -> 200: [{"name":"Library A","capacity":4},{"name":"Library B","capacity":4},{"name":"Group Room","capacity":6}]
+GET /api/bookings -> 200: []
+GET /docs -> 200: 
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+    <link rel="shortcut icon" href="https://fastapi.tiangolo.com/img/favicon.png">
+    <title>StudySlot - Swagger UI</title>
+    </head>
+    <body>
+    <div id="swagger-ui">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js
+POST /api/bookings -> 201: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":19,"attendees":3,"id":1}
+GET /api/bookings/1 -> 200: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":19,"attendees":3,"id":1}
+POST /api/bookings -> 409: {"detail":"This room is already booked for that hour"}
+PUT /api/bookings/1 -> 200: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":20,"attendees":3,"id":1}
+DELETE /api/bookings/1 -> 204: 
+GET /api/bookings/1 -> 404: {"detail":"Booking not found"}
+Concurrent POST results: [[409, {"detail": "This room is already booked for that hour"}], [201, {"student_name": "Archit Kulkarni", "roll_no": "24BCS10194", "room": "Group Room", "booking_date": "2099-10-16", "start_hour": 19, "attendees": 3, "id": 3}]]
+POST /api/bookings -> 422: {"detail":[{"type":"string_too_short","loc":["body","student_name"],"msg":"String should have at least 2 characters","input":"   ","ctx":{"min_length":2}}]}
+POST /api/bookings -> 422: {"detail":"Too many people for this room"}
+GET /metrics -> 200: # HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 492.0
+python_gc_objects_collected_total{generation="1"} 640.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_unco
+DELETE /api/bookings/3 -> 204: 
+POST /api/bookings -> 201: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Library A","booking_date":"2026-10-17","start_hour":10,"attendees":2,"id":5}
+POST /api/bookings -> 201: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2026-10-17","start_hour":14,"attendees":4,"id":6}
+StudySlot CRUD, validation, metrics and concurrent PostgreSQL booking checks passed.
++ docker compose exec -T postgres psql -U studyslot -d studyslot -c '\d bookings'
+                                      Table "public.bookings"
+    Column    |         Type          | Collation | Nullable |               Default                
+--------------+-----------------------+-----------+----------+--------------------------------------
+ id           | integer               |           | not null | nextval('bookings_id_seq'::regclass)
+ student_name | character varying(80) |           | not null | 
+ roll_no      | character varying(20) |           | not null | 
+ room         | character varying(30) |           | not null | 
+ booking_date | date                  |           | not null | 
+ start_hour   | integer               |           | not null | 
+ attendees    | integer               |           | not null | 
+Indexes:
+    "bookings_pkey" PRIMARY KEY, btree (id)
+    "uq_room_slot" UNIQUE CONSTRAINT, btree (room, booking_date, start_hour)
+Check constraints:
+    "ck_booking_attendees" CHECK (attendees >= 1 AND attendees <= 6)
+    "ck_booking_hour" CHECK (start_hour >= 8 AND start_hour <= 20)
+
++ docker compose exec -T postgres psql -U studyslot -d studyslot -c 'SELECT * FROM alembic_version;'
+ version_num  
+--------------
+ 001_bookings
+(1 row)
+
++ docker image ls studyslot-backend
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                     ID             DISK USAGE   CONTENT SIZE   EXTRA
+studyslot-backend:local   7df891d96725        177MB         41.1MB   U    
++ docker image ls studyslot-frontend
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+IMAGE                      ID             DISK USAGE   CONTENT SIZE   EXTRA
+studyslot-frontend:local   023040088858        102MB         28.7MB   U    
+
+Exit code: 0

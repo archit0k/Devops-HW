@@ -1,0 +1,70 @@
+Recorded: 2026-10-16T10:55:01.480729+00:00
+Command: wsl.exe -d Ubuntu -u root -- bash project/scripts/prepare-local.sh ea51f5a57bcb2fd435a33cc64a91730c17b824f3
+
+minikube
+Switched to context "minikube".
+* ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
+You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+  - Using image registry.k8s.io/ingress-nginx/controller:v1.15.1
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+* Verifying ingress addon...
+* The 'ingress' addon is enabled
+! Executing "docker container inspect minikube --format={{.State.Status}}" took an unusually long time: 2.718730027s
+* Restarting the docker service may improve performance.
+* metrics-server is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
+You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
+  - Using image registry.k8s.io/metrics-server/metrics-server:v0.9.0
+* The 'metrics-server' addon is enabled
+deployment "ingress-nginx-controller" successfully rolled out
+deployment "metrics-server" successfully rolled out
+namespace/monitoring created
+secret/studyslot-grafana created
+"prometheus-community" already exists with the same configuration, skipping
+Release "monitoring" does not exist. Installing it now.
+NAME: monitoring
+LAST DEPLOYED: Fri Oct 16 10:57:57 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=monitoring"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace monitoring get secrets monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=monitoring" -oname)
+  kubectl --namespace monitoring port-forward $POD_NAME 3000
+
+Get your grafana admin user password by running:
+
+  kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo
+
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+configmap/studyslot-dashboard created
+NAME                                                       READY   STATUS    RESTARTS   AGE
+pod/monitoring-grafana-7d6486497d-wqgf9                    3/3     Running   0          95s
+pod/monitoring-kube-prometheus-operator-6869bbbf74-5kg59   1/1     Running   0          95s
+pod/monitoring-kube-state-metrics-6bf9f6c66f-mxfhz         1/1     Running   0          95s
+pod/monitoring-prometheus-node-exporter-9dz77              1/1     Running   0          95s
+pod/prometheus-monitoring-kube-prometheus-prometheus-0     2/2     Running   0          78s
+
+NAME                                            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+service/monitoring-grafana                      ClusterIP   10.107.136.63    <none>        80/TCP              96s
+service/monitoring-kube-prometheus-operator     ClusterIP   10.105.104.172   <none>        443/TCP             96s
+service/monitoring-kube-prometheus-prometheus   ClusterIP   10.105.190.232   <none>        9090/TCP,8080/TCP   96s
+service/monitoring-kube-state-metrics           ClusterIP   10.97.154.200    <none>        8080/TCP            96s
+service/monitoring-prometheus-node-exporter     ClusterIP   10.101.232.129   <none>        9100/TCP            96s
+service/prometheus-operated                     ClusterIP   None             <none>        9090/TCP            78s
+namespace/studyslot configured
+secret/studyslot-database created
+Release "studyslot" does not exist. Installing it now.
+Error: Unable to continue with install: ConfigMap "studyslot-config" in namespace "studyslot" exists and cannot be imported into the current release: invalid ownership metadata; label validation error: missing key "app.kubernetes.io/managed-by": must be set to "Helm"; annotation validation error: missing key "meta.helm.sh/release-name": must be set to "studyslot"; annotation validation error: missing key "meta.helm.sh/release-namespace": must be set to "studyslot"
+
+Exit code: 1

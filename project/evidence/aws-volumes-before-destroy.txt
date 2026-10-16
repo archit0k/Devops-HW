@@ -1,0 +1,6 @@
+Recorded: 2026-10-16T11:49:27.502362+00:00
+Command: wsl -d Ubuntu -u root -- python3 project/scripts/check-cloud-cleanup.py before
+
+Volumes remaining after Helm/PVC cleanup: [{"VolumeId": "vol-07c1f48866336e139", "Size": 20, "State": "in-use"}, {"VolumeId": "vol-0f23a6c4452b89ea2", "Size": 20, "State": "in-use"}]
+
+Exit code: 0

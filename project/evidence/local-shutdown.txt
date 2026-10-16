@@ -1,0 +1,36 @@
+Recorded: 2026-10-16T12:07:10.950196+00:00
+Command: wsl -d Ubuntu -u root -- bash project/scripts/stop-local.sh
+
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/backend-54fc56cc8f-lgc52    1/1     Running   0          35m
+pod/backend-54fc56cc8f-qxsc9    1/1     Running   0          35m
+pod/frontend-6fcd89fdbf-9rwt5   1/1     Running   0          69m
+pod/frontend-6fcd89fdbf-wr289   1/1     Running   0          69m
+pod/postgres-0                  1/1     Running   0          20m
+
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/backend    ClusterIP   10.96.173.52    <none>        8000/TCP   69m
+service/frontend   ClusterIP   10.101.104.61   <none>        8080/TCP   69m
+service/postgres   ClusterIP   None            <none>        5432/TCP   69m
+
+NAME                                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/data-postgres-0   Bound    pvc-71f5114f-c2c6-4bcf-a19f-e763a4df90fb   2Gi        RWO            standard       <unset>                 69m
+
+NAME                                  CLASS   HOSTS       ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/studyslot   nginx   localhost   192.168.49.2   80      69m
+
+NAME                                          REFERENCE            TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend   Deployment/backend   cpu: 8%/60%   2         4         2          69m
+NAME        SYNC STATUS   HEALTH STATUS
+studyslot   Synced        Healthy
+Saved the local demo database in ignored private-evidence/studyslot-backup.sql.
+* Stopping node "minikube"  ...
+! Executing "docker container inspect minikube --format={{.State.Status}}" took an unusually long time: 2.159310715s
+* Restarting the docker service may improve performance.
+* Powering off "minikube" via SSH ...
+* 1 node stopped.
+minikube
+Restored the stopped Minikube container to its original 2 GiB / two CPU limits.
+Docker and containerd stopped. Demo PVCs and the SQL backup are preserved.
+
+Exit code: 0

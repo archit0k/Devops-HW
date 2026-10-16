@@ -1,0 +1,228 @@
+NAME                          STATUS   ROLES    AGE   VERSION               INTERNAL-IP   EXTERNAL-IP      OS-IMAGE                        KERNEL-VERSION                     CONTAINER-RUNTIME
+ip-10-42-1-116.ec2.internal   Ready    <none>   23m   v1.35.8-eks-b9510e3   10.42.1.116   44.222.93.29     Amazon Linux 2023.12.20261012   6.12.111-136.204.amzn2023.x86_64   containerd://2.3.5+unknown
+ip-10-42-2-189.ec2.internal   Ready    <none>   23m   v1.35.8-eks-b9510e3   10.42.2.189   18.206.160.140   Amazon Linux 2023.12.20261012   6.12.111-136.204.amzn2023.x86_64   containerd://2.3.5+unknown
+storageclass.storage.k8s.io/studyslot-gp3 created
+namespace/studyslot created
+secret/studyslot-database created
+secret/ghcr created
+namespace/monitoring created
+secret/studyslot-grafana created
+"prometheus-community" has been added to your repositories
+Release "monitoring" does not exist. Installing it now.
+NAME: monitoring
+LAST DEPLOYED: Fri Oct 16 11:19:58 2026
+NAMESPACE: monitoring
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+kube-prometheus-stack has been installed. Check its status by running:
+  kubectl --namespace monitoring get pods -l "release=monitoring"
+
+Get Grafana 'admin' user password by running:
+
+  kubectl --namespace monitoring get secrets monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 -d ; echo
+
+Access Grafana local instance:
+
+  export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=monitoring" -oname)
+  kubectl --namespace monitoring port-forward $POD_NAME 3000
+
+Get your grafana admin user password by running:
+
+  kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo
+
+
+Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
+configmap/studyslot-dashboard created
+NAME                                                       READY   STATUS    RESTARTS   AGE
+pod/monitoring-grafana-89f6777ff-q2wxp                     3/3     Running   0          40s
+pod/monitoring-kube-prometheus-operator-7c4b86bb85-g7k8l   1/1     Running   0          40s
+pod/monitoring-kube-state-metrics-6959d6756d-xmh2t         1/1     Running   0          40s
+pod/monitoring-prometheus-node-exporter-kd4sr              1/1     Running   0          40s
+pod/monitoring-prometheus-node-exporter-pbs9c              1/1     Running   0          40s
+pod/prometheus-monitoring-kube-prometheus-prometheus-0     2/2     Running   0          32s
+
+NAME                                            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+service/monitoring-grafana                      ClusterIP   172.20.34.37     <none>        80/TCP              40s
+service/monitoring-kube-prometheus-operator     ClusterIP   172.20.124.130   <none>        443/TCP             40s
+service/monitoring-kube-prometheus-prometheus   ClusterIP   172.20.172.223   <none>        9090/TCP,8080/TCP   40s
+service/monitoring-kube-state-metrics           ClusterIP   172.20.192.253   <none>        8080/TCP            40s
+service/monitoring-prometheus-node-exporter     ClusterIP   172.20.149.107   <none>        9100/TCP            40s
+service/prometheus-operated                     ClusterIP   None             <none>        9090/TCP            32s
+"ingress-nginx" has been added to your repositories
+Release "ingress-nginx" does not exist. Installing it now.
+NAME: ingress-nginx
+LAST DEPLOYED: Fri Oct 16 11:20:48 2026
+NAMESPACE: ingress-nginx
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+The ingress-nginx controller has been installed.
+Get the application URL by running these commands:
+  export POD_NAME="$(kubectl get pods --namespace ingress-nginx --selector app.kubernetes.io/name=ingress-nginx,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/component=controller --output jsonpath="{.items[0].metadata.name}")"
+  kubectl port-forward --namespace ingress-nginx "${POD_NAME}" 8080:80
+  echo "Visit http://127.0.0.1:8080 to access your application."
+
+An example Ingress that makes use of the controller:
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: example
+    namespace: foo
+  spec:
+    ingressClassName: nginx
+    rules:
+      - host: www.example.com
+        http:
+          paths:
+            - pathType: Prefix
+              backend:
+                service:
+                  name: exampleService
+                  port:
+                    number: 80
+              path: /
+    # This section is only required if TLS is to be enabled for the Ingress
+    tls:
+      - hosts:
+        - www.example.com
+        secretName: example-tls
+
+If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
+
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: example-tls
+    namespace: foo
+  data:
+    tls.crt: <base64 encoded cert>
+    tls.key: <base64 encoded key>
+  type: kubernetes.io/tls
+Release "studyslot" does not exist. Installing it now.
+NAME: studyslot
+LAST DEPLOYED: Fri Oct 16 11:21:27 2026
+NAMESPACE: studyslot
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/backend    2/2     2            2           37s
+deployment.apps/frontend   2/2     2            2           37s
+
+NAME                           READY   STATUS    RESTARTS   AGE
+pod/backend-6459dc7cb8-88cjp   1/1     Running   0          22s
+pod/backend-6459dc7cb8-pcx6v   1/1     Running   0          37s
+pod/frontend-6799c759c-78887   1/1     Running   0          37s
+pod/frontend-6799c759c-vp2jr   1/1     Running   0          37s
+pod/postgres-0                 1/1     Running   0          37s
+
+NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/backend    ClusterIP   172.20.194.214   <none>        8000/TCP   37s
+service/frontend   ClusterIP   172.20.101.148   <none>        8080/TCP   37s
+service/postgres   ClusterIP   None             <none>        5432/TCP   37s
+
+NAME                                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS    VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/data-postgres-0   Bound    pvc-eb3014c3-9b9c-4c00-8950-d04e7adac189   2Gi        RWO            studyslot-gp3   <unset>                 37s
+
+NAME                                  CLASS   HOSTS       ADDRESS   PORTS   AGE
+ingress.networking.k8s.io/studyslot   nginx   localhost             80      37s
+
+NAME                                          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend   Deployment/backend   cpu: <unknown>/60%   2         4         2          37s
+
+NAME                                             AGE
+servicemonitor.monitoring.coreos.com/studyslot   37s
+NAME         	NAMESPACE    	REVISION	UPDATED                                	STATUS  	CHART                       	APP VERSION
+ingress-nginx	ingress-nginx	1       	2026-10-16 11:20:48.290211014 +0000 UTC	deployed	ingress-nginx-4.15.1        	1.15.1     
+monitoring   	monitoring   	1       	2026-10-16 11:19:58.821734796 +0000 UTC	deployed	kube-prometheus-stack-89.2.0	v0.93.1    
+studyslot    	studyslot    	1       	2026-10-16 11:21:27.033561493 +0000 UTC	deployed	studyslot-0.1.0             	1.0.0      
+Defaulted container "backend" out of: backend, migrate (init)
+uid=10001(studyslot) gid=10001(studyslot) groups=10001(studyslot)
+uid=101(nginx) gid=101(nginx) groups=101(nginx)
+curl: (7) Failed to connect to localhost port 8000 after 0 ms: Couldn't connect to server
+Forwarding from 127.0.0.1:3000 -> 80
+Forwarding from 127.0.0.1:8000 -> 8000
+Handling connection for 8000
+{"status":"ready"}Handling connection for 3000
+okHandling connection for 8000
+GET /health -> 200: {"status":"ok","app":"StudySlot","student":"Archit Kulkarni"}
+Handling connection for 8000
+GET /ready -> 200: {"status":"ready"}
+Handling connection for 3000
+GET / -> 200: <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#23423c" />
+    <title>StudySlot | Campus room bookings</title>
+    <script type="module" crossorigin src="/assets/index-CKZAsdG3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CRcmMn4p.css">
+  </head>
+  <body><div id="root"></div></body>
+</html>
+
+Handling connection for 3000
+GET /api/rooms -> 200: [{"name":"Library A","capacity":4},{"name":"Library B","capacity":4},{"name":"Group Room","capacity":6}]
+Handling connection for 3000
+GET /api/bookings -> 200: []
+Handling connection for 8000
+GET /docs -> 200: 
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+    <link rel="shortcut icon" href="https://fastapi.tiangolo.com/img/favicon.png">
+    <title>StudySlot - Swagger UI</title>
+    </head>
+    <body>
+    <div id="swagger-ui">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js
+Handling connection for 3000
+POST /api/bookings -> 201: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":19,"attendees":3,"id":1}
+Handling connection for 3000
+GET /api/bookings/1 -> 200: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":19,"attendees":3,"id":1}
+Handling connection for 3000
+POST /api/bookings -> 409: {"detail":"This room is already booked for that hour"}
+Handling connection for 3000
+PUT /api/bookings/1 -> 200: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":20,"attendees":3,"id":1}
+Handling connection for 3000
+DELETE /api/bookings/1 -> 204: 
+Handling connection for 3000
+GET /api/bookings/1 -> 404: {"detail":"Booking not found"}
+Handling connection for 3000
+Handling connection for 3000
+Concurrent POST results: [[201, {"student_name": "Archit Kulkarni", "roll_no": "24BCS10194", "room": "Group Room", "booking_date": "2099-10-16", "start_hour": 19, "attendees": 3, "id": 3}], [409, {"detail": "This room is already booked for that hour"}]]
+Handling connection for 3000
+POST /api/bookings -> 422: {"detail":[{"type":"string_too_short","loc":["body","student_name"],"msg":"String should have at least 2 characters","input":"   ","ctx":{"min_length":2}}]}
+Handling connection for 3000
+POST /api/bookings -> 422: {"detail":"Too many people for this room"}
+Handling connection for 8000
+GET /metrics -> 200: # HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 492.0
+python_gc_objects_collected_total{generation="1"} 93.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncol
+Handling connection for 3000
+DELETE /api/bookings/3 -> 204: 
+StudySlot CRUD, validation, metrics and concurrent PostgreSQL booking checks passed.
+ version_num  
+--------------
+ 001_bookings
+(1 row)
+
+NAME                       CPU(cores)   MEMORY(bytes)   
+backend-6459dc7cb8-88cjp   206m         71Mi            
+backend-6459dc7cb8-pcx6v   221m         71Mi            
+frontend-6799c759c-78887   1m           2Mi             
+frontend-6799c759c-vp2jr   1m           2Mi             
+postgres-0                 148m         30Mi            

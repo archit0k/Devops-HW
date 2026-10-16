@@ -4,39 +4,39 @@ StudySlot — Archit Kulkarni, 24BCS10194. Edited captioned browser walkthrough;
 
 2
 00:00:12,000 --> 00:00:24,000
-Presentation 2/10 â€” StudySlot, Archit Kulkarni, 24BCS10194
+Presentation 2/10 — StudySlot, Archit Kulkarni, 24BCS10194
 
 3
 00:00:24,000 --> 00:00:36,000
-Presentation 3/10 â€” StudySlot, Archit Kulkarni, 24BCS10194
+Presentation 3/10 — StudySlot, Archit Kulkarni, 24BCS10194
 
 4
 00:00:36,000 --> 00:00:48,000
-Presentation 4/10 â€” StudySlot, Archit Kulkarni, 24BCS10194
+Presentation 4/10 — StudySlot, Archit Kulkarni, 24BCS10194
 
 5
 00:00:48,000 --> 00:01:00,000
-Presentation 5/10 â€” StudySlot, Archit Kulkarni, 24BCS10194
+Presentation 5/10 — StudySlot, Archit Kulkarni, 24BCS10194
 
 6
 00:01:00,000 --> 00:01:12,000
-Presentation 6/10 â€” StudySlot architecture and DevOps workflow
+Presentation 6/10 — StudySlot architecture and DevOps workflow
 
 7
 00:01:12,000 --> 00:01:24,000
-Presentation 7/10 â€” StudySlot architecture and DevOps workflow
+Presentation 7/10 — StudySlot architecture and DevOps workflow
 
 8
 00:01:24,000 --> 00:01:36,000
-Presentation 8/10 â€” StudySlot architecture and DevOps workflow
+Presentation 8/10 — StudySlot architecture and DevOps workflow
 
 9
 00:01:36,000 --> 00:01:48,000
-Presentation 9/10 â€” StudySlot architecture and DevOps workflow
+Presentation 9/10 — StudySlot architecture and DevOps workflow
 
 10
 00:01:48,000 --> 00:02:00,000
-Presentation 10/10 â€” StudySlot architecture and DevOps workflow
+Presentation 10/10 — StudySlot architecture and DevOps workflow
 
 11
 00:02:00,000 --> 00:02:14,000
