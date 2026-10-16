@@ -4,6 +4,10 @@ export PATH="/root/.minikube/cache/linux/amd64/v1.37.0:$PATH"
 [[ $(kubectl config current-context) == minikube ]]
 kubectl -n studyslot get deployments,pods,svc,pvc,ingress,hpa,servicemonitors
 helm list -A
+for attempt in $(seq 1 30); do
+  if curl -fsS http://localhost:8000/ready >/dev/null && curl -fsS http://localhost:3000/frontend-health >/dev/null; then break; fi
+  sleep 2
+done
 python3 project/scripts/check-api.py
 python3 - <<'PY'
 import json, urllib.parse, urllib.request
