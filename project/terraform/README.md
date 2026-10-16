@@ -16,6 +16,22 @@ terraform plan -destroy
 terraform destroy
 ```
 
-The separate lab-admin role is assumed only by the account's root principal and is removed at cleanup. GitHub uses OIDC, restricted to this repository's `main` branch. Its AWS permission is only `eks:DescribeCluster`; Kubernetes access is edit access in `studyslot`, not account-wide administration. The classroom namespace and database Secret are bootstrapped separately.
+GitHub uses OIDC, restricted to this repository's immutable owner/repository IDs and `main` branch. Its AWS permission is only `eks:DescribeCluster`. Initial setup temporarily uses `AmazonEKSClusterAdminPolicy` on this cluster; after bootstrap, `bash project/scripts/terraform-lab.sh restrict` replaces that with `AmazonEKSEditPolicy` scoped to the `studyslot` namespace. There is no separate root-assumed lab role, IAM user or permanent access key. Root credentials cannot directly authenticate kubectl to EKS, so the deployment runs through the approved temporary GitHub role.
 
-Cost control: create this cluster only for verification, disable cloud CD before cleanup, delete Kubernetes-created load balancers/volumes first, then destroy Terraform resources. The homework budget is **$30 maximum**; free credits do not make resources free forever. Terraform creation/cleanup evidence will be added after the actual run.
+From the repository root, the lab helper records a reproducible sequence:
+
+```bash
+bash project/scripts/terraform-lab.sh plan
+bash project/scripts/terraform-lab.sh apply
+# Dispatch studyslot-aws-lab.yml with action=bootstrap and an already scanned SHA.
+bash project/scripts/terraform-lab.sh restrict
+# Enable ENABLE_EKS_CD only while this temporary lab exists.
+# After the demo: disable CD, dispatch action=cleanup, then:
+bash project/scripts/terraform-lab.sh destroy
+```
+
+The actual [apply record](../evidence/terraform-apply-final.txt) created 26 resources. The [AWS bootstrap run](https://github.com/archit0k/Devops-HW/actions/runs/38893003011) deployed the application and monitoring, checked both non-root users, exercised CRUD through Ingress and verified the database migration. The [access restriction record](../evidence/terraform-restrict-access-final.txt) confirms that namespace-only permissions replaced bootstrap access.
+
+Cost control: create this cluster only for verification, disable cloud CD before cleanup, delete Kubernetes-created volumes while the EBS CSI driver is still running, then destroy Terraform resources. This configuration uses a ClusterIP Ingress controller, not a chargeable public LoadBalancer. The homework budget is **$30 maximum**; free credits do not make resources free forever. State, saved plans and generated passwords are ignored. Keep state until teardown is verified.
+
+On this Windows/WSL machine the large provider binary started slowly from the Windows mount. Keeping the already verified provider on Linux storage fixed startup timeouts; it does not change the infrastructure configuration or bypass the dependency lock checks.
