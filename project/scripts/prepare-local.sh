@@ -10,6 +10,7 @@ export PATH="/root/.minikube/cache/linux/amd64/v1.37.0:$PATH"
 kubectl config use-context minikube
 minikube addons enable ingress
 minikube addons enable metrics-server
+kubectl -n kube-system patch deployment metrics-server --patch-file project/k8s/metrics-server-local-patch.yaml
 for app in backend frontend; do
   image="ghcr.io/archit0k/studyslot-$app:$tag"
   if minikube image ls | grep -Fxq "$image"; then continue; fi

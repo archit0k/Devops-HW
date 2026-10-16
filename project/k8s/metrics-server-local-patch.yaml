@@ -1,0 +1,16 @@
+# Local Minikube only: leave time for probes during a cold laptop startup.
+spec:
+  template:
+    spec:
+      containers:
+        - name: metrics-server
+          livenessProbe:
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            timeoutSeconds: 5
+          startupProbe:
+            httpGet: {path: /livez, port: 4443, scheme: HTTPS}
+            timeoutSeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
