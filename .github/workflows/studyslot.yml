@@ -184,7 +184,7 @@ jobs:
         if: always()
         run: /tmp/kind delete cluster --name studyslot-ci
   deploy_aws:
-    needs: images
+    needs: [images, deploy]
     if: github.ref == 'refs/heads/main' && vars.ENABLE_EKS_CD == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20

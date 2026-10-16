@@ -1,5 +1,12 @@
 alertmanager:
   enabled: false
+# Neither managed EKS nor this Minikube setup exposes these control-plane ports.
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeEtcd:
+  enabled: false
 grafana:
   image:
     tag: 12.1.1
