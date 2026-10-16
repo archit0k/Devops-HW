@@ -18,3 +18,8 @@ variable "existing_github_oidc_arn" {
   type    = string
   default = ""
 }
+variable "bootstrap_cluster" {
+  description = "Temporary cluster-only bootstrap access; set false after setup to restrict CD to the studyslot namespace."
+  type        = bool
+  default     = false
+}

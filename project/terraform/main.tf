@@ -76,6 +76,7 @@ resource "aws_eks_node_group" "lab" {
   node_role_arn   = aws_iam_role.node.arn
   subnet_ids      = aws_subnet.public[*].id
   instance_types  = ["t3.medium"]
+  ami_type        = "AL2023_x86_64_STANDARD"
   disk_size       = 20
   scaling_config {
     desired_size = 2
@@ -129,41 +130,10 @@ resource "aws_eks_addon" "ebs" {
   depends_on    = [aws_eks_node_group.lab, aws_eks_addon.pod_identity, aws_iam_role_policy_attachment.ebs, aws_eks_pod_identity_association.ebs]
 }
 
-# Root credentials provision the lab, but kubectl uses a short-lived IAM role session.
-resource "aws_iam_role" "lab_admin" {
-  name = "studyslot-lab-admin"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect    = "Allow", Principal = { AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root" },
-      Action    = "sts:AssumeRole",
-      Condition = { ArnEquals = { "aws:PrincipalArn" = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root" } }
-    }]
-  })
-}
-resource "aws_iam_role_policy" "describe_admin" {
-  role = aws_iam_role.lab_admin.id
-  policy = jsonencode({
-    Version   = "2012-10-17"
-    Statement = [{ Effect = "Allow", Action = ["eks:DescribeCluster"], Resource = aws_eks_cluster.lab.arn }]
-  })
-}
-resource "aws_eks_access_entry" "admin" {
-  cluster_name  = aws_eks_cluster.lab.name
-  principal_arn = aws_iam_role.lab_admin.arn
-}
-resource "aws_eks_access_policy_association" "admin" {
-  cluster_name  = aws_eks_cluster.lab.name
-  principal_arn = aws_eks_access_entry.admin.principal_arn
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-  access_scope { type = "cluster" }
-}
-
 resource "aws_iam_openid_connect_provider" "github" {
-  count           = var.existing_github_oidc_arn == "" ? 1 : 0
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+  count          = var.existing_github_oidc_arn == "" ? 1 : 0
+  url            = "https://token.actions.githubusercontent.com"
+  client_id_list = ["sts.amazonaws.com"]
 }
 locals {
   github_oidc_arn = var.existing_github_oidc_arn != "" ? var.existing_github_oidc_arn : aws_iam_openid_connect_provider.github[0].arn
@@ -195,9 +165,21 @@ resource "aws_eks_access_entry" "ci" {
 resource "aws_eks_access_policy_association" "ci" {
   cluster_name  = aws_eks_cluster.lab.name
   principal_arn = aws_eks_access_entry.ci.principal_arn
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy"
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/${var.bootstrap_cluster ? "AmazonEKSClusterAdminPolicy" : "AmazonEKSEditPolicy"}"
   access_scope {
-    type       = "namespace"
-    namespaces = ["studyslot"]
+    type       = var.bootstrap_cluster ? "cluster" : "namespace"
+    namespaces = var.bootstrap_cluster ? null : ["studyslot"]
   }
+}
+
+data "aws_eks_addon_version" "metrics" {
+  addon_name         = "metrics-server"
+  kubernetes_version = var.kubernetes_version
+  most_recent        = true
+}
+resource "aws_eks_addon" "metrics" {
+  cluster_name  = aws_eks_cluster.lab.name
+  addon_name    = "metrics-server"
+  addon_version = data.aws_eks_addon_version.metrics.version
+  depends_on    = [aws_eks_node_group.lab]
 }

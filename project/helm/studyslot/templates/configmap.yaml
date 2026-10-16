@@ -7,3 +7,4 @@ data:
   DB_HOST: postgres
   DB_NAME: studyslot
   DB_USER: studyslot
+  DEMO_REVISION: {{ .Values.demoRevision | quote }}

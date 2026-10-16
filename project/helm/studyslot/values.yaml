@@ -4,6 +4,7 @@ backend:
 frontend:
   repository: ghcr.io/archit0k/studyslot-frontend
 imageTag: ''
+demoRevision: first-sync
 imagePullSecrets: []
 database:
   image: postgres:17-alpine

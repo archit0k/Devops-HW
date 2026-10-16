@@ -1,0 +1,176 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: studyslot-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  studyslot.json: |
+    {
+      "uid": "archit-studyslot",
+      "title": "StudySlot - Archit Kulkarni - 24BCS10194",
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "10s",
+      "time": {
+        "from": "now-30m",
+        "to": "now"
+      },
+      "panels": [
+        {
+          "id": 1,
+          "title": "Backend targets UP",
+          "type": "stat",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 5
+          },
+          "targets": [
+            {
+              "expr": "sum(up{namespace=\"studyslot\"})",
+              "refId": "A",
+              "legendFormat": "{{route}}"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "HTTP requests",
+          "type": "stat",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 5
+          },
+          "targets": [
+            {
+              "expr": "sum(studyslot_http_requests_total{namespace=\"studyslot\"})",
+              "refId": "A",
+              "legendFormat": "{{route}}"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "title": "Backend replicas",
+          "type": "stat",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 5
+          },
+          "targets": [
+            {
+              "expr": "kube_deployment_status_replicas_available{namespace=\"studyslot\",deployment=\"backend\"}",
+              "refId": "A",
+              "legendFormat": "{{route}}"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "title": "Request rate",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "x": 0,
+            "y": 5,
+            "w": 12,
+            "h": 8
+          },
+          "targets": [
+            {
+              "expr": "sum by(route) (rate(studyslot_http_requests_total{namespace=\"studyslot\"}[2m]))",
+              "refId": "A",
+              "legendFormat": "{{route}}"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "title": "Backend CPU",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "x": 12,
+            "y": 5,
+            "w": 12,
+            "h": 8
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"studyslot\",container=\"backend\"}[2m]))",
+              "refId": "A",
+              "legendFormat": "{{route}}"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "title": "p95 latency",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "x": 0,
+            "y": 13,
+            "w": 12,
+            "h": 8
+          },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95,sum by(le)(rate(studyslot_http_request_duration_seconds_bucket{namespace=\"studyslot\"}[2m])))",
+              "refId": "A",
+              "legendFormat": "{{route}}"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "title": "5xx errors per second",
+          "type": "timeseries",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "gridPos": {
+            "x": 12,
+            "y": 13,
+            "w": 12,
+            "h": 8
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(studyslot_http_requests_total{namespace=\"studyslot\",status=~\"5..\"}[2m])) or vector(0)",
+              "refId": "A",
+              "legendFormat": "{{route}}"
+            }
+          ]
+        }
+      ]
+    }

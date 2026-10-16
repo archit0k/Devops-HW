@@ -4,3 +4,4 @@ cluster_name       = "archit-studyslot"
 kubernetes_version = "1.35"
 # Only set this if the account already has the GitHub OIDC provider.
 existing_github_oidc_arn = ""
+bootstrap_cluster = false

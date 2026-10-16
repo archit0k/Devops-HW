@@ -190,6 +190,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
+      packages: read
       id-token: write
     steps:
       - uses: actions/checkout@v7.0.1
@@ -207,11 +208,14 @@ jobs:
           tar -xzf helm-v3.22.0-linux-amd64.tar.gz
           sudo install linux-amd64/helm /usr/local/bin/helm
       - name: Deploy the tested SHA to EKS
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           aws eks update-kubeconfig --name archit-studyslot --region us-east-1
+          python3 project/scripts/registry-secret.py
           helm upgrade --install studyslot project/helm/studyslot -n studyslot \
             --set imageTag="${GITHUB_SHA}" --set database.storageClass=studyslot-gp3 \
-            --set ingress.host=studyslot.127.0.0.1.sslip.io --set monitoring.serviceMonitor=true \
+            --set ingress.host=localhost --set 'imagePullSecrets[0].name=ghcr' --set monitoring.serviceMonitor=true \
             --wait --timeout 10m
           kubectl get pods,svc,ingress,hpa,pvc -n studyslot
           helm list -n studyslot
