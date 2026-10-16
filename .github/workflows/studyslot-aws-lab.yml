@@ -48,15 +48,19 @@ jobs:
           if [[ "$LAB_ACTION" == bootstrap ]]; then
             bash project/scripts/bootstrap-aws.sh "$TESTED_SHA" 2>&1 | tee project-evidence/aws-bootstrap.txt
           elif [[ "$LAB_ACTION" == configure-access ]]; then
-            kubectl apply -f project/k8s/ci-monitoring-rbac.yaml
-            kubectl -n studyslot get role,rolebinding
+            {
+              kubectl apply -f project/k8s/ci-monitoring-rbac.yaml
+              kubectl -n studyslot get role,rolebinding
+            } 2>&1 | tee project-evidence/aws-access.txt
           elif [[ "$LAB_ACTION" == verify ]]; then
             bash project/scripts/verify-aws.sh 2>&1 | tee project-evidence/aws-verify.txt
           elif [[ "$LAB_ACTION" == cleanup ]]; then
-            helm uninstall studyslot -n studyslot --wait
-            kubectl -n studyslot delete pvc -l app=studyslot-postgres
-            kubectl -n studyslot delete pvc data-postgres-0 --ignore-not-found=true --wait=true
-            kubectl -n studyslot get pods,pvc
+            {
+              helm uninstall studyslot -n studyslot --wait
+              kubectl -n studyslot delete pvc -l app=studyslot-postgres
+              kubectl -n studyslot delete pvc data-postgres-0 --ignore-not-found=true --wait=true
+              kubectl -n studyslot get pods,pvc
+            } 2>&1 | tee project-evidence/aws-cleanup.txt
           fi
       - uses: actions/upload-artifact@v7.0.2
         if: always()
