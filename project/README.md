@@ -95,6 +95,8 @@ Initial setup temporarily has cluster-admin access on this EKS cluster only. Nor
 
 Cleanup order: disable `ENABLE_EKS_CD`, dispatch the AWS workflow's `cleanup` action to remove the release/PVC while EBS CSI still runs, then run `bash project/scripts/terraform-lab.sh destroy`. Check for leftover clusters, VPCs, instances and volumes. The budget is $30 maximum; credits are not a reason to leave resources running.
 
+That cleanup is complete: [26 resources destroyed](evidence/terraform-destroy-final.txt), [no project cloud leftovers](evidence/cloud-cleanup-final.txt), and [local services stopped with data preserved](evidence/local-shutdown.txt). The recorded [six-job push pipeline](https://github.com/archit0k/Devops-HW/actions/runs/38894261034) includes a successful namespace-only EKS deployment.
+
 ## Kubernetes, Helm and GitOps
 
 The chart under `helm/studyslot/` defines two frontend replicas, a backend HPA (2–4 replicas at 60% CPU), ClusterIP Services, Ingress `/` and `/api`, probes, migration init containers and PostgreSQL on a 2 GiB PVC. `k8s/namespace.yaml` creates the namespace; the database Secret is bootstrapped separately.

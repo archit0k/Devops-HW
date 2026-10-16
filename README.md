@@ -84,7 +84,7 @@ bash project/scripts/terraform-lab.sh restrict
 
 Terraform creates the VPC, public subnets in two zones, internet gateway/routes, EKS 1.35, two `t3.medium` workers, EBS CSI/Pod Identity and Metrics Server. The application uses a ClusterIP Ingress controller; no NAT gateway, RDS or public application LoadBalancer is created. GitHub OIDC trusts only this repository's immutable IDs and main branch. Initial cluster-only administration is removed after bootstrap; deployment access is namespace-only, with a small ServiceMonitor Role. No IAM user or permanent key is created. [Infrastructure details](project/terraform/README.md).
 
-Disable `ENABLE_EKS_CD` before cleanup, dispatch the AWS workflow's `cleanup` action to delete the application/PVC while EBS CSI still runs, then run `bash project/scripts/terraform-lab.sh destroy`. Keep ignored state until teardown is confirmed. The spending cap is $30, including the earlier homework labs; credits do not make resources free indefinitely.
+Disable `ENABLE_EKS_CD` before cleanup, dispatch the AWS workflow's `cleanup` action to delete the application/PVC while EBS CSI still runs, then run `bash project/scripts/terraform-lab.sh destroy`. Keep ignored state until teardown is confirmed. The spending cap is $30, including the earlier homework labs; credits do not make resources free indefinitely. [Teardown is complete](project/evidence/cloud-cleanup-final.txt): all 26 Terraform resources were destroyed, no project cloud leftovers remain, and local demo services are stopped with data preserved.
 
 ### Helm, GitOps and monitoring
 
