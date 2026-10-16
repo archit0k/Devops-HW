@@ -1,0 +1,18 @@
+Recorded: 2026-10-16T18:33:28.295096+00:00
+Command: wsl -d Ubuntu -u root --exec bash -lc 'cloud_check_status=0; python3 project/scripts/check-recording-cleanup.py check || cloud_check_status=$?; if systemctl is-active --quiet docker.service; then if test -z "$(docker ps -q)"; then systemctl stop docker.service docker.socket containerd.service; else echo "Unrelated containers exist; Docker was left running."; fi; fi; printf "Final local Docker service states:\n"; systemctl is-active docker docker.socket containerd || true; exit "$cloud_check_status"'
+
+StudySlot EKS cluster absent: True
+StudySlot VPCs remaining: 0
+Non-terminated StudySlot workers: []
+Recorded StudySlot volumes remaining: []
+StudySlot IAM roles remaining: []
+Terraform-owned OIDC providers remaining: []
+Pre-existing shared GitHub OIDC provider was not managed or deleted by this lab.
+Terraform managed resources remaining: 0
+Fresh recording lab cleanup passed. Unrelated account resources were left alone.
+Final local Docker service states:
+inactive
+inactive
+inactive
+
+Exit code: 0

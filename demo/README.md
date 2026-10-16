@@ -27,4 +27,4 @@ The recorded [push pipeline](https://github.com/archit0k/Devops-HW/actions/runs/
 | 6:49 | Live Grafana metrics |
 | 7:07 | Terraform destroy and leftover checks |
 
-The earlier AWS lab was removed after capture. A fresh recording rehearsal is tracked separately in [the current rehearsal record](../project/evidence/rehearsal-20261016/README.md). Its status must not be inferred from the older teardown screenshot. No always-on public endpoint is promised.
+The earlier AWS lab was removed after capture. The later recording rehearsal is also shut down: its AWS resources were deleted and the local demo stopped with data preserved. Its separate cleanup proof is in [the current rehearsal record](../project/evidence/rehearsal-20261016/README.md), not the older teardown screenshot. Recording setup is paused until the next recording window. No always-on public endpoint is promised.

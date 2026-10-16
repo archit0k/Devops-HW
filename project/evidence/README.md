@@ -17,7 +17,7 @@ Screenshots are browser captures of the actual lab. Command-output screenshots d
 | M9 Observability | [Monitoring values](../monitoring/values.yaml), [dashboard](../monitoring/dashboard.yaml), [curl metrics output](metrics-curl.txt), [target and PromQL checks](kubernetes-final.txt) | [Metrics output](metrics-output.jpg), [two targets UP](prometheus-targets.jpg), [populated Grafana](grafana-live.jpg) |
 | M10 Presentation/docs | [Full root README](../../README.md), [project documentation](../README.md), [recording guide](../../demo/recording-guide.md), [speaking script](../../demo/speaking-script.md), [video format/duration check](video-check.txt) | [Twelve-slide PPTX](../../demo/presentation.pptx), [earlier captioned MP4](../../demo/walkthrough.mp4) |
 
-The [later recording rehearsal](rehearsal-20261016/README.md) has fresh tests, local checks and browser captures. It recreates AWS for a fresh recording, so the cleanup evidence below describes the earlier lab only. The new narrated recording has not yet replaced the existing MP4.
+The [later recording rehearsal](rehearsal-20261016/README.md) has fresh tests, local checks and browser captures. That temporary AWS lab has also been removed, with its own 25-resource destroy and leftover checks; the local demo is stopped with data preserved. The cleanup evidence below describes the earlier lab only. The new narrated recording has not yet replaced the existing MP4.
 
 ## GitOps
 

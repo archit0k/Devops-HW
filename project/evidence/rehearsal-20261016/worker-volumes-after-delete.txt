@@ -1,0 +1,6 @@
+Recorded: 2026-10-16T18:31:38.684142+00:00
+Command: wsl -d Ubuntu -u root --exec /root/.local/bin/aws ec2 describe-volumes --profile devops-homework --region us-east-1 --no-cli-pager --cli-connect-timeout 10 --cli-read-timeout 20 --filters Name=volume-id,Values=vol-0a1b2fe873313ab14,vol-0c1c80a095400f220,vol-08a63ca164120e239 --query 'Volumes[].{Id:VolumeId,State:State}' --output json
+
+[]
+
+Exit code: 0

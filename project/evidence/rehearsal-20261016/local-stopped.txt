@@ -1,0 +1,34 @@
+Recorded: 2026-10-16T18:18:00.272591+00:00
+Command: wsl -d Ubuntu -u root --exec bash project/scripts/stop-local.sh
+
+NAME                            READY   STATUS    RESTARTS      AGE
+pod/backend-54fc56cc8f-mpz8g    1/1     Running   0             48m
+pod/backend-54fc56cc8f-tkw2b    1/1     Running   0             48m
+pod/frontend-6fcd89fdbf-9rwt5   1/1     Running   7 (41m ago)   7h19m
+pod/frontend-6fcd89fdbf-wr289   1/1     Running   7 (41m ago)   7h19m
+pod/postgres-0                  1/1     Running   3 (47m ago)   6h30m
+
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/backend    ClusterIP   10.96.173.52    <none>        8000/TCP   7h19m
+service/frontend   ClusterIP   10.101.104.61   <none>        8080/TCP   7h19m
+service/postgres   ClusterIP   None            <none>        5432/TCP   7h19m
+
+NAME                                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/data-postgres-0   Bound    pvc-71f5114f-c2c6-4bcf-a19f-e763a4df90fb   2Gi        RWO            standard       <unset>                 7h19m
+
+NAME                                  CLASS   HOSTS       ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/studyslot   nginx   localhost   192.168.49.2   80      7h19m
+
+NAME                                          REFERENCE            TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend   Deployment/backend   cpu: 6%/60%   2         4         2          7h19m
+NAME        SYNC STATUS   HEALTH STATUS
+studyslot   Synced        Healthy
+Saved the local demo database in ignored private-evidence/studyslot-backup.sql.
+* Stopping node "minikube"  ...
+* Powering off "minikube" via SSH ...
+* 1 node stopped.
+minikube
+Restored the stopped Minikube container to its original 2 GiB / two CPU limits.
+Docker and containerd stopped. Demo PVCs and the SQL backup are preserved.
+
+Exit code: 0

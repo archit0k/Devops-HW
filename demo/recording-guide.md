@@ -4,7 +4,9 @@ Archit Kulkarni, 24BCS10194, Section A
 
 This is the recording checklist, not another assignment. Read [speaking-script.md](speaking-script.md) alongside it. The instructor asks for slides first, followed by code, a push-triggered pipeline, Terraform/AWS, Argo CD, Kubernetes, Prometheus and Grafana. Allow about 10–13 minutes of finished video. This timing is a suggestion, not an instructor limit. Record the real actions and shorten waiting periods honestly.
 
-If this laptop's prepared session is already running and the preflight passes, start at **Scene 1**. Sections 2–3 explain a cold start and must not be repeated blindly. In particular, do not run another Terraform apply or a second forwarding process during an already prepared recording.
+Recording is paused as of 17 October (IST). The local demo is stopped with its database and SQL backup preserved, and the temporary AWS lab has been removed. The [rehearsal status](../project/evidence/rehearsal-20261016/README.md) links the verification records. Keep both environments off until the next recording window.
+
+After setup is resumed, if this laptop's prepared session is already running and the preflight passes, start at **Scene 1**. Sections 2–3 explain a cold start and must not be repeated blindly. In particular, do not run another Terraform apply or a second forwarding process during an already prepared recording.
 
 ## 1. Before recording
 

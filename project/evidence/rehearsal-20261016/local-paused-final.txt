@@ -1,0 +1,12 @@
+Recorded: 2026-10-16T18:21:51.939193+00:00
+Command: wsl -d Ubuntu -u root --exec bash -lc 'printf "Demo service states (docker, socket, containerd):\n"; systemctl is-active docker docker.socket containerd || true; test -s private-evidence/studyslot-backup.sql || exit 1; echo "Local SQL backup exists and is not empty."; if pgrep -af "[k]ubectl.*port-forward|[f]orward-local.sh|[d]emo-traffic.py"; then exit 1; fi; echo "No demo forwarding or traffic processes remain."; if ss -lntp | grep -E ":(3000|3001|8000|8081|8766|9090)\b"; then exit 1; fi; echo "No demo ports are listening."'
+
+Demo service states (docker, socket, containerd):
+inactive
+inactive
+inactive
+Local SQL backup exists and is not empty.
+No demo forwarding or traffic processes remain.
+No demo ports are listening.
+
+Exit code: 0
