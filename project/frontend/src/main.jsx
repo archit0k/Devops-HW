@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
 
-const today = new Date().toLocaleDateString('en-CA');
+const now = new Date();
+const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 const blank = { student_name: 'Archit Kulkarni', roll_no: '24BCS10194', room: 'Library A',
   booking_date: today, start_hour: 10, attendees: 2 };
 
@@ -91,7 +92,7 @@ function App() {
         </div>
         <div className="schedule"><div className="card-heading"><h2>The room list</h2><span>{bookings.length} BOOKED</span></div>
           <p className="schedule-note">All reservations · one hour per slot</p>
-          {loading ? <div className="empty">Loading bookings…</div> : bookings.length === 0 ? <div className="empty"><div className="empty-icon">↗</div><h3>Some quiet space is waiting.</h3><p>No bookings yet. Pick a room and make the first one.</p></div> :
+          {loading ? <div className="empty">Loading bookings…</div> : error && bookings.length === 0 ? <div className="empty"><h3>Could not load the room list.</h3><p>Check that the backend is running, then refresh the page.</p></div> : bookings.length === 0 ? <div className="empty"><div className="empty-icon">↗</div><h3>Some quiet space is waiting.</h3><p>No bookings yet. Pick a room and make the first one.</p></div> :
             <div className="booking-list">{bookings.map(booking => <article className="reservation" key={booking.id}>
               <div className="time-block"><strong>{String(booking.start_hour).padStart(2, '0')}:00</strong><span>{booking.booking_date}</span></div>
               <div className="reservation-info"><h3>{booking.room}</h3><p>{booking.student_name} · {booking.attendees} {booking.attendees === 1 ? 'person' : 'people'}</p><small>{booking.roll_no}</small></div>

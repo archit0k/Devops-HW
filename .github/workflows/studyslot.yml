@@ -2,7 +2,6 @@ name: StudySlot checks and deployment
 on:
   push:
     branches: [main]
-    paths: ['project/**', '.github/workflows/studyslot.yml']
   pull_request:
     paths: ['project/**', '.github/workflows/studyslot.yml']
   workflow_dispatch:
@@ -113,17 +112,15 @@ jobs:
           name: studyslot-image-scans
           path: scan-results
       - name: Compose integration and non-root check
-        working-directory: project
         run: |
-          export POSTGRES_PASSWORD="$(openssl rand -hex 16)"
-          trap 'docker compose down -v' EXIT
-          docker compose up --build -d
-          docker compose ps -a
-          docker compose exec -T backend id
-          docker compose exec -T frontend id
-          curl --retry 10 --retry-connrefused --retry-delay 2 -fsS http://localhost:3000/frontend-health
-          curl -fsS http://localhost:3000/api/rooms
-          curl -fsS http://localhost:8000/ready
+          set -euo pipefail
+          mkdir -p project-evidence
+          bash project/scripts/run-compose.sh 2>&1 | tee project-evidence/compose.txt
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: studyslot-compose
+          path: project-evidence
       - name: Publish SHA-tagged images only after all gates pass
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         env:
@@ -136,7 +133,57 @@ jobs:
             docker tag "studyslot-${app}:${GITHUB_SHA}" "$image"
             docker push "$image"
           done
+      - name: Export the exact scanned images for deployment
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          docker save "ghcr.io/${owner}/studyslot-backend:${GITHUB_SHA}" "ghcr.io/${owner}/studyslot-frontend:${GITHUB_SHA}" | gzip > studyslot-images.tar.gz
+      - uses: actions/upload-artifact@v7.0.2
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          name: studyslot-tested-images
+          path: studyslot-images.tar.gz
+          retention-days: 3
   deploy:
+    needs: images
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v7.0.0
+        with:
+          name: studyslot-tested-images
+      - name: Create an isolated Kubernetes cluster
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 -o /tmp/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64
+          curl -fsSL --retry 3 -o /tmp/kind.sha256sum https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64.sha256sum
+          curl -fsSL --retry 3 -o /tmp/helm.tar.gz https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz
+          curl -fsSL --retry 3 -o /tmp/helm.sha256sum https://get.helm.sh/helm-v3.22.0-linux-amd64.tar.gz.sha256sum
+          cd /tmp
+          echo "$(cut -d ' ' -f 1 kind.sha256sum)  kind" | sha256sum -c -
+          echo "$(cut -d ' ' -f 1 helm.sha256sum)  helm.tar.gz" | sha256sum -c -
+          chmod +x kind
+          tar -xzf helm.tar.gz
+          sudo install linux-amd64/helm /usr/local/bin/helm
+          /tmp/kind create cluster --name studyslot-ci --image kindest/node:v1.35.8@sha256:07b2536e30b803ed61d1677a79df6115f798ce64c80f9e22f6ed45afd09323c0 --wait 120s
+      - name: Deploy and verify the scanned images
+        run: |
+          set -euo pipefail
+          mkdir -p project-evidence
+          docker load -i studyslot-images.tar.gz
+          /tmp/kind load docker-image "ghcr.io/archit0k/studyslot-backend:${GITHUB_SHA}" "ghcr.io/archit0k/studyslot-frontend:${GITHUB_SHA}" --name studyslot-ci
+          bash project/scripts/run-ci-deploy.sh "$GITHUB_SHA" 2>&1 | tee project-evidence/kubernetes.txt
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: studyslot-kubernetes
+          path: project-evidence
+      - name: Remove the runner cluster
+        if: always()
+        run: /tmp/kind delete cluster --name studyslot-ci
+  deploy_aws:
     needs: images
     if: github.ref == 'refs/heads/main' && vars.ENABLE_EKS_CD == 'true'
     runs-on: ubuntu-latest

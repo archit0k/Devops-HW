@@ -7,6 +7,7 @@ ROOMS = {"Library A": 4, "Library B": 4, "Group Room": 6}
 
 
 class BookingInput(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
     student_name: str = Field(min_length=2, max_length=80)
     roll_no: str = Field(pattern=r"^[A-Za-z0-9]{5,20}$")
     room: Literal["Library A", "Library B", "Group Room"]

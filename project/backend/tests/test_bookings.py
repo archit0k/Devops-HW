@@ -78,3 +78,37 @@ def test_metrics_and_request_id(client):
     metrics = client.get("/metrics")
     assert metrics.status_code == 200
     assert "studyslot_http_requests_total" in metrics.text
+
+
+def test_whitespace_only_name_is_rejected(client, booking):
+    booking["student_name"] = "   "
+    assert client.post("/api/bookings", json=booking).status_code == 422
+
+
+def test_name_and_roll_are_trimmed(client, booking):
+    booking["student_name"] = "  Archit Kulkarni  "
+    booking["roll_no"] = " 24BCS10194 "
+    response = client.post("/api/bookings", json=booking)
+    assert response.status_code == 201
+    assert response.json()["student_name"] == "Archit Kulkarni"
+    assert response.json()["roll_no"] == "24BCS10194"
+
+
+def test_unknown_room_and_extra_fields_are_rejected(client, booking):
+    assert client.post("/api/bookings", json={**booking, "room": "Unknown"}).status_code == 422
+    assert client.post("/api/bookings", json={**booking, "admin": True}).status_code == 422
+
+
+def test_readiness_reports_database_failure(client):
+    from sqlalchemy.exc import OperationalError
+
+    from app.database import get_db
+    from app.main import app
+
+    class BrokenDatabase:
+        def execute(self, _statement):
+            raise OperationalError("SELECT 1", {}, Exception("offline"))
+
+    app.dependency_overrides[get_db] = lambda: BrokenDatabase()
+    assert client.get("/ready").status_code == 503
+    assert client.get("/health").status_code == 200

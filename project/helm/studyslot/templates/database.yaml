@@ -45,13 +45,20 @@ spec:
             - {name: postgres, containerPort: 5432}
           resources:
             requests: {cpu: 100m, memory: 128Mi}
-            limits: {cpu: 500m, memory: 256Mi}
+            limits: {cpu: 500m, memory: 512Mi}
+          startupProbe:
+            exec: {command: [pg_isready, -U, studyslot, -d, studyslot]}
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 60
           readinessProbe:
             exec: {command: [pg_isready, -U, studyslot, -d, studyslot]}
             periodSeconds: 5
+            timeoutSeconds: 5
           livenessProbe:
             exec: {command: [pg_isready, -U, studyslot, -d, studyslot]}
             initialDelaySeconds: 30
+            timeoutSeconds: 5
           volumeMounts:
             - {name: data, mountPath: /var/lib/postgresql/data}
   volumeClaimTemplates:
