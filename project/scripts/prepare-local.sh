@@ -2,8 +2,14 @@
 set -euo pipefail
 tag=${1:?Pass a tested SHA}
 [[ "$tag" =~ ^[0-9a-f]{40}$ ]]
+if ! docker info >/dev/null 2>&1; then systemctl start docker; fi
 if ! minikube status >/dev/null 2>&1; then
-  minikube start --driver=docker --memory=5120 --cpus=6 --force
+  if docker inspect minikube >/dev/null 2>&1; then
+    docker update --memory 5g --memory-swap 7g --cpus 6 minikube
+    minikube start --driver=docker --force
+  else
+    minikube start --driver=docker --memory=5120 --cpus=6 --force
+  fi
 fi
 docker update --memory 5g --memory-swap 7g --cpus 6 minikube
 export PATH="/root/.minikube/cache/linux/amd64/v1.37.0:$PATH"
