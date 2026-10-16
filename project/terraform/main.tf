@@ -146,7 +146,7 @@ resource "aws_iam_role" "github_deploy" {
       Effect = "Allow", Principal = { Federated = local.github_oidc_arn }, Action = "sts:AssumeRoleWithWebIdentity",
       Condition = { StringEquals = {
         "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com",
-        "token.actions.githubusercontent.com:sub" = "repo:archit0k/Devops-HW:ref:refs/heads/main"
+        "token.actions.githubusercontent.com:sub" = "repo:archit0k@178862175/Devops-HW@1356256990:ref:refs/heads/main"
       } }
     }]
   })
