@@ -1,6 +1,6 @@
 imageTag: ea51f5a57bcb2fd435a33cc64a91730c17b824f3
 replicaCount: 2
-demoRevision: first-sync
+demoRevision: booking-demo
 ingress:
   host: localhost
 monitoring:
