@@ -6,6 +6,7 @@ tag=${1:?Pass a tested image SHA}
 kubectl get nodes -o wide
 kubectl apply -f project/k8s/storageclass.yaml
 python3 project/scripts/bootstrap-secret.py
+kubectl apply -f project/k8s/ci-monitoring-rbac.yaml
 python3 project/scripts/registry-secret.py
 bash project/scripts/setup-monitoring.sh
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx

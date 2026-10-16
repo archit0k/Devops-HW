@@ -5,7 +5,7 @@ on:
       action:
         type: choice
         required: true
-        options: [bootstrap, verify, cleanup]
+        options: [bootstrap, configure-access, verify, cleanup]
       image_sha:
         description: SHA already built and scanned by the StudySlot pipeline
         required: true
@@ -47,6 +47,9 @@ jobs:
           mkdir -p project-evidence
           if [[ "$LAB_ACTION" == bootstrap ]]; then
             bash project/scripts/bootstrap-aws.sh "$TESTED_SHA" 2>&1 | tee project-evidence/aws-bootstrap.txt
+          elif [[ "$LAB_ACTION" == configure-access ]]; then
+            kubectl apply -f project/k8s/ci-monitoring-rbac.yaml
+            kubectl -n studyslot get role,rolebinding
           elif [[ "$LAB_ACTION" == verify ]]; then
             bash project/scripts/verify-aws.sh 2>&1 | tee project-evidence/aws-verify.txt
           elif [[ "$LAB_ACTION" == cleanup ]]; then

@@ -161,6 +161,7 @@ resource "aws_iam_role_policy" "describe_ci" {
 resource "aws_eks_access_entry" "ci" {
   cluster_name  = aws_eks_cluster.lab.name
   principal_arn = aws_iam_role.github_deploy.arn
+  kubernetes_groups = ["studyslot-deploy"]
 }
 resource "aws_eks_access_policy_association" "ci" {
   cluster_name  = aws_eks_cluster.lab.name

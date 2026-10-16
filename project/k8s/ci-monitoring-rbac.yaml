@@ -1,0 +1,24 @@
+# EKS's built-in Edit policy does not include this custom Prometheus resource.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: studyslot-monitoring-deploy
+  namespace: studyslot
+rules:
+  - apiGroups: [monitoring.coreos.com]
+    resources: [servicemonitors]
+    verbs: [get, list, watch, create, update, patch, delete]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: studyslot-monitoring-deploy
+  namespace: studyslot
+subjects:
+  - kind: Group
+    name: studyslot-deploy
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: studyslot-monitoring-deploy
+  apiGroup: rbac.authorization.k8s.io
