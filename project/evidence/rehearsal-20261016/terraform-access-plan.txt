@@ -1,0 +1,153 @@
+Recorded: 2026-10-16T17:48:27.794180+00:00
+Command: wsl -d Ubuntu -u root --exec bash project/scripts/terraform-lab.sh plan
+
+data.aws_eks_addon_version.metrics: Reading...
+data.aws_availability_zones.available: Reading...
+data.aws_eks_addon_version.pod_identity: Reading...
+data.aws_eks_addon_version.ebs: Reading...
+data.aws_caller_identity.current: Reading...
+aws_iam_role.node: Refreshing state... [id=studyslot-eks-workers]
+aws_iam_role.cluster: Refreshing state... [id=studyslot-eks-control-plane]
+aws_iam_role.ebs: Refreshing state... [id=studyslot-ebs-driver]
+aws_vpc.lab: Refreshing state... [id=vpc-0a4ae82a738379dd9]
+data.aws_caller_identity.current: Read complete after 1s [id=731372490400]
+data.aws_availability_zones.available: Read complete after 2s [id=us-east-1]
+aws_internet_gateway.lab: Refreshing state... [id=igw-058c740749afb7a1d]
+aws_subnet.public[0]: Refreshing state... [id=subnet-0f45691f9004eeef7]
+aws_subnet.public[1]: Refreshing state... [id=subnet-0a05866b830365d2d]
+aws_route_table.public: Refreshing state... [id=rtb-0b3d8dc814b03bb7f]
+data.aws_eks_addon_version.ebs: Read complete after 5s [id=aws-ebs-csi-driver]
+aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0d6a6b6efefb4bd89]
+aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-054c198901b70d2ea]
+data.aws_eks_addon_version.metrics: Read complete after 5s [id=metrics-server]
+data.aws_eks_addon_version.pod_identity: Read complete after 5s [id=eks-pod-identity-agent]
+aws_iam_role_policy_attachment.node["AmazonEKSWorkerNodePolicy"]: Refreshing state... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy]
+aws_iam_role_policy_attachment.node["AmazonEC2ContainerRegistryReadOnly"]: Refreshing state... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly]
+aws_iam_role_policy_attachment.node["AmazonEKS_CNI_Policy"]: Refreshing state... [id=studyslot-eks-workers/arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy]
+aws_iam_role_policy_attachment.ebs: Refreshing state... [id=studyslot-ebs-driver/arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy]
+aws_iam_role_policy_attachment.cluster: Refreshing state... [id=studyslot-eks-control-plane/arn:aws:iam::aws:policy/AmazonEKSClusterPolicy]
+aws_eks_cluster.lab: Refreshing state... [id=archit-studyslot]
+aws_eks_pod_identity_association.ebs: Refreshing state... [id=a-eolc0pushytvju32r]
+aws_eks_node_group.lab: Refreshing state... [id=archit-studyslot:classroom]
+aws_eks_addon.pod_identity: Refreshing state... [id=archit-studyslot:eks-pod-identity-agent]
+aws_eks_addon.metrics: Refreshing state... [id=archit-studyslot:metrics-server]
+aws_eks_addon.ebs: Refreshing state... [id=archit-studyslot:aws-ebs-csi-driver]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_eks_access_entry.ci will be created
+  + resource "aws_eks_access_entry" "ci" {
+      + access_entry_arn  = (known after apply)
+      + cluster_name      = "archit-studyslot"
+      + created_at        = (known after apply)
+      + id                = (known after apply)
+      + kubernetes_groups = [
+          + "studyslot-deploy",
+        ]
+      + modified_at       = (known after apply)
+      + principal_arn     = (known after apply)
+      + region            = "us-east-1"
+      + tags_all          = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + type              = "STANDARD"
+      + user_name         = (known after apply)
+    }
+
+  # aws_eks_access_policy_association.ci will be created
+  + resource "aws_eks_access_policy_association" "ci" {
+      + associated_at = (known after apply)
+      + cluster_name  = "archit-studyslot"
+      + id            = (known after apply)
+      + modified_at   = (known after apply)
+      + policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+      + principal_arn = (known after apply)
+      + region        = "us-east-1"
+
+      + access_scope {
+          + type = "cluster"
+        }
+    }
+
+  # aws_iam_role.github_deploy will be created
+  + resource "aws_iam_role" "github_deploy" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRoleWithWebIdentity"
+                      + Condition = {
+                          + StringEquals = {
+                              + "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+                              + "token.actions.githubusercontent.com:sub" = "repo:archit0k@178862175/Devops-HW@1356256990:ref:refs/heads/main"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Federated = "arn:aws:iam::731372490400:oidc-provider/token.actions.githubusercontent.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "studyslot-github-deploy"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "Owner"   = "Archit-Kulkarni"
+          + "Project" = "studyslot-homework"
+          + "Roll"    = "24BCS10194"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # aws_iam_role_policy.describe_ci will be created
+  + resource "aws_iam_role_policy" "describe_ci" {
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + name_prefix = (known after apply)
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "eks:DescribeCluster",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:eks:us-east-1:731372490400:cluster/archit-studyslot"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role        = (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + github_deploy_role_arn = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: project.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "project.tfplan"
+
+Exit code: 0

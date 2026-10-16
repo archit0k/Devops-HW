@@ -1,0 +1,71 @@
+Recorded: 2026-10-16T17:34:20.017499+00:00
+Command: wsl -d Ubuntu -u root --exec bash project/scripts/resume-local.sh
+
+minikube
+* minikube v1.39.0 on Ubuntu 26.04 (amd64)
+! minikube skips various validations when --force is supplied; this may lead to unexpected behavior
+* Using the docker driver based on existing profile
+* The "docker" driver should not be used with root privileges. If you wish to continue as root, use --force.
+* If you are running minikube within a VM, consider using --driver=none:
+*   https://minikube.sigs.k8s.io/docs/reference/drivers/none/
+* Tip: To remove this root owned cluster, run: sudo minikube delete
+* Starting "minikube" primary control-plane node in "minikube" cluster
+* Pulling base image v0.0.51 ...
+! StartHost failed, but will try again: driver start: start: docker start minikube: exit status 1
+stdout:
+
+stderr:
+Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: unable to apply cgroup configuration: unable to start unit "docker-41aacbc0fe254690a80c0ad70c8ee96b32d18edddbff6fb70216099ce7289771.scope" (properties [{Name:Description Value:"libcontainer container 41aacbc0fe254690a80c0ad70c8ee96b32d18edddbff6fb70216099ce7289771"} {Name:Slice Value:"system.slice"} {Name:Delegate Value:true} {Name:PIDs Value:@au [7520]} {Name:MemoryAccounting Value:true} {Name:CPUAccounting Value:true} {Name:IOAccounting Value:true} {Name:TasksAccounting Value:true} {Name:DefaultDependencies Value:false}]): error creating systemd unit `docker-41aacbc0fe254690a80c0ad70c8ee96b32d18edddbff6fb70216099ce7289771.scope`: got `failed`
+failed to start containers: minikube
+
+! Failing to connect to https://registry.k8s.io/ from inside the minikube container
+* To pull new external images, you may need to configure a proxy: https://minikube.sigs.k8s.io/docs/reference/networking/proxy/
+* Preparing Kubernetes v1.37.0 on containerd 2.3.4 ...
+* Verifying Kubernetes components...
+  - Using image registry.k8s.io/ingress-nginx/controller:v1.15.1
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+  - Using image registry.k8s.io/metrics-server/metrics-server:v0.9.0
+  - Using image gcr.io/k8s-minikube/storage-provisioner:v5
+* Verifying ingress addon...
+* Enabled addons: storage-provisioner, metrics-server, default-storageclass, ingress
+* To connect to this cluster, use:  --context=minikube
+Switched to context "minikube".
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 1 new pods have been updated...
+Waiting for deployment "backend" rollout to finish: 0 of 4 updated replicas are available...
+Waiting for deployment "backend" rollout to finish: 1 of 4 updated replicas are available...
+Waiting for deployment "backend" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "backend" rollout to finish: 3 of 4 updated replicas are available...
+deployment "backend" successfully rolled out
+deployment "frontend" successfully rolled out
+deployment "ingress-nginx-controller" successfully rolled out
+deployment "monitoring-grafana" successfully rolled out
+deployment "argocd-server" successfully rolled out
+NAME                            READY   STATUS    RESTARTS       AGE
+pod/backend-54fc56cc8f-lgc52    1/1     Running   2 (101s ago)   6h5m
+pod/backend-54fc56cc8f-mpz8g    1/1     Running   0              7m8s
+pod/backend-54fc56cc8f-qxsc9    1/1     Running   2 (101s ago)   6h4m
+pod/backend-54fc56cc8f-tkw2b    1/1     Running   0              7m8s
+pod/frontend-6fcd89fdbf-9rwt5   1/1     Running   7 (55s ago)    6h38m
+pod/frontend-6fcd89fdbf-wr289   1/1     Running   7 (51s ago)    6h38m
+pod/postgres-0                  1/1     Running   3 (7m ago)     5h49m
+
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/backend    ClusterIP   10.96.173.52    <none>        8000/TCP   6h39m
+service/frontend   ClusterIP   10.101.104.61   <none>        8080/TCP   6h39m
+service/postgres   ClusterIP   None            <none>        5432/TCP   6h39m
+
+NAME                                  CLASS   HOSTS       ADDRESS   PORTS   AGE
+ingress.networking.k8s.io/studyslot   nginx   localhost             80      6h38m
+
+NAME                                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/data-postgres-0   Bound    pvc-71f5114f-c2c6-4bcf-a19f-e763a4df90fb   2Gi        RWO            standard       <unset>                 6h38m
+
+NAME                                          REFERENCE            TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend   Deployment/backend   cpu: <unknown>/60%   2         4         4          6h38m
+NAME        SYNC STATUS   HEALTH STATUS
+studyslot   Synced        Progressing
+The preserved local lab is running. Start forward-local.sh in a separate shell.
+
+Exit code: 0

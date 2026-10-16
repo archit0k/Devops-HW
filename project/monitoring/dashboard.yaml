@@ -78,7 +78,7 @@ data:
           },
           "targets": [
             {
-              "expr": "kube_deployment_status_replicas_available{namespace=\"studyslot\",deployment=\"backend\"}",
+              "expr": "max(kube_deployment_status_replicas_available{namespace=\"studyslot\",deployment=\"backend\"})",
               "refId": "A",
               "legendFormat": "{{route}}"
             }

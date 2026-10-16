@@ -35,9 +35,11 @@ Copy `.env.example` to ignored `.env` and set a local password. Then run `docker
 
 ## Demo and verification
 
-The [demo folder](../demo/README.md) contains the ten-slide presentation and captioned MP4 walkthrough. The [evidence index](evidence/README.md) maps the rubric to actual command records, screenshots and Actions runs. Records keep their timestamps and exit codes; failed attempts are identified, not presented as passing runs. This capstone is separate from the [Session 21 TaskBoard walkthrough](../session21-final-project/README.md).
+The [demo folder](../demo/README.md) contains the twelve-slide presentation, detailed recording guide, speaking script and earlier captioned MP4 walkthrough. The earlier video uses the previous deck; the new narrated recording is still separate work. The [evidence index](evidence/README.md) maps the rubric to actual command records, screenshots and Actions runs. Records keep their timestamps and exit codes; failed attempts are identified, not presented as passing runs. This capstone is separate from the [Session 21 TaskBoard walkthrough](../session21-final-project/README.md).
 
 ![StudySlot in the browser](evidence/desktop-browser.jpg)
+
+The [fresh recording rehearsal](evidence/rehearsal-20261016/README.md) adds new browser screenshots and verification records. It also tracks the new temporary AWS lab separately from the earlier teardown.
 
 ## Stack and API
 
@@ -95,7 +97,7 @@ Initial setup temporarily has cluster-admin access on this EKS cluster only. Nor
 
 Cleanup order: disable `ENABLE_EKS_CD`, dispatch the AWS workflow's `cleanup` action to remove the release/PVC while EBS CSI still runs, then run `bash project/scripts/terraform-lab.sh destroy`. Check for leftover clusters, VPCs, instances and volumes. The budget is $30 maximum; credits are not a reason to leave resources running.
 
-That cleanup is complete: [26 resources destroyed](evidence/terraform-destroy-final.txt), [no project cloud leftovers](evidence/cloud-cleanup-final.txt), and [local services stopped with data preserved](evidence/local-shutdown.txt). The recorded [six-job push pipeline](https://github.com/archit0k/Devops-HW/actions/runs/38894261034) includes a successful namespace-only EKS deployment.
+The earlier lab's cleanup completed: [26 resources destroyed](evidence/terraform-destroy-final.txt), [no project cloud leftovers at that check](evidence/cloud-cleanup-final.txt), and [local services stopped with data preserved](evidence/local-shutdown.txt). A later recording rehearsal resumes local services and recreates AWS only for recording; see [its own status](evidence/rehearsal-20261016/README.md), not the old cleanup record, for that lab. The recorded [six-job push pipeline](https://github.com/archit0k/Devops-HW/actions/runs/38894261034) includes a successful namespace-only EKS deployment.
 
 ## Kubernetes, Helm and GitOps
 

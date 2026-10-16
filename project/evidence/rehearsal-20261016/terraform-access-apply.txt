@@ -1,0 +1,26 @@
+Recorded: 2026-10-16T17:50:29.701942+00:00
+Command: wsl -d Ubuntu -u root --exec bash project/scripts/terraform-lab.sh apply
+
+aws_iam_role.github_deploy: Creating...
+aws_iam_role.github_deploy: Creation complete after 4s [id=studyslot-github-deploy]
+aws_iam_role_policy.describe_ci: Creating...
+aws_eks_access_entry.ci: Creating...
+aws_iam_role_policy.describe_ci: Creation complete after 1s [id=studyslot-github-deploy:terraform-7a87ec3af53f5bb504af396533]
+aws_eks_access_entry.ci: Still creating... [00m10s elapsed]
+aws_eks_access_entry.ci: Creation complete after 11s [id=archit-studyslot:arn:aws:iam::731372490400:role/studyslot-github-deploy]
+aws_eks_access_policy_association.ci: Creating...
+aws_eks_access_policy_association.ci: Creation complete after 1s [id=archit-studyslot#arn:aws:iam::731372490400:role/studyslot-github-deploy#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy]
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+cluster_name = "archit-studyslot"
+github_deploy_role_arn = "arn:aws:iam::731372490400:role/studyslot-github-deploy"
+public_subnet_ids = [
+  "subnet-0f45691f9004eeef7",
+  "subnet-0a05866b830365d2d",
+]
+vpc_id = "vpc-0a4ae82a738379dd9"
+
+Exit code: 0

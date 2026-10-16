@@ -1,0 +1,102 @@
+Recorded: 2026-10-16T17:44:14.546034+00:00
+Command: wsl -d Ubuntu -u root --exec bash project/scripts/verify-local.sh
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/backend    2/2     2            2           6h46m
+deployment.apps/frontend   2/2     2            2           6h46m
+
+NAME                            READY   STATUS    RESTARTS       AGE
+pod/backend-54fc56cc8f-mpz8g    1/1     Running   0              14m
+pod/backend-54fc56cc8f-tkw2b    1/1     Running   0              14m
+pod/frontend-6fcd89fdbf-9rwt5   1/1     Running   7 (8m4s ago)   6h46m
+pod/frontend-6fcd89fdbf-wr289   1/1     Running   7 (8m ago)     6h46m
+pod/postgres-0                  1/1     Running   3 (14m ago)    5h57m
+
+NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/backend    ClusterIP   10.96.173.52    <none>        8000/TCP   6h46m
+service/frontend   ClusterIP   10.101.104.61   <none>        8080/TCP   6h46m
+service/postgres   ClusterIP   None            <none>        5432/TCP   6h46m
+
+NAME                                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/data-postgres-0   Bound    pvc-71f5114f-c2c6-4bcf-a19f-e763a4df90fb   2Gi        RWO            standard       <unset>                 6h46m
+
+NAME                                  CLASS   HOSTS       ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/studyslot   nginx   localhost   192.168.49.2   80      6h46m
+
+NAME                                          REFERENCE            TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/backend   Deployment/backend   cpu: 9%/60%   2         4         2          6h46m
+
+NAME                                             AGE
+servicemonitor.monitoring.coreos.com/studyslot   6h46m
+NAME      	NAMESPACE 	REVISION	UPDATED                                	STATUS  	CHART                       	APP VERSION
+monitoring	monitoring	2       	2026-10-16 11:18:15.587963932 +0000 UTC	deployed	kube-prometheus-stack-89.2.0	v0.93.1    
+studyslot 	studyslot 	1       	2026-10-16 11:01:06.220994797 +0000 UTC	deployed	studyslot-0.1.0             	1.0.0      
+curl: (52) Empty reply from server
+curl: (7) Failed to connect to localhost port 8000 after 0 ms: Could not connect to server
+GET /health -> 200: {"status":"ok","app":"StudySlot","student":"Archit Kulkarni"}
+GET /ready -> 200: {"status":"ready"}
+GET / -> 200: <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#23423c" />
+    <title>StudySlot | Campus room bookings</title>
+    <script type="module" crossorigin src="/assets/index-CKZAsdG3.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CRcmMn4p.css">
+  </head>
+  <body><div id="root"></div></body>
+</html>
+
+GET /api/rooms -> 200: [{"name":"Library A","capacity":4},{"name":"Library B","capacity":4},{"name":"Group Room","capacity":6}]
+GET /api/bookings -> 200: [{"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Library A","booking_date":"2026-10-17","start_hour":10,"attendees":2,"id":5},{"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2026-10-17","start_hour":14,"attendees":4,"id":6}]
+GET /docs -> 200: 
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
+    <link rel="shortcut icon" href="https://fastapi.tiangolo.com/img/favicon.png">
+    <title>StudySlot - Swagger UI</title>
+    </head>
+    <body>
+    <div id="swagger-ui">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js
+POST /api/bookings -> 201: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":19,"attendees":3,"id":17}
+GET /api/bookings/17 -> 200: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":19,"attendees":3,"id":17}
+POST /api/bookings -> 409: {"detail":"This room is already booked for that hour"}
+PUT /api/bookings/17 -> 200: {"student_name":"Archit Kulkarni","roll_no":"24BCS10194","room":"Group Room","booking_date":"2099-10-16","start_hour":20,"attendees":3,"id":17}
+DELETE /api/bookings/17 -> 204: 
+GET /api/bookings/17 -> 404: {"detail":"Booking not found"}
+Concurrent POST results: [[409, {"detail": "This room is already booked for that hour"}], [201, {"student_name": "Archit Kulkarni", "roll_no": "24BCS10194", "room": "Group Room", "booking_date": "2099-10-16", "start_hour": 19, "attendees": 3, "id": 19}]]
+POST /api/bookings -> 422: {"detail":[{"type":"string_too_short","loc":["body","student_name"],"msg":"String should have at least 2 characters","input":"   ","ctx":{"min_length":2}}]}
+POST /api/bookings -> 422: {"detail":"Too many people for this room"}
+GET /metrics -> 200: # HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 492.0
+python_gc_objects_collected_total{generation="1"} 221.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_unco
+DELETE /api/bookings/19 -> 204: 
+StudySlot CRUD, validation, metrics and concurrent PostgreSQL booking checks passed.
+Prometheus target: http://10.244.0.16:8000/metrics up error: 
+Prometheus target: http://10.244.0.17:8000/metrics up error: 
+sum(up{namespace="studyslot"}) [{"metric": {}, "value": [1792172666.728, "2"]}]
+sum(studyslot_http_requests_total{namespace="studyslot"}) [{"metric": {}, "value": [1792172666.741, "326"]}]
+sum(rate(studyslot_http_requests_total{namespace="studyslot"}[5m])) [{"metric": {}, "value": [1792172666.753, "1.1066748165916451"]}]
+histogram_quantile(0.95, sum by (le) (rate(studyslot_http_request_duration_seconds_bucket{namespace="studyslot"}[5m]))) [{"metric": {}, "value": [1792172666.763, "0.014937197600382836"]}]
+Ingress, CRUD, real PostgreSQL conflict protection and Prometheus checks passed.
+NAME        SYNC STATUS   HEALTH STATUS
+studyslot   Synced        Healthy
+NAME                        CPU(cores)   MEMORY(bytes)   
+backend-54fc56cc8f-mpz8g    7m           80Mi            
+backend-54fc56cc8f-tkw2b    7m           77Mi            
+frontend-6fcd89fdbf-9rwt5   1m           8Mi             
+frontend-6fcd89fdbf-wr289   1m           5Mi             
+postgres-0                  23m          44Mi            
+
+Exit code: 0
