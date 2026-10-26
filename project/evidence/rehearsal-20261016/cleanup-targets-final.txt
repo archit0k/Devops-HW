@@ -1,7 +1,0 @@
-Recorded: 2026-10-16T18:17:49.898217+00:00
-Command: wsl -d Ubuntu -u root --exec python3 project/scripts/check-recording-cleanup.py capture
-
-Captured exact StudySlot cleanup targets: {"vpc_id": "vpc-0a4ae82a738379dd9", "cluster": "archit-studyslot", "volumes": ["vol-0a1b2fe873313ab14", "vol-0c1c80a095400f220", "vol-08a63ca164120e239"], "roles": ["studyslot-eks-control-plane", "studyslot-ebs-driver", "studyslot-github-deploy", "studyslot-eks-workers"], "owned_oidc": []}
-A pre-existing OIDC provider outside this Terraform state is not a deletion target.
-
-Exit code: 0

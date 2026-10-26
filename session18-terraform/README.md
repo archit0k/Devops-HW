@@ -1,8 +1,8 @@
-# Session 18 - Terraform and Infrastructure as Code
+# Session 18 — Terraform and infrastructure as code
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-The [S3 demo](terraform-s3-demo/) defines a private, encrypted bucket in `us-east-1`. Bucket name/region come from variables and `terraform.tfvars`; outputs show the name, ARN and region. This file contains no credentials.
+The [S3 demo and its results](terraform-s3-demo/README.md) define a private, encrypted bucket in `us-east-1`. Bucket name/region come from variables and a non-secret `terraform.tfvars`; outputs show the name, ARN and region. The second task is the five AWS service notes linked below.
 
 ## Terraform workflow
 
@@ -22,7 +22,7 @@ terraform destroy
 
 Terraform resolves references into a dependency graph, so the public-access block and encryption settings depend on the bucket without manual command ordering. Providers translate resource operations into AWS API calls. Variables are inputs, outputs expose selected results, and state is not the same thing as source code.
 
-The real AWS bucket was created on 7 October. [Evidence](evidence/) contains validation, plan/apply, inspection, outputs and cleanup records. State, saved plans and authentication material are ignored by Git.
+The AWS bucket was created on 7 October. [Execution records](evidence/) contain validation, plan/apply, inspection, outputs and cleanup. All three managed resources were destroyed afterward. State, saved plans and authentication material are ignored by Git.
 
 ![Bucket created by Terraform](evidence/aws-bucket.jpg)
 

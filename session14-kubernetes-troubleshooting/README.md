@@ -1,12 +1,12 @@
-# Session 14 - Kubernetes Troubleshooting
+# Session 14 — Kubernetes troubleshooting
 
 Archit Kulkarni | 24BCS10194 | Section A
 
 The mini project starts with a two-replica Nginx Deployment and ClusterIP Service. The lab deliberately breaks one thing at a time, checks the cause, fixes it, and repeats the request.
 
-## Commands and evidence
+## Lab and results
 
-Run `bash run-lab.sh` from Ubuntu with Minikube running. The complete local commands and real output are in [evidence/lab.txt](evidence/lab.txt). The runner version uses an isolated kind cluster; it is not a screenshot of the laptop's Minikube cluster.
+Run [run-lab.sh](run-lab.sh) from this directory in Ubuntu with Minikube running. The [local command output](evidence/lab.txt) and [runner output](evidence/runner/commands.txt) are separate checks; the runner used an isolated Kind cluster. The [mini-project manifests](mini-project/) contain the application and failure examples.
 
 | Problem | Check | Fix and verification |
 | --- | --- | --- |
@@ -33,10 +33,10 @@ Other commands exercised: `kubectl logs`, `exec`, `get events --sort-by=.metadat
 9. Logs explain application errors; events explain scheduling, pulling and mounting problems. `describe` brings the latter together.
 10. A fix is complete only after the Pod is healthy and the original client request works again.
 
-The first local attempt also hit a real laptop DNS problem while pulling a valid image. Valid images were loaded into Minikube's cache, and the lab was rerun. Network failures are not evidence that an image tag is invalid.
+One local pull failed because of DNS, even though the tag was valid. Loading the verified image into Minikube allowed that check to continue; an image pull failure needs its actual event message, not an assumed cause.
 
 The script removes only its `homework14` namespace at the end.
 
-The [clean runner recheck](https://github.com/archit0k/Devops-HW/actions/runs/37660525939) passed with pipeline failure propagation enabled. [Runner output](evidence/runner/commands.txt) preserves the independent break/fix tests.
+The [runner check](https://github.com/archit0k/Devops-HW/actions/runs/37660525939) passed all independent break/fix tests. Each fix was followed by readiness or an HTTP request, and the temporary namespace was removed.
 
 ![Healthy Pods after the fixes in the saved runner output](evidence/fixed-pods.jpg)

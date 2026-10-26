@@ -1,8 +1,8 @@
-# Session 17 - DevSecOps
+# Session 17 — DevSecOps
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-The small Flask API has a home page, `/health`, greeting endpoint and numeric addition endpoint. Tests cover normal requests, invalid input and missing routes.
+The [Flask API](app.py) has a home page, `/health`, greeting and numeric-addition endpoints. [Tests](tests/) cover normal requests, invalid input and missing routes. The [Dockerfile](Dockerfile), [deployment](kubernetes/deployment.yaml) and [security configuration](security/) are included beside the application.
 
 ## Pipeline and gates
 
@@ -20,6 +20,8 @@ The [successful run](https://github.com/archit0k/Devops-HW/actions/runs/37655885
 
 ![Completed DevSecOps pipeline](evidence/pipeline.jpg)
 
+Run the local commands from `session17-devsecops/`. The Kubernetes commands require a running lab cluster and the tested image tag.
+
 ```bash
 pip install -r requirements-dev.txt
 pytest -v
@@ -31,6 +33,6 @@ kubectl set image deployment/homework-api app=<the-tested-image-tag>
 kubectl rollout status deployment/homework-api
 ```
 
-The manifest image `homework-api:ci` is replaced with the exact tested commit-SHA tag by the workflow. It is not a claim that a public mutable `latest` tag was deployed. Publishing uses GitHub's short-lived workflow token, not AWS keys or a stored personal token.
+The workflow replaces the manifest's `homework-api:ci` image with the exact tested commit-SHA tag. Publishing uses GitHub's short-lived workflow token; the deployment target is the runner's disposable Kind cluster.
 
 [Security notes](security/README.md) explain what each scanner covers and the narrowly documented historical teaching-value fingerprints in `.gitleaksignore`. Flask's development server is sufficient for this classroom API, not a production serving recommendation.

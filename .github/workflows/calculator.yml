@@ -23,6 +23,10 @@ jobs:
       - uses: actions/setup-python@v7.0.0
         with: {python-version: '3.14'}
       - run: cd session16-github-actions && bash build.sh
+      - name: Build and run the calculator container
+        run: |
+          docker build -t calculator-homework:ci session16-github-actions
+          docker run --rm calculator-homework:ci
       - uses: actions/upload-artifact@v7.0.2
         with:
           name: calculator-build

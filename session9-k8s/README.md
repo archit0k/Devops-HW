@@ -1,7 +1,8 @@
-# Session 9 - Kubernetes Fundamentals
+# Session 9 — Kubernetes fundamentals
 
-Name: Archit Kulkarni  
-Roll number: 24BCS10194
+Archit Kulkarni | 24BCS10194 | Section A
+
+This lab covers cluster setup, the control plane, workload deployment, scaling, updates and rollback. [run-basics.sh](run-basics.sh) repeats the hands-on tutorial in a temporary namespace.
 
 ## 1. CLI and Minikube setup
 
@@ -13,7 +14,6 @@ minikube kubectl -- version --client --output=yaml
 minikube start --driver=docker
 minikube status
 minikube kubectl -- get nodes -o wide
-minikube stop
 ```
 
 `minikube start` creates the cluster, `status` confirms host/kubelet/API-server health, and `stop` releases the VM resources without deleting cluster configuration.
@@ -32,13 +32,13 @@ kubectl / controllers
   kube-proxy -> Service networking
 ```
 
-The control plane stores desired state in **etcd**. The **API server** is the only public control-plane entry point; the **scheduler** chooses a node for unscheduled pods, and controller managers continually reconcile actual state with desired state. On each worker, **kubelet** starts the assigned Pod through a CRI-compatible runtime, while **kube-proxy** programs Service traffic rules.
+The control plane stores cluster state in **etcd**. The **API server** is the entry point used by kubectl and controllers; the **scheduler** chooses a node for unscheduled Pods, and controllers reconcile desired state. On each worker, **kubelet** starts the assigned Pods through the container runtime, while **kube-proxy** handles Service traffic rules in this cluster.
 
 ## 3. Verification sequence
 
-Run the version, start, status, node, and stop commands above in that order. The same cluster can be used for the later Kubernetes exercises, then stopped after the lab work is finished.
+After the setup checks, run `bash run-basics.sh` from this folder. It deploys Nginx, exposes a Service, scales to four replicas, updates the image, checks rollout history, rolls back and requests the page from inside the cluster. The same Minikube cluster can be reused for later exercises.
 
-## 4. Local cluster check
+## 4. Results
 
 The local Minikube cluster was started with the Docker driver in Ubuntu WSL. The control plane and node check returned:
 
@@ -53,3 +53,5 @@ minikube   Ready    control-plane   v1.37.0
 The [full recheck](evidence/lab.txt), produced by [run-basics.sh](run-basics.sh), also deploys Nginx, exposes its Service, scales to four replicas, changes the image, checks rollout history, rolls back and verifies HTTP from inside the cluster. The temporary `homework9` namespace is then removed. WSL uses the Docker driver; `minikube kubectl --` keeps the CLI version matched to the cluster.
 
 ![Four-replica rollout in the saved local output](evidence/rollout.jpg)
+
+After finishing the local exercises, `minikube stop` stops the node without deleting its configuration.

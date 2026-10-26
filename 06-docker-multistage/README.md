@@ -1,9 +1,8 @@
-# Docker Multi-Stage Build
+# Session 7 — Docker multi-stage build
 
-Name: **Archit Kulkarni**  
-Enrollment number: **24BCS10194**
+Archit Kulkarni | 24BCS10194 | Section A
 
-This application uses a multi-stage Dockerfile: the `dependencies` stage installs production packages and the small production stage receives only `node_modules`, `package.json`, and `server.js`.
+The [Dockerfile](Dockerfile) installs production dependencies in one stage and copies only `node_modules`, `package.json` and `server.js` into the runtime stage. The application listens on port 8080.
 
 ## Build and run
 
@@ -26,7 +25,7 @@ Expected `docker ps` port mapping includes `0.0.0.0:8080->8080/tcp`.
 
 The repository also deploys the required three application types in [`../05-docker-hello-apps`](../05-docker-hello-apps): Node.js, Python, and Java. Each has a standalone Dockerfile and a documented build/run command.
 
-## Actual check
+## Results
 
 The multi-stage image was built, started with `8080:8080`, inspected with `docker ps` and `docker history`, and tested over HTTP. The [saved output](../05-docker-hello-apps/evidence/commands.txt) contains the real Hello World response and port mapping. The container was removed afterward.
 

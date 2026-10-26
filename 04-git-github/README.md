@@ -1,6 +1,8 @@
-# Git and GitHub Exercises
+# Session 5 — Git and GitHub
 
-This folder contains the working notes for the two required exercises. The repository history is the evidence for the commits and cherry-pick.
+Archit Kulkarni | 24BCS10194 | Section A
+
+The two exercises compare staged/automatic commits and selectively copy a branch commit with cherry-pick. [The command transcript](evidence/git-lab.txt) includes both successful commands and the expected failures when nothing eligible was staged.
 
 ## `git commit -a -m` versus `git commit -m`
 
@@ -27,8 +29,8 @@ git log --oneline --decorate -n 10
 
 The `cherry-pick-evidence.md` file is created on the lab branch and then cherry-picked into `main`, demonstrating selective transfer of one commit rather than merging the complete branch.
 
-## Fresh verification
+## Results
 
-[Real Git transcript](evidence/git-lab.txt) repeats both exercises in an isolated temporary repository without rewriting published history. Main gets three initial commits, the practice branch gets three commits, and only its second commit is cherry-picked. Assertions check that the other two branch-only files are absent from main. The record also shows `-m` refusing unstaged changes and `-am` refusing an untracked file.
+In the isolated practice repository, main had three initial commits and the practice branch had three more. Only the second branch commit was cherry-picked; the other two branch-only files were absent from main. The transcript also shows `-m` leaving unstaged changes out and `-am` leaving untracked files out. [The earlier cherry-pick file](cherry-pick-evidence.md) is retained in this repository's history.
 
 ![Cherry-pick result in the saved transcript](evidence/cherry-pick.jpg)

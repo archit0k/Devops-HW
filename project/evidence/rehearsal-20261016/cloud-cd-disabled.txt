@@ -1,6 +1,0 @@
-Recorded: 2026-10-16T18:26:11.744512+00:00
-Command: C:/Users/archi/AppData/Local/DevOpsHomeworkTools/gh-2.102.0/bin/gh.exe variable get ENABLE_EKS_CD --repo archit0k/Devops-HW
-
-false
-
-Exit code: 0

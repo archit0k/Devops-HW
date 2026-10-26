@@ -1,6 +1,8 @@
 # Networking Command Practice
 
-The command list is based on the course's `devops-heros/session4-networking` resources and is organized as a reproducible lab record.
+[Back to Session 4](README.md)
+
+These commands check the interface, route, DNS, network path and application port separately. The examples below include the captured local results.
 
 ## Address and interface inspection
 

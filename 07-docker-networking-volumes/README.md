@@ -1,4 +1,8 @@
-# Docker Networking and Volumes
+# Session 8 — Docker networking and volumes
+
+Archit Kulkarni | 24BCS10194 | Section A
+
+The four tasks cover container connectivity, host networking, live bind-mount updates and overlay-network research. [docker-compose.yml](docker-compose.yml) defines the three-container exercise; [frontend/index.html](frontend/index.html) is the mounted page.
 
 ## Task 1 - three containers and networks
 
@@ -61,8 +65,8 @@ docker compose down
 docker rm -f apache-host
 ```
 
-## Executed checks
+## Results
 
-The local helper `scripts/check-networking.sh` starts the three containers, inspects the backend's two networks, pings both peers, checks MySQL's port, and verifies that the frontend cannot resolve the isolated database. It then edits the mounted page to include my name/roll number and checks that the container start time is unchanged. Finally it installs Apache on the Linux host and reaches port 80 from an Alpine container using `--network host`. The helper is kept locally, not in this repository. The [successful live run](https://github.com/archit0k/Devops-HW/actions/runs/37664384256) preserves those checks and cleanup. Overlay networking is a research exercise here, not a claim of a deployed multi-host Swarm.
+The [passing run](https://github.com/archit0k/Devops-HW/actions/runs/37664384256) and [saved output](evidence/commands.txt) show the three containers, backend connectivity to both peers, MySQL's port and frontend/database isolation. Updating the mounted page changed its response without changing the container start time. The host-network client reached Apache on port 80. Overlay networking was the research task; no multi-host Swarm was provisioned.
 
 ![Bind-mount update and unchanged start time in the saved output](evidence/bind-mount.jpg)

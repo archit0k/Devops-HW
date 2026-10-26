@@ -1,4 +1,8 @@
-# Linux Fundamentals
+# Sessions 1–2 — Linux fundamentals
+
+Archit Kulkarni | 24BCS10194 | Section A
+
+This exercise covers links, account creation, system logs and common Linux commands. [The execution record](evidence/foundations.txt) contains the command output; the link result is shown below.
 
 ## Task 1 - soft links and hard links
 
@@ -12,14 +16,18 @@ ln -s original.txt soft-link.txt
 ls -li original.txt hard-link.txt soft-link.txt
 cat hard-link.txt
 cat soft-link.txt
-rm soft-link.txt hard-link.txt original.txt
+rm original.txt
+cat hard-link.txt
+readlink soft-link.txt
+cat soft-link.txt  # fails because original.txt was removed
+rm soft-link.txt hard-link.txt
 ```
 
-Interview summary: deleting `original.txt` does not remove data while `hard-link.txt` remains, because its link count is still nonzero. The soft link contains `original.txt`, so it no longer resolves after that deletion.
+After deleting `original.txt`, the hard link still reads the same data. The soft link still stores `original.txt`, but that target no longer exists. `ls -li` also shows the original and hard link sharing an inode, while the soft link has its own inode.
 
 ## Task 2 - `adduser` versus `useradd`
 
-`useradd` is the low-level binary: it creates an account according to options/defaults and often requires flags for a home directory, shell, and groups. `adduser` is a friendlier Debian/Ubuntu Perl wrapper that interactively creates the home directory, asks for account details, and applies sensible defaults. On Ubuntu, `adduser` is normally preferred for an interactive human account.
+`useradd` is the lower-level account command and often needs explicit home-directory, shell and group options. Ubuntu's `adduser` helper asks for account details and sets up a normal interactive account. I used `adduser` for the test account; `useradd` is useful when a script needs exact options.
 
 ```bash
 sudo adduser devops-test
@@ -34,7 +42,7 @@ sudo deluser --remove-home devops-test
 ```bash
 journalctl -b                    # current boot
 journalctl -u ssh --since today  # one service, since today
-journalctl -p err..alert         # errors and more severe events
+journalctl -p err                # errors and more severe events
 journalctl -f                    # follow new log entries
 ```
 
@@ -54,10 +62,10 @@ For a service incident, I would first use `journalctl -u <service> -b`, then add
 
 Practice each command in a disposable directory and read `man <command>` before using destructive flags.
 
-## Recorded exercise
+## Results
 
-[Actual command output](evidence/foundations.txt) records inode equality, the dangling soft link, two disposable user accounts, journal queries and command practice. The lab deletes only the two accounts it has just created. It does not alter existing accounts. `adduser` is the distribution's higher-level helper; its implementation language is not the reason to choose it.
+[Command output](evidence/foundations.txt) shows equal original/hard-link inode numbers, the dangling soft link, the disposable user-account checks, journal queries and command practice. The test accounts were removed after the exercise.
 
-Screenshot of the saved command record on GitHub:
+Screenshot of the saved command output:
 
 ![Hard and soft link results](evidence/links-output.jpg)

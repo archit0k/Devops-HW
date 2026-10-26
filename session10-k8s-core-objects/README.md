@@ -1,9 +1,8 @@
-# Session 10 - Core Kubernetes Objects
+# Session 10 — Pods, controllers and deployment strategies
 
-Name: Archit Kulkarni  
-Roll number: 24BCS10194
+Archit Kulkarni | 24BCS10194 | Section A
 
-This folder keeps the supplied manifests grouped by exercise. Apply and clean up one scenario at a time so intentionally failing Pods do not interfere with later checks.
+The manifests are grouped into Pod lifecycle, controllers and four deployment strategies. The [execution record](evidence/commands.txt) contains the apply/get/describe/log checks and results. Run commands from this assignment directory and clean up each scenario afterward.
 
 ## Pod and lifecycle work
 
@@ -25,7 +24,7 @@ kubectl delete -f hello.yml
 
 An `ImagePullBackOff` creates an API object successfully because the API server persists the desired Pod specification first. The later image pull is a node-runtime operation; kubelet records the pull failure and retries with exponential backoff.
 
-### Local observations
+### Recorded observations
 
 The Nginx Pod reached `1/1 Running` on the Minikube control-plane node:
 
@@ -35,7 +34,7 @@ nginx-pod   1/1     Running   0          10.244.0.3   minikube
 ```
 
 
-The short-lived `hello-pod` was observed in `ContainerCreating` while the image/runtime setup was in progress. The intentionally invalid image manifest then produced the expected pull failure:
+The short-lived `hello-pod` later completed and logged `Hello Kubernetes`. The intentionally invalid image produced a pull failure:
 
 ```text
 NAME                    READY   STATUS         RESTARTS
@@ -48,9 +47,32 @@ Error: ImagePullBackOff
 
 
 
+### Lifecycle cases
+
+The runner applied all twelve files and inspected each Pod. These observations are from the saved output, not assumed from the file names.
+
+| File in `pod-lifecycle/` | Observed behavior |
+| --- | --- |
+| `01-running.yaml` | Ready, Running |
+| `02-pending.yaml` | Initially ContainerCreating, then Running; this file did not remain unschedulable |
+| `03-succeeded.yaml` | Completed, phase Succeeded |
+| `04-failed.yaml` | Error, phase Failed, no restart |
+| `05-crashloopbackoff.yaml` | Repeated exit code 1, two restarts at the recorded check and BackOff events |
+| `06-imagepullbackoff.yaml` | ErrImagePull/ImagePullBackOff for the invalid image |
+| `07-readiness.yaml` | Became 1/1 Ready after its readiness check |
+| `08-liveness.yaml` | Running with a passing liveness check at the recorded sample |
+| `09-startup.yaml` | Startup check passed and Pod became Ready |
+| `10-init-container.yaml` | Init:0/1 during initialization, then main container Running |
+| `11-multi-container.yaml` | Both containers Running, 2/2 Ready |
+| `12-termination.yaml` | Running before deletion; termination handling recorded during cleanup |
+
+Session 14 separately reproduces a sustained Pending Pod using an impossible memory request.
+
+![All twelve lifecycle examples in the saved command output](evidence/lifecycle.jpg)
+
 ## Controllers and self-healing
 
-`replicaset.yml` maintains the requested stateless replicas. Delete one selected pod and the ReplicaSet immediately creates another. `k8s-core-objects/statefulset.yml` demonstrates stable ordinal identities and claims for stateful workloads. `daemonset/node-agent-ds.yaml` schedules one host-agent Pod per eligible node.
+`replicaset.yml` maintains the requested stateless replica count and replaces a deleted Pod. `k8s-core-objects/statefulset.yml` demonstrates stable ordinal identities and claims. `daemonset/node-agent-ds.yaml` schedules one host-agent Pod per eligible node.
 
 ```bash
 kubectl apply -f replicaset.yml
@@ -62,6 +84,13 @@ kubectl get ds,pods -o wide
 ```
 
 ## Deployment strategies and troubleshooting
+
+| Strategy | Files | What was checked |
+| --- | --- | --- |
+| Rolling update | [01-rolling-update/](01-rolling-update/) | v1 → v2, rollout status/history, then rollback |
+| Blue-green | [02-blue-green/](02-blue-green/) | HTTP response before and after switching the Service selector |
+| Canary | [03-canary/](03-canary/) | Nine stable/one canary, request samples, then five of each |
+| Recreate | [04-recreate/](04-recreate/) | Old Pods terminated before the new version started |
 
 `01-rolling-update/` uses `maxSurge: 1` and `maxUnavailable: 0`; `02-blue-green/` switches a Service selector between complete blue and green environments; `03-canary/` shares one Service across stable and canary replicas; `04-recreate/` deliberately terminates v1 before creating v2. The `troubleshooting/` manifests reproduce invalid image and selector mismatch failures.
 
@@ -78,7 +107,7 @@ kubectl rollout undo deployment/app-rolling
 
 For a three-replica Deployment, `maxSurge: 1` permits a fourth Pod during the update, while `maxUnavailable: 0` keeps all three requested endpoints available. Requests reserve scheduler capacity; limits cap runtime consumption. Memory units are binary for `Mi`/`Gi` and decimal for `M`/`G`.
 
-## Executed lab
+## Results
 
 The [command record](evidence/commands.txt) covers all twelve lifecycle cases, completed-job logs, shutdown handling, ReplicaSet replacement, DaemonSet placement, MySQL StatefulSet/PVCs, and all four deployment strategies. The [Linux runner](https://github.com/archit0k/Devops-HW/actions/runs/37658242308) used a real disposable Kubernetes cluster.
 

@@ -1,8 +1,18 @@
-# System Information Script
+# Session 3 — Shell scripting
 
-`system-info.sh` meets the task requirements: it uses variables, accepts two values with `read -p`, creates a directory with `mkdir`, creates a file with `touch`, and uses `>` to redirect `ps aux` into that file.
+Archit Kulkarni | 24BCS10194 | Section A
 
-Run it from a Linux shell:
+[system-info.sh](system-info.sh) prints the date, hostname, username, disk usage and processes. It stores values in variables, reads a directory/file name, creates both and redirects `ps aux` to the requested file.
+
+| Requirement | Command used |
+| --- | --- |
+| Date, hostname and user | `date`, `hostname`, `whoami` |
+| Disk and process information | `df -h`, `ps aux` |
+| User input | `read -r -p` |
+| Directory and file creation | `mkdir -p`, `touch` |
+| Save process report | `ps aux > "$target_directory/$process_file"` |
+
+Run from this assignment directory in a Linux shell:
 
 ```bash
 chmod +x system-info.sh
@@ -37,11 +47,11 @@ root           1 21.7  0.2  24316 15360 ?        Ss   18:06   0:01 /sbin/init
 Process information was saved to: system-report/processes.log
 ```
 
-The full captured process list is committed at `system-report/processes.log`.
+The full process report is written to `system-report/processes.log` locally. It is not tracked because a process list can contain unrelated application details.
 
-## Recheck
+## Results
 
-The script was run again in Ubuntu WSL with two inputs on 7 October. It printed date, hostname, user, disk and process information, created the requested directory/file, and saved 133 lines of process output. The [complete execution](../01-linux-fundamentals/evidence/foundations.txt) also includes the Linux and networking command practice.
+The 7 October Ubuntu WSL run created the requested directory/file and saved 133 lines of process output. Date, hostname, user, disk and process information were printed. The [execution record](../01-linux-fundamentals/evidence/foundations.txt) includes the script run alongside the Linux/networking exercises.
 
 Screenshot of that saved execution record:
 

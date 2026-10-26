@@ -1,7 +1,0 @@
-Recorded: 2026-10-16T10:35:37.330690+00:00
-Command: wsl.exe -d Ubuntu -u root -- terraform -chdir=project/terraform validate -no-color
-
-Success! The configuration is valid.
-
-
-Exit code: 0

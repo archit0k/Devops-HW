@@ -1,6 +1,12 @@
-# Session 20 - Monitoring, Observability and GitOps
+# Session 20 — Monitoring, observability and GitOps
 
 Archit Kulkarni | 24BCS10194 | Section A
+
+| Task | Files and result |
+| --- | --- |
+| Monitoring | [monitoring/](monitoring/): Prometheus/Grafana, CPU/memory/health dashboard and firing/recovery alert test |
+| Observability | Notes below compare metrics, logs and traces, with commands and investigation order |
+| GitOps | [app/](app/) and [Application](argocd-application.yaml): Git change from two to three replicas, then automatic drift correction |
 
 ## Prometheus and Grafana
 
@@ -14,11 +20,11 @@ docker compose -f monitoring/compose.yaml logs --tail=15
 docker compose -f monitoring/compose.yaml down
 ```
 
-The dashboard shows target health (`up`), process memory and process CPU rate. These are Prometheus-process metrics, not a claim to monitor every laptop process. Both ports bind only to `127.0.0.1`. The classroom dashboard has anonymous **read-only** viewing, no user data, and no public exposure. [The alert rule](monitoring/alerts.yml) defines `TargetDown` for a target unreachable for ten seconds.
+The dashboard shows target health (`up`), process memory and process CPU rate for the monitored services. Both ports bind only to `127.0.0.1`. The classroom dashboard allows anonymous read-only viewing and contains no user data. [The alert rule](monitoring/alerts.yml) defines `TargetDown` after a target is unreachable for ten seconds.
 
 ![Live Grafana dashboard](evidence/grafana.jpg)
 
-[Monitoring API/health/log output](evidence/monitoring.txt) and the [alert test](evidence/alert.txt) record the real values. The alert test stops Grafana, waits for `TargetDown` to enter `firing`, restarts Grafana and checks recovery. This intentionally tests a scrape failure, not an invented production incident.
+[Monitoring API/health/log output](evidence/monitoring.txt) and the [alert test](evidence/alert.txt) record the values. The test stops Grafana, waits for `TargetDown` to enter `firing`, restarts Grafana and checks recovery.
 
 ## GitOps mini project
 
@@ -33,6 +39,8 @@ The [actual GitOps run](https://github.com/archit0k/Devops-HW/actions/runs/37657
 
 ## Viva notes
 
+Metrics are numerical samples, logs record events, and traces connect the steps of a request. Prometheus/Grafana provide metrics here; `docker compose logs` and `kubectl logs` provide service/application logs. A tracing backend such as Jaeger or Tempo would be a separate addition. Kubernetes observability also includes Pod status, events, resource metrics and application signals rather than only the host dashboard.
+
 1. Monitoring checks known signals/conditions; observability lets me investigate why an unexpected problem happened using system outputs.
 2. Metrics are numerical time series, logs are event records, and traces follow a request through multiple components. A trace/span ID can connect these views.
 3. Prometheus pulls metrics, stores time series and evaluates PromQL/rules.
@@ -46,6 +54,6 @@ The [actual GitOps run](https://github.com/archit0k/Devops-HW/actions/runs/37657
 11. Self-healing restores manual cluster drift when enabled. It is not the same as a Deployment replacing one failed Pod.
 12. Changing two to three in Git causes Argo CD to update the Deployment; Kubernetes creates the additional Pod.
 
-For an incident I would check target health first, then CPU/memory/request latency, application logs and traces. The mini project produces real Nginx access logs; distributed tracing here is research, not an unimplemented claim of a trace backend.
+For an incident I would check target health first, then CPU/memory/request latency, application logs and available traces. This mini project produces Nginx access logs; distributed tracing is covered in the notes, not deployed as a backend.
 
 ![Manual replica drift restored by Argo CD in the saved runner output](evidence/gitops-self-heal.jpg)

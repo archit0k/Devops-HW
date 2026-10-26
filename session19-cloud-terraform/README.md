@@ -1,4 +1,4 @@
-# Session 19 - Cloud and Terraform
+# Session 19 — Cloud and Terraform
 
 Archit Kulkarni | 24BCS10194 | Section A
 
@@ -19,6 +19,13 @@ Private S3 bucket (separate regional AWS service)
 
 ## What is configured
 
+| Terraform file | Purpose |
+| --- | --- |
+| [provider.tf](provider.tf) | Terraform and AWS provider requirements |
+| [main.tf](main.tf) | VPC, subnet, routes, Security Group, EC2 and S3 |
+| [variables.tf](variables.tf) | Region and other inputs |
+| [outputs.tf](outputs.tf) | Created resource IDs and web URL |
+
 The subnet is public because its associated route table sends `0.0.0.0/0` to the Internet Gateway. The instance also needs its public IPv4 address and an inbound HTTP Security Group rule. No SSH port or key pair is opened. IMDSv2 is required. User data installs Apache and serves a page with my name, roll number and section.
 
 The configuration uses the Amazon Linux 2023 AMI published through SSM rather than a hardcoded old AMI. Availability Zone data selects a real AZ in the chosen region. The bucket blocks all four public-access paths. Standard CPU credits avoid unlimited-mode burst charges in this short lab.
@@ -34,7 +41,7 @@ curl "$(terraform output -raw web_url)"
 terraform destroy
 ```
 
-The files separate provider setup, resources, inputs and outputs. The dependency on the public route association makes networking available before instance provisioning. [Evidence](evidence/) records the actual operations and resource IDs, including any retry caused by local DNS trouble.
+The files separate provider setup, resources, inputs and outputs. The dependency on the public route association makes networking available before the instance starts. [Execution records](evidence/) contain validation, the plan, apply, HTTP/console checks and teardown.
 
 ![Actual EC2 instance](evidence/aws-instance.jpg)
 

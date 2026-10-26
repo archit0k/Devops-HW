@@ -1,7 +1,13 @@
-# Session 12 - ConfigMaps, Secrets, and Ingress
+# Session 12 — ConfigMaps, Secrets and Ingress
 
-Name: Archit Kulkarni  
-Roll number: 24BCS10194
+Archit Kulkarni | 24BCS10194 | Section A
+
+| Task | Files and checks |
+| --- | --- |
+| ConfigMap | [01-configmap/](01-configmap/): create configuration and verify injected values |
+| Secret | [02-secret/](02-secret/): generate a runtime Secret and check injection without publishing the password |
+| Ingress | [03-ingress/](03-ingress/) and [04-full-demo/](04-full-demo/): route `/` and `/api/` through the controller |
+| Troubleshooting | Break the backend selector, inspect endpoints, correct it and repeat HTTP checks |
 
 ## Configuration and secrets
 
@@ -19,7 +25,7 @@ Use `echo -n` before `base64`; plain `echo` appends a newline and changes the de
 
 ## Ingress
 
-An Ingress is a routing resource; an Ingress controller is the running software that watches it and performs the routing. Enable the NGINX controller before applying resources in `03-ingress/` or `04-full-demo/`.
+An Ingress is routing configuration; an Ingress controller is the running software that reads it and handles requests. The rule alone does not listen for traffic. For example, this lab's Nginx controller uses the `/api` rule to select the backend Service; another controller would need a matching IngressClass and its own installation. Enable the classroom NGINX controller before applying `03-ingress/` or `04-full-demo/`.
 
 ```bash
 minikube addons enable ingress
@@ -54,6 +60,12 @@ Vault / cloud secret manager -> External Secrets Operator -> Kubernetes Secret -
 
 The external manager remains the source of truth. The operator synchronizes short-lived Kubernetes Secrets, and workloads consume only the keys they need.
 
-## End-to-end verification
+## Results and troubleshooting
 
 The [successful run](https://github.com/archit0k/Devops-HW/actions/runs/37664018450) installed the real NGINX Ingress controller, injected configuration and a disposable Secret, waited for routes to load, then checked `/` and `/api/` using `Host: yatri.local`. It deliberately broke the backend Service selector, observed the unavailable backend, fixed it and retested HTTP. Finally it changed `LOG_LEVEL`, restarted the backend and read `DEBUG` from its environment. [Full command output](evidence/runner/commands.txt) includes the checks and cleanup; passwords were not printed.
+
+The selector problem left the backend Service without matching endpoints. Checking Pod labels and the Service selector identified the cause; restoring the selector made `/api/` respond again. Ingress Nginx is retained for the course exercise, not as a recommendation for a new production installation.
+
+![Saved selector failure and restored API routing](evidence/ingress-routing.jpg)
+
+![Saved ConfigMap update, rollout and DEBUG environment value](evidence/configmap-update.jpg)

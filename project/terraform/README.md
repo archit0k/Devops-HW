@@ -1,8 +1,12 @@
 # AWS lab infrastructure
 
+Archit Kulkarni | 24BCS10194 | Section A
+
+[Back to StudySlot](../README.md)
+
 Two public subnets in separate availability zones, one VPC, one EKS control plane and one managed group with two `t3.medium` nodes. There is no SSH rule, key pair, NAT gateway or RDS instance. Public-node networking avoids a NAT hourly charge for this short classroom lab; a long-running production deployment should normally use private nodes and controlled egress.
 
-The region is `us-east-1`, matching my account setup. Kubernetes 1.35 is in EKS standard support. The lab uses temporary AWS console-session credentials via the `devops-homework` profile, not access keys in code. Terraform state and plan files are ignored because they contain account and resource details.
+The region is `us-east-1`. EKS uses Kubernetes 1.35. The recorded lab used the `devops-homework` profile; configure an authorized AWS profile before running these commands. State, plan files and runtime credentials are ignored.
 
 ```bash
 terraform init
@@ -30,8 +34,10 @@ bash project/scripts/terraform-lab.sh restrict
 bash project/scripts/terraform-lab.sh destroy
 ```
 
-The actual [apply record](../evidence/terraform-apply-final.txt) created 26 resources. The [AWS bootstrap run](https://github.com/archit0k/Devops-HW/actions/runs/38893003011) deployed the application and monitoring, checked both non-root users, exercised CRUD through Ingress and verified the database migration. The [access restriction record](../evidence/terraform-restrict-access-final.txt) confirms that namespace-only permissions replaced bootstrap access.
+The [AWS bootstrap](https://github.com/archit0k/Devops-HW/actions/runs/38942882934) deployed the application and monitoring, checked both non-root users, exercised CRUD through Ingress and verified the database migration. The later [main-branch pipeline](https://github.com/archit0k/Devops-HW/actions/runs/38943691357) passed deployment with namespace-only permissions. [VPC](../screenshots/aws-vpc.jpg) and [EKS](../screenshots/aws-eks.jpg) screenshots show the provisioned infrastructure.
 
-Cost control: create this cluster only for verification, disable cloud CD before cleanup, delete Kubernetes-created volumes while the EBS CSI driver is still running, then destroy Terraform resources. This configuration uses a ClusterIP Ingress controller, not a chargeable public LoadBalancer. The homework budget is **$30 maximum**; free credits do not make resources free forever. State, saved plans and generated passwords are ignored. Keep state until teardown is verified.
+If the account already has GitHub's OIDC provider, set `existing_github_oidc_arn` in ignored `terraform.tfvars`. This reuses the provider without importing it into this lab's state or deleting it on teardown. Otherwise Terraform creates its own provider. The initial run managed 26 resources; the later run managed 25 because it reused the existing provider.
 
-On this Windows/WSL machine the large provider binary started slowly from the Windows mount. Keeping the already verified provider on Linux storage fixed startup timeouts; it does not change the infrastructure configuration or bypass the dependency lock checks.
+Create this cluster only for verification. Disable cloud CD before cleanup, delete the application/PVC while EBS CSI is still running, then destroy Terraform resources. This configuration uses a ClusterIP Ingress controller rather than a public application LoadBalancer. Keep state until teardown is verified.
+
+The [cleanup workflow](https://github.com/archit0k/Devops-HW/actions/runs/38946391044) removed the later application's PVC before Terraform destroyed all 25 managed resources. Final checks found no project cluster, VPC, workers, recorded volumes or temporary roles. The [destroy screenshot](../screenshots/terraform-destroy.jpg) is from the earlier 26-resource run. Shared account infrastructure was not a deletion target.

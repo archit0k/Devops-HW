@@ -22,5 +22,29 @@ private-evidence/
 session16-github-actions/build/
 
 # Local recording material and helper tools
-/demo/
+/demo/*
+!/demo/README.md
+!/demo/presentation.pptx
+!/demo/video/
+/demo/video/*
+!/demo/video/.gitkeep
+!/demo/video/walkthrough.mp4
 /scripts/
+
+# Raw lab records and local maintenance helpers
+/project/evidence/
+/project/scripts/aws-preflight.sh
+/project/scripts/check-cloud-cleanup.py
+/project/scripts/check-recording-cleanup.py
+/project/scripts/demo-traffic.py
+/project/scripts/resume-local.sh
+/project/scripts/stop-local.sh
+/session21-final-project/evidence/**/*.txt
+/session21-final-project/evidence/ci-passed.jpg
+/session21-final-project/evidence/ci-deploy-passed.jpg
+/session21-final-project/refresh-grafana.sh
+/session21-final-project/run-ui-update.sh
+/session18-terraform/evidence/destroy-before-rerun.txt
+/02-shell-scripting/system-report/
+.DS_Store
+Thumbs.db

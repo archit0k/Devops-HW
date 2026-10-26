@@ -1,5 +1,9 @@
 # Terraform lab
 
+Archit Kulkarni | 24BCS10194 | Section A
+
+[Back to the TaskBoard walkthrough](../../README.md)
+
 This folder teaches Infrastructure as Code by provisioning the AWS VPC and EKS cluster used by the production-style TaskBoard deployment.
 
 The module-based approach keeps the lesson focused on Terraform concepts: providers, variables, modules, state, plan/apply, outputs and dependency graphs.
@@ -21,6 +25,6 @@ aws eks update-kubeconfig --profile taskboard-access --region ap-south-1 \
 terraform destroy
 ```
 
-The dedicated lab role is used for Kubernetes access. AWS root cannot assume roles; the first `kubectl` attempt confirmed this restriction. Terraform now rejects that setup before provisioning unless an approved non-root principal is supplied. `taskboard-access` is the intended separate CLI profile, not a profile already created in this repository. No new user or access key has been created while permission is pending. Generated state, saved plans, credentials and kubeconfig stay out of Git. Do not apply this folder while the homework is paused.
+The dedicated lab role is used for Kubernetes access. The recorded apply/destroy succeeded, but root was rejected when assuming that role, so the TaskBoard application was verified on Minikube and CI Kind rather than EKS. Terraform now rejects root-only access before provisioning unless an approved non-root principal is supplied. Configure the `taskboard-access` CLI profile yourself before using the example access command. State, saved plans, credentials and kubeconfig remain local.
 
 EKS depends on the complete VPC module, including its NAT gateway. Cleanup must remove EKS before taking away the private nodes' network path.
