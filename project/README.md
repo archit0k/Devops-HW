@@ -35,7 +35,7 @@ Copy `.env.example` to ignored `.env` and set a local password. Then run `docker
 
 ## Demo and verification
 
-The [demo folder](../demo/README.md) contains the twelve-slide presentation, detailed recording guide, speaking script and earlier captioned MP4 walkthrough. The earlier video uses the previous deck; the new narrated recording is still separate work. The [evidence index](evidence/README.md) maps the rubric to actual command records, screenshots and Actions runs. Records keep their timestamps and exit codes; failed attempts are identified, not presented as passing runs. This capstone is separate from the [Session 21 TaskBoard walkthrough](../session21-final-project/README.md).
+The presentation, recording guide, speaking script and walkthrough video are kept in the local-only `demo/` folder, not published in this repository. The [evidence index](evidence/README.md) maps the rubric to actual command records, screenshots and Actions runs. Records keep their timestamps and exit codes; failed attempts are identified, not presented as passing runs. This capstone is separate from the [Session 21 TaskBoard walkthrough](../session21-final-project/README.md).
 
 ![StudySlot in the browser](evidence/desktop-browser.jpg)
 

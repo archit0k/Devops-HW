@@ -49,7 +49,7 @@ Git chart + pinned tested image → Argo CD → local Kubernetes
 Terraform → AWS VPC + two public subnets + EKS + two workers
 ```
 
-The stack is Python 3.14/FastAPI, SQLAlchemy/Alembic, PostgreSQL 17, React/Vite, Nginx, Docker Compose, GitHub Actions, Trivy, Terraform, Kubernetes, Helm, Argo CD, Prometheus and Grafana. The [project README](project/README.md) has API details and troubleshooting; the [evidence index](project/evidence/README.md) maps all ten grading modules to source, logs and screenshots. The [demo folder](demo/README.md) contains the twelve-slide PPTX, recording guide, speaking script and earlier captioned MP4 walkthrough. The earlier MP4 uses the previous deck; it is not the new narrated recording.
+The stack is Python 3.14/FastAPI, SQLAlchemy/Alembic, PostgreSQL 17, React/Vite, Nginx, Docker Compose, GitHub Actions, Trivy, Terraform, Kubernetes, Helm, Argo CD, Prometheus and Grafana. The [project README](project/README.md) has API details and troubleshooting; the [evidence index](project/evidence/README.md) maps all ten grading modules to source, logs and screenshots. Presentation and recording materials are kept locally, not in this repository.
 
 ### Run locally
 
@@ -97,9 +97,3 @@ The [monitoring values](project/monitoring/values.yaml) install Prometheus/Grafa
 ### Limits
 
 This is a temporary classroom deployment, not a public service: no authentication, TLS ingress, replicated database or automated backups. The PVC protects data across a Pod restart, not deliberate volume deletion. Ingress Nginx matches the class exercise but is retired and is not a production recommendation. Images need rescanning over time. The demo records the running lab; an always-on AWS endpoint is not promised after cleanup.
-
-## Course and submission
-
-Requirements come from the instructor's [devops-heros repository](https://github.com/Nency-Ravaliya/devops-heros) and its linked official homework document. Personal notes are reference material, not extra assignment titles.
-
-The [Section A homework form](https://forms.gle/ydjAJcwxjpjBXgxB8) asks for individual assignment README links. The separate [capstone form](https://forms.gle/XWAP1vAumDJgAPM1A) asks for the repository link and requires the official SST email. Its confirmed deadline is **16 October 2026, 11:59 PM IST**. Follow the instructor's [submission guide](https://github.com/Nency-Ravaliya/devsecops-python/blob/main/SUBMISSION.md) and [rubric](https://github.com/Nency-Ravaliya/devsecops-python/blob/main/GRADING.md), not the mistaken date in that file. No form has been submitted from this work. Earlier homework resources were cleaned up; the capstone lifecycle records are linked in its evidence index.

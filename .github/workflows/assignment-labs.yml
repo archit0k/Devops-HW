@@ -6,7 +6,7 @@ on:
         description: Assignment lab
         required: true
         type: choice
-        options: ['20', '10', '11', '12', '13', '14', '15', 'docker', 'networking']
+        options: ['20', '14', '15']
 permissions:
   contents: read
 jobs:
@@ -16,7 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
       - name: Create a real disposable cluster
-        if: inputs.lab != 'docker' && inputs.lab != 'networking'
         run: |
           curl -fsSL --retry 3 -o /tmp/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64
           curl -fsSL --retry 3 -o /tmp/kind.sha256sum https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64.sha256sum
@@ -33,11 +32,7 @@ jobs:
           mkdir -p lab-evidence
           if [ "$LAB" = 20 ]; then
             bash session20-monitoring-gitops/run-gitops.sh 2>&1 | tee lab-evidence/commands.txt
-          elif [ "$LAB" = docker ]; then
-            bash scripts/check-docker-labs.sh 2>&1 | tee lab-evidence/commands.txt
-          elif [ "$LAB" = networking ]; then
-            bash scripts/check-networking.sh 2>&1 | tee lab-evidence/commands.txt
-          elif [ "$LAB" = 14 ] || [ "$LAB" = 15 ]; then
+          else
             minikube() { shift; [[ "$1" = -- ]] && shift; kubectl "$@"; }
             export -f minikube
             if [ "$LAB" = 14 ]; then
@@ -45,8 +40,6 @@ jobs:
             else
               bash session15-helm/run-lab.sh 2>&1 | tee lab-evidence/commands.txt
             fi
-          else
-            bash scripts/check-kubernetes-labs.sh "$LAB" 2>&1 | tee lab-evidence/commands.txt
           fi
       - name: Keep complete command output
         if: always()
@@ -55,5 +48,5 @@ jobs:
           name: assignment-${{ inputs.lab }}-evidence
           path: lab-evidence
       - name: Remove this runner's cluster
-        if: always() && inputs.lab != 'docker' && inputs.lab != 'networking'
+        if: always()
         run: /tmp/kind delete cluster --name assignment

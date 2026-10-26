@@ -20,3 +20,7 @@ terraform.tfvars
 kubeconfig*
 private-evidence/
 session16-github-actions/build/
+
+# Local recording material and helper tools
+/demo/
+/scripts/
