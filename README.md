@@ -2,7 +2,7 @@
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-The assignments are listed in course order. Each README explains the task, points to the implementation, and includes commands, results and screenshots.
+Commands, results and screenshots for each session.
 
 | Session | Assignment | Work covered |
 | --- | --- | --- |
@@ -25,14 +25,7 @@ The assignments are listed in course order. Each README explains the task, point
 | 18 | [Terraform and IaC](session18-terraform/README.md) | S3 lifecycle and separate AWS service notes |
 | 19 | [Cloud and Terraform](session19-cloud-terraform/README.md) | VPC, subnet, routes, Security Group, EC2 and S3 |
 | 20 | [Monitoring and GitOps](session20-monitoring-gitops/README.md) | Prometheus, Grafana, alerts and Argo CD reconciliation |
-| 21 | [TaskBoard walkthrough](session21-final-project/README.md) | Instructor's application, command results and troubleshooting |
+| 21 | [TaskBoard walkthrough](session21-final-project/README.md) | TaskBoard commands, deployment checks and troubleshooting |
 | Capstone | [StudySlot](project/README.md) | Study-room booking app with CI/CD, AWS/EKS, Helm, GitOps and monitoring |
 
-## Repository guide
-
-- The assignment READMEs are the starting point; source files and manifests are kept beside them.
-- Screenshots and recorded results show completed lab checks. Saved command-output screenshots are labelled as such.
-- Local container/Kubernetes work used Ubuntu WSL with Docker Engine and Minikube, or an isolated GitHub Actions runner where stated.
-- Temporary AWS resources were destroyed after verification. Recorded addresses and screenshots do not represent an always-on deployment.
-
-Session 21 follows the instructor's TaskBoard example. StudySlot is the separate booking-application capstone; its [README](project/README.md) contains the architecture, setup, API, pipeline, infrastructure and monitoring details. The [presentation folder](demo/README.md) contains the slide deck and the reserved video location.
+[StudySlot presentation](demo/presentation.pptx)

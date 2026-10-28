@@ -2,7 +2,7 @@
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-[Command notes and output](networking-commands.md) cover addressing, routing, interfaces, ports, DNS and connectivity. [The Linux record](../01-linux-fundamentals/evidence/foundations.txt) includes `ip addr`, `ip route`, `ss`, `getent` and `ping`.
+[Command notes](networking-commands.md) cover addresses, routes, ports, DNS and connectivity. [Linux output](../01-linux-fundamentals/evidence/foundations.txt) includes `ip addr`, `ip route`, `ss`, `getent` and `ping`.
 
 | Check | Linux | Windows |
 | --- | --- | --- |
@@ -21,6 +21,6 @@ Modern networks use CIDR, not classful allocation. Private IPv4 ranges are `10.0
 
 ## Results
 
-[Windows/WSL command output](evidence/network-check-complete.txt) records the Wi-Fi address/prefix, default gateway, DNS lookup, listening TCP ports, an eight-hop route trace and HTTPS status 200. Some hops did not answer the trace; the HTTPS check still worked. [check-network.ps1](check-network.ps1) repeats these read-only checks without changing DNS settings.
+[Command output](evidence/network-check-complete.txt) includes the Wi-Fi address, default gateway, DNS lookup, listening TCP ports, an eight-hop route trace and HTTPS status 200. [check-network.ps1](check-network.ps1) repeats the checks on Windows.
 
 ![Route trace and HTTPS check in the saved command record](evidence/network-check.jpg)

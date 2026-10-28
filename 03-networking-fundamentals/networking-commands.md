@@ -2,7 +2,7 @@
 
 [Back to Session 4](README.md)
 
-These commands check the interface, route, DNS, network path and application port separately. The examples below include the captured local results.
+Commands and local results for interface, route, DNS, network path and port checks.
 
 ## Address and interface inspection
 

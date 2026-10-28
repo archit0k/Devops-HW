@@ -2,7 +2,7 @@
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-This is the instructor's calculator build/test exercise. [app/calculator.py](app/calculator.py) implements four arithmetic operations and divide-by-zero handling; [tests](tests/) contains five pytest cases. [build.sh](build.sh) packages the module and build information, and the [Dockerfile](Dockerfile) runs the calculator examples as a non-root container.
+[app/calculator.py](app/calculator.py) supports addition, subtraction, multiplication and division, including divide-by-zero handling. There are five [pytest cases](tests/). [build.sh](build.sh) packages the module, and the [Dockerfile](Dockerfile) runs the examples as a non-root user.
 
 ## Workflow
 
@@ -31,4 +31,4 @@ docker run --rm calculator-homework
 
 CI builds/tests changes; continuous delivery packages a passing version for release, while continuous deployment additionally sends it to a running environment. An event triggers a workflow; jobs run on runners, and steps within each job run in order. `needs` establishes dependencies and artifacts transfer outputs. `${{ secrets.NAME }}` reads a repository secret; `${{ github.sha }}` identifies the source commit. This lab needs no personal access key.
 
-The simple security job checks for credential files; it is not a replacement for SAST/SCA. The next assignment adds those actual security gates.
+`security-check` checks for credential files. [Session 17](../session17-devsecops/README.md) adds SAST, dependency and image scans.

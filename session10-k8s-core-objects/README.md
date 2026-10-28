@@ -49,12 +49,12 @@ Error: ImagePullBackOff
 
 ### Lifecycle cases
 
-The runner applied all twelve files and inspected each Pod. These observations are from the saved output, not assumed from the file names.
+Results from applying all twelve lifecycle files:
 
 | File in `pod-lifecycle/` | Observed behavior |
 | --- | --- |
 | `01-running.yaml` | Ready, Running |
-| `02-pending.yaml` | Initially ContainerCreating, then Running; this file did not remain unschedulable |
+| `02-pending.yaml` | ContainerCreating → Running |
 | `03-succeeded.yaml` | Completed, phase Succeeded |
 | `04-failed.yaml` | Error, phase Failed, no restart |
 | `05-crashloopbackoff.yaml` | Repeated exit code 1, two restarts at the recorded check and BackOff events |
@@ -66,7 +66,7 @@ The runner applied all twelve files and inspected each Pod. These observations a
 | `11-multi-container.yaml` | Both containers Running, 2/2 Ready |
 | `12-termination.yaml` | Running before deletion; termination handling recorded during cleanup |
 
-Session 14 separately reproduces a sustained Pending Pod using an impossible memory request.
+[Session 14](../session14-kubernetes-troubleshooting/README.md) includes a Pending Pod caused by an impossible memory request.
 
 ![All twelve lifecycle examples in the saved command output](evidence/lifecycle.jpg)
 
@@ -111,6 +111,6 @@ For a three-replica Deployment, `maxSurge: 1` permits a fourth Pod during the up
 
 The [command record](evidence/commands.txt) covers all twelve lifecycle cases, completed-job logs, shutdown handling, ReplicaSet replacement, DaemonSet placement, MySQL StatefulSet/PVCs, and all four deployment strategies. The [Linux runner](https://github.com/archit0k/Devops-HW/actions/runs/37658242308) used a real disposable Kubernetes cluster.
 
-Rolling update includes an actual rollback; blue-green includes HTTP checks before/after switching the Service selector; canary starts with nine stable and one canary Pod, samples sixty requests, then scales to five each. Replica ratios approximate traffic share, not an exact percentage guarantee. Recreate records the old/new Pods and events. Likewise `maxUnavailable: 0` is a rollout policy, not proof of zero downtime under every possible failure.
+Rolling update and rollback passed. Blue-green HTTP checks passed before and after switching the Service selector. Canary started with nine stable and one canary Pod, sampled sixty requests, then scaled to five each. Replica ratios provide an approximate traffic split. Recreate showed the old Pods terminating before the new version started.
 
 ![StatefulSet, DaemonSet and Bound PVCs in the saved runner output](evidence/controllers.jpg)

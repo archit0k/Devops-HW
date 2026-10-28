@@ -36,4 +36,4 @@ The AWS bucket was created on 7 October. [Execution records](evidence/) contain 
 | VPC | [Subnets, routing and network controls](aws-vpc/README.md) |
 | DynamoDB / RDS | [NoSQL and relational database comparison](aws-databases/README.md) |
 
-Infrastructure code is repeatable and reviewable, but `apply` is not automatically safe. Always check the account, region, state location and proposed changes. Local state can contain sensitive values, even when terminal output labels them sensitive; keep it private.
+Check the account, region and plan before applying. State and credentials stay local.

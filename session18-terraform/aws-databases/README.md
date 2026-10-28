@@ -23,6 +23,6 @@ RDS manages relational engines such as PostgreSQL/MySQL, handling tasks includin
 
 Multi-AZ deployment improves availability; it is not automatically a read-scaling substitute. Read replicas serve read traffic and typically use asynchronous replication. Automated backups allow recovery within the retention window; manual snapshots are separate retained backups. Use private DB subnets, restricted Security Groups, encryption and managed credentials. Storage/IO, instance size and data transfer affect cost.
 
-I would choose RDS for a booking application's relational constraints and DynamoDB for suitable key-based, predictable access patterns. Neither is deployed just for these research notes.
+I would choose RDS for a booking application's relational constraints and DynamoDB for predictable key-based access.
 
 [RDS documentation](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html).

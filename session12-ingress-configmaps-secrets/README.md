@@ -25,7 +25,7 @@ Use `echo -n` before `base64`; plain `echo` appends a newline and changes the de
 
 ## Ingress
 
-An Ingress is routing configuration; an Ingress controller is the running software that reads it and handles requests. The rule alone does not listen for traffic. For example, this lab's Nginx controller uses the `/api` rule to select the backend Service; another controller would need a matching IngressClass and its own installation. Enable the classroom NGINX controller before applying `03-ingress/` or `04-full-demo/`.
+An Ingress defines routing rules; the controller handles the requests. This lab uses Nginx to route `/api` to the backend Service. Enable the controller before applying `03-ingress/` or `04-full-demo/`.
 
 ```bash
 minikube addons enable ingress
@@ -64,7 +64,7 @@ The external manager remains the source of truth. The operator synchronizes shor
 
 The [successful run](https://github.com/archit0k/Devops-HW/actions/runs/37664018450) installed the real NGINX Ingress controller, injected configuration and a disposable Secret, waited for routes to load, then checked `/` and `/api/` using `Host: yatri.local`. It deliberately broke the backend Service selector, observed the unavailable backend, fixed it and retested HTTP. Finally it changed `LOG_LEVEL`, restarted the backend and read `DEBUG` from its environment. [Full command output](evidence/runner/commands.txt) includes the checks and cleanup; passwords were not printed.
 
-The selector problem left the backend Service without matching endpoints. Checking Pod labels and the Service selector identified the cause; restoring the selector made `/api/` respond again. Ingress Nginx is retained for the course exercise, not as a recommendation for a new production installation.
+The broken selector left the backend Service without endpoints. Matching it to the Pod labels restored `/api/` responses.
 
 ![Saved selector failure and restored API routing](evidence/ingress-routing.jpg)
 

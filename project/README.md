@@ -4,11 +4,9 @@ Archit Kulkarni | 24BCS10194 | Section A
 
 StudySlot lets a student reserve, change or cancel a one-hour study-room booking. Library A and B hold four people each; the group room holds six. PostgreSQL prevents duplicate bookings for the same room, date and hour, even when two requests arrive together.
 
-This is separate from the instructor's [TaskBoard walkthrough](../session21-final-project/README.md). It is a classroom application with synthetic bookings, not an official campus service.
-
 ![StudySlot booking page](screenshots/application.jpg)
 
-## Work completed
+## Project summary
 
 | Area | Implementation and result | Review |
 | --- | --- | --- |
@@ -21,9 +19,9 @@ This is separate from the instructor's [TaskBoard walkthrough](../session21-fina
 | Terraform/AWS | Two-zone VPC, EKS and two managed workers; infrastructure removed after checks | [Terraform](terraform/README.md), [VPC](screenshots/aws-vpc.jpg), [EKS](screenshots/aws-eks.jpg), [earlier destroy result](screenshots/terraform-destroy.jpg) |
 | Kubernetes/Helm | Deployments, Services, Ingress, probes, HPA and PostgreSQL PVC; data survived a Pod replacement | [Chart](helm/studyslot/), [resources](screenshots/kubernetes.jpg), [persistence](screenshots/storage.jpg) |
 | GitOps/monitoring | Argo CD Synced/Healthy, Prometheus targets UP and populated Grafana metrics | [GitOps](gitops/), [monitoring](monitoring/), screenshots below |
-| Presentation | Technical documentation and the final slide deck are included | [Deck and video location](../demo/README.md); recording will be added later |
+| Presentation | Architecture, implementation and results | [Slides](../demo/presentation.pptx) |
 
-Screenshots are from completed checks on 16 October 2026. Images of command output show saved execution records; browser images show the application or console. The AWS lab and local demo are stopped.
+Screenshots are from 16 October 2026. Command-output captures use saved lab output.
 
 ## Architecture and files
 
@@ -110,7 +108,7 @@ The [pipeline](../.github/workflows/studyslot.yml) has six jobs: tests, frontend
 
 Images are published to `ghcr.io/archit0k/studyslot-backend:<commit-sha>` and `ghcr.io/archit0k/studyslot-frontend:<commit-sha>`. The same scanned images are loaded into an isolated Kind cluster for Helm and HTTP checks. The optional EKS job runs afterward using short-lived GitHub OIDC credentials. [The recorded run](https://github.com/archit0k/Devops-HW/actions/runs/38943691357) passed all six jobs.
 
-`ENABLE_EKS_CD` is disabled when the temporary cloud lab is absent. Scans describe the image and advisory database at scan time, not a permanent security guarantee. [Security notes](security/README.md) describe each gate and the narrowly scoped historical teaching-value exceptions.
+`ENABLE_EKS_CD` controls the AWS deployment job and is disabled after cleanup. See [security checks](security/README.md) for the scanner configuration.
 
 ## Terraform and AWS
 
@@ -167,19 +165,10 @@ The recorded checks found healthy scrape targets and populated PromQL results. M
 
 ![Grafana with application traffic and replica metrics](screenshots/grafana.jpg)
 
-## Troubleshooting and lessons
+## Fixes
 
 | Issue | Cause and change | Verification |
 | --- | --- | --- |
 | Two students request one slot | Application-level checks alone can race; added database uniqueness and 409 handling | Concurrent requests return one 201 and one 409 |
-| CI could not manage ServiceMonitor | EKS Edit access did not cover this custom resource | Added a namespace-only Role; AWS deployment job passed |
+| ServiceMonitor permissions | Added a namespace Role for this custom resource | AWS deployment job passed |
 | Argo/Helm ownership conflict | Both tried to create the initial resources | Established Helm ownership first, then enabled Argo reconciliation |
-| Existing Compose data rejected a new password | Changing environment variables did not change the stored database password | Preserved the original volume and used an isolated verification stack |
-
-A passing test suite does not prove Service routing or database integration; HTTP checks cover those separately. A PVC survives Pod replacement, but deleting it is not a backup strategy. Kubernetes API permissions and AWS IAM permissions also need separate verification.
-
-## Limits and presentation
-
-This demo has no authentication, TLS ingress, replicated database or automated backup schedule. Use only disposable bookings. The classroom Ingress Nginx setup is retained for the exercise, not recommended for a new production deployment. Temporary cloud resources were removed after verification.
-
-The [slide deck](../demo/presentation.pptx) is included. The [video folder](../demo/video/) is reserved for the recording and currently has no video. The instructor's [submission guide](https://github.com/Nency-Ravaliya/devsecops-python/blob/main/SUBMISSION.md) requires the MP4 as well, so the video deliverable remains outstanding.

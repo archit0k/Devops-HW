@@ -10,7 +10,7 @@ Archit Kulkarni | 24BCS10194 | Section A
 
 ## Prometheus and Grafana
 
-The [Compose setup](monitoring/compose.yaml) runs the instructor's Prometheus 3.5.0 and Grafana 12.1.1 images. Prometheus scrapes itself and Grafana every five seconds. Grafana's provisioned Prometheus data source connects through the Compose service name, not the laptop's `localhost`.
+The [Compose setup](monitoring/compose.yaml) runs Prometheus 3.5.0 and Grafana 12.1.1. Prometheus scrapes itself and Grafana every five seconds. Grafana connects to Prometheus through its Compose service name.
 
 ```bash
 docker compose -f monitoring/compose.yaml up -d
@@ -20,7 +20,7 @@ docker compose -f monitoring/compose.yaml logs --tail=15
 docker compose -f monitoring/compose.yaml down
 ```
 
-The dashboard shows target health (`up`), process memory and process CPU rate for the monitored services. Both ports bind only to `127.0.0.1`. The classroom dashboard allows anonymous read-only viewing and contains no user data. [The alert rule](monitoring/alerts.yml) defines `TargetDown` after a target is unreachable for ten seconds.
+The dashboard shows target health (`up`), process memory and CPU rate. Both ports bind to `127.0.0.1`, with anonymous read-only dashboard access. [TargetDown](monitoring/alerts.yml) fires after a target is unreachable for ten seconds.
 
 ![Live Grafana dashboard](evidence/grafana.jpg)
 
@@ -35,11 +35,11 @@ The dashboard shows target health (`up`), process memory and process CPU rate fo
 3. The lab ran `kubectl scale ... --replicas=1`. Git still specified three, so Argo CD self-healed back to three. Rollout and HTTP checks then passed.
 4. The Application and the runner's disposable kind cluster were removed.
 
-The [actual GitOps run](https://github.com/archit0k/Devops-HW/actions/runs/37657659611) and [command transcript](evidence/commands.txt) preserve the initial two, Git-driven three, manual one and restored three. This cluster ran on a GitHub-hosted runner; the monitoring dashboard ran locally in Ubuntu WSL. `run-gitops.sh` needs a commit change during its demonstration, so rerunning it against the final three-replica manifest requires restoring two first in Git.
+The [GitOps run](https://github.com/archit0k/Devops-HW/actions/runs/37657659611) and [command output](evidence/commands.txt) show the replica changes: 2 → 3 → 1 → 3. GitOps ran on a GitHub-hosted Kind cluster; monitoring ran locally in Ubuntu WSL. To repeat the change, start with two replicas in Git, then commit three.
 
 ## Viva notes
 
-Metrics are numerical samples, logs record events, and traces connect the steps of a request. Prometheus/Grafana provide metrics here; `docker compose logs` and `kubectl logs` provide service/application logs. A tracing backend such as Jaeger or Tempo would be a separate addition. Kubernetes observability also includes Pod status, events, resource metrics and application signals rather than only the host dashboard.
+Metrics are numerical samples, logs record events, and traces connect the steps of a request. This lab uses Prometheus/Grafana for metrics and `docker compose logs` or `kubectl logs` for logs. Jaeger and Tempo are examples of tracing backends.
 
 1. Monitoring checks known signals/conditions; observability lets me investigate why an unexpected problem happened using system outputs.
 2. Metrics are numerical time series, logs are event records, and traces follow a request through multiple components. A trace/span ID can connect these views.
@@ -54,6 +54,6 @@ Metrics are numerical samples, logs record events, and traces connect the steps 
 11. Self-healing restores manual cluster drift when enabled. It is not the same as a Deployment replacing one failed Pod.
 12. Changing two to three in Git causes Argo CD to update the Deployment; Kubernetes creates the additional Pod.
 
-For an incident I would check target health first, then CPU/memory/request latency, application logs and available traces. This mini project produces Nginx access logs; distributed tracing is covered in the notes, not deployed as a backend.
+For an incident I would check target health, CPU/memory and request latency, then application logs and any available traces.
 
 ![Manual replica drift restored by Argo CD in the saved runner output](evidence/gitops-self-heal.jpg)

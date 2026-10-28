@@ -13,20 +13,20 @@ docker ps --filter name=archit-multistage
 curl http://localhost:8080
 ```
 
-Expected application response:
+Application response:
 
 ```html
 <h1>Hello World from Docker multi-stage build</h1>
 ```
 
-Expected `docker ps` port mapping includes `0.0.0.0:8080->8080/tcp`.
+`docker ps` shows `0.0.0.0:8080->8080/tcp`.
 
 ## Three Docker application types
 
-The repository also deploys the required three application types in [`../05-docker-hello-apps`](../05-docker-hello-apps): Node.js, Python, and Java. Each has a standalone Dockerfile and a documented build/run command.
+[Session 6](../05-docker-hello-apps/README.md) includes Node.js, Python and Java applications, each with a Dockerfile and build/run command.
 
 ## Results
 
-The multi-stage image was built, started with `8080:8080`, inspected with `docker ps` and `docker history`, and tested over HTTP. The [saved output](../05-docker-hello-apps/evidence/commands.txt) contains the real Hello World response and port mapping. The container was removed afterward.
+The image built, started with `8080:8080` and passed the HTTP check. [Command output](../05-docker-hello-apps/evidence/commands.txt) includes `docker ps`, `docker history`, the Hello World response and cleanup.
 
 ![Runtime image layers in the saved runner output](evidence/image-history.jpg)

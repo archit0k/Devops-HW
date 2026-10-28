@@ -4,9 +4,9 @@ Archit Kulkarni | 24BCS10194 | Section A
 
 [Back to StudySlot](../README.md)
 
-Two public subnets in separate availability zones, one VPC, one EKS control plane and one managed group with two `t3.medium` nodes. There is no SSH rule, key pair, NAT gateway or RDS instance. Public-node networking avoids a NAT hourly charge for this short classroom lab; a long-running production deployment should normally use private nodes and controlled egress.
+One VPC, two public subnets in separate availability zones, EKS 1.35 and two `t3.medium` workers. The nodes use public-subnet routing. SSH access is disabled.
 
-The region is `us-east-1`. EKS uses Kubernetes 1.35. The recorded lab used the `devops-homework` profile; configure an authorized AWS profile before running these commands. State, plan files and runtime credentials are ignored.
+Region: `us-east-1`. AWS profile: `devops-homework`. State, plan files and credentials stay local.
 
 ```bash
 terraform init
@@ -15,14 +15,14 @@ terraform validate
 terraform plan -out=lab.tfplan
 terraform apply lab.tfplan
 terraform output
-# After the deployments, screenshots and walkthrough:
+# Cleanup:
 terraform plan -destroy
 terraform destroy
 ```
 
-GitHub uses OIDC, restricted to this repository's immutable owner/repository IDs and `main` branch. Its AWS permission is only `eks:DescribeCluster`. Initial setup temporarily uses `AmazonEKSClusterAdminPolicy` on this cluster; after bootstrap, `bash project/scripts/terraform-lab.sh restrict` replaces that with `AmazonEKSEditPolicy` scoped to the `studyslot` namespace. There is no separate root-assumed lab role, IAM user or permanent access key. Root credentials cannot directly authenticate kubectl to EKS, so the deployment runs through the approved temporary GitHub role.
+GitHub uses OIDC, restricted to this repository's owner/repository IDs and `main` branch. Its AWS permission is `eks:DescribeCluster`. Bootstrap uses `AmazonEKSClusterAdminPolicy`; `terraform-lab.sh restrict` then switches to `AmazonEKSEditPolicy` scoped to the `studyslot` namespace. Deployment uses short-lived role credentials.
 
-From the repository root, the lab helper records a reproducible sequence:
+From the repository root:
 
 ```bash
 bash project/scripts/terraform-lab.sh plan
@@ -38,6 +38,6 @@ The [AWS bootstrap](https://github.com/archit0k/Devops-HW/actions/runs/389428829
 
 If the account already has GitHub's OIDC provider, set `existing_github_oidc_arn` in ignored `terraform.tfvars`. This reuses the provider without importing it into this lab's state or deleting it on teardown. Otherwise Terraform creates its own provider. The initial run managed 26 resources; the later run managed 25 because it reused the existing provider.
 
-Create this cluster only for verification. Disable cloud CD before cleanup, delete the application/PVC while EBS CSI is still running, then destroy Terraform resources. This configuration uses a ClusterIP Ingress controller rather than a public application LoadBalancer. Keep state until teardown is verified.
+The Ingress controller uses a ClusterIP Service. Before cleanup, disable cloud CD and delete the application/PVC while EBS CSI is running. Then destroy Terraform resources and check the remaining volumes.
 
-The [cleanup workflow](https://github.com/archit0k/Devops-HW/actions/runs/38946391044) removed the later application's PVC before Terraform destroyed all 25 managed resources. Final checks found no project cluster, VPC, workers, recorded volumes or temporary roles. The [destroy screenshot](../screenshots/terraform-destroy.jpg) is from the earlier 26-resource run. Shared account infrastructure was not a deletion target.
+The [cleanup workflow](https://github.com/archit0k/Devops-HW/actions/runs/38946391044) removed the PVC before Terraform destroyed all 25 managed resources. The cluster, VPC, workers, volumes and temporary roles were removed. The [destroy screenshot](../screenshots/terraform-destroy.jpg) shows the earlier 26-resource run.

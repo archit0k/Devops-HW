@@ -33,8 +33,6 @@ Other commands exercised: `kubectl logs`, `exec`, `get events --sort-by=.metadat
 9. Logs explain application errors; events explain scheduling, pulling and mounting problems. `describe` brings the latter together.
 10. A fix is complete only after the Pod is healthy and the original client request works again.
 
-One local pull failed because of DNS, even though the tag was valid. Loading the verified image into Minikube allowed that check to continue; an image pull failure needs its actual event message, not an assumed cause.
-
 The script removes only its `homework14` namespace at the end.
 
 The [runner check](https://github.com/archit0k/Devops-HW/actions/runs/37660525939) passed all independent break/fix tests. Each fix was followed by readiness or an HTTP request, and the temporary namespace was removed.

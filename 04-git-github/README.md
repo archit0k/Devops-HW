@@ -2,7 +2,7 @@
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-The two exercises compare staged/automatic commits and selectively copy a branch commit with cherry-pick. [The command transcript](evidence/git-lab.txt) includes both successful commands and the expected failures when nothing eligible was staged.
+Staged commits, automatic staging with `-a`, and cherry-picking a branch commit. [Command output](evidence/git-lab.txt).
 
 ## `git commit -a -m` versus `git commit -m`
 
@@ -10,10 +10,10 @@ The two exercises compare staged/automatic commits and selectively copy a branch
 
 ```bash
 git add tracked-file.md
-git commit -m "Stage and commit tracked file"
+git commit -m "add file"
 
 # After changing an existing tracked file:
-git commit -a -m "Commit tracked modifications automatically"
+git commit -a -m "update"
 ```
 
 ## Cherry-pick lab

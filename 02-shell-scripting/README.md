@@ -26,7 +26,7 @@ Enter a directory name to create: system-report
 Enter a file name for process output: processes.log
 ```
 
-The generated `system-report/processes.log` contains the complete `ps aux` output. `df -h` and `ps aux` are also printed to the terminal for immediate review.
+`system-report/processes.log` saves the `ps aux` output. Disk usage and processes are also printed in the terminal.
 
 ## Verification output (Ubuntu WSL, 2026-09-03)
 
@@ -47,7 +47,7 @@ root           1 21.7  0.2  24316 15360 ?        Ss   18:06   0:01 /sbin/init
 Process information was saved to: system-report/processes.log
 ```
 
-The full process report is written to `system-report/processes.log` locally. It is not tracked because a process list can contain unrelated application details.
+The full process report stays in the local `system-report/` directory.
 
 ## Results
 

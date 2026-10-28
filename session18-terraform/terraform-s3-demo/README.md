@@ -31,10 +31,10 @@ terraform destroy
 
 `init` installs providers, `validate` checks the configuration, `plan` previews changes and `apply` creates them. State links configuration addresses to real resource IDs; the public-access/encryption resources reference the bucket, which establishes dependencies.
 
-## Recorded results
+## Results
 
 The 7 October run created `archit-24bcs10194-devops-hw18-20261007` in `us-east-1`. [Apply](../evidence/apply.txt), [inspection](../evidence/show.txt) and [outputs](../evidence/output.txt) record the operations. `bucket_arn` was `arn:aws:s3:::archit-24bcs10194-devops-hw18-20261007`.
 
 ![Bucket created by Terraform](../evidence/aws-bucket.jpg)
 
-[Cleanup](../evidence/destroy.txt) completed with `Resources: 3 destroyed` and exit code 0. The bucket shown above is historical, not an active public endpoint. Choose an available globally unique name before rerunning. AWS credentials, state and saved plans must remain local.
+[Cleanup](../evidence/destroy.txt) completed with `Resources: 3 destroyed` and exit code 0. Use a globally unique bucket name when rerunning. Credentials, state and plans stay local.

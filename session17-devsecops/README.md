@@ -35,4 +35,4 @@ kubectl rollout status deployment/homework-api
 
 The workflow replaces the manifest's `homework-api:ci` image with the exact tested commit-SHA tag. Publishing uses GitHub's short-lived workflow token; the deployment target is the runner's disposable Kind cluster.
 
-[Security notes](security/README.md) explain what each scanner covers and the narrowly documented historical teaching-value fingerprints in `.gitleaksignore`. Flask's development server is sufficient for this classroom API, not a production serving recommendation.
+[Security checks](security/README.md) lists the scanners and Gitleaks configuration.

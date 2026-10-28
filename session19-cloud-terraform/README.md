@@ -2,7 +2,7 @@
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-This extends the instructor's VPC mini project with an actual EC2 web server and private S3 bucket.
+VPC, public subnet, EC2 web server and private S3 bucket, managed with Terraform.
 
 ```text
 Internet -> Internet Gateway -> public route table
@@ -28,7 +28,7 @@ Private S3 bucket (separate regional AWS service)
 
 The subnet is public because its associated route table sends `0.0.0.0/0` to the Internet Gateway. The instance also needs its public IPv4 address and an inbound HTTP Security Group rule. No SSH port or key pair is opened. IMDSv2 is required. User data installs Apache and serves a page with my name, roll number and section.
 
-The configuration uses the Amazon Linux 2023 AMI published through SSM rather than a hardcoded old AMI. Availability Zone data selects a real AZ in the chosen region. The bucket blocks all four public-access paths. Standard CPU credits avoid unlimited-mode burst charges in this short lab.
+The Amazon Linux 2023 AMI comes from SSM. Availability Zone data selects an AZ in the chosen region. The S3 bucket blocks public access, and the instance uses standard CPU credits.
 
 ```bash
 terraform init
@@ -49,12 +49,10 @@ The files separate provider setup, resources, inputs and outputs. The dependency
 
 ![Actual VPC resource map](evidence/aws-vpc.jpg)
 
-The [destroy record](evidence/destroy.txt) confirms all nine managed resources were removed. The saved public URL is historical evidence, not a permanently hosted site.
+The [destroy output](evidence/destroy.txt) confirms all nine resources were removed after the HTTP check.
 
 ## Cloud concepts
 
 IaaS supplies compute/network/storage while the customer manages OS and application (EC2). PaaS handles more of the platform so the customer focuses on application code. SaaS supplies the finished application. Responsibility shifts with the service model, but customer data, identity and access choices remain important.
 
 A Region is a geographical AWS area; Availability Zones are isolated locations within it. Multi-AZ placement improves resilience. A subnet belongs to one AZ, while a VPC spans the Region. Security Groups are stateful allow rules on network interfaces; NACLs are stateless subnet controls with allow/deny rules, so return ports need explicit consideration.
-
-This was a temporary exercise: there is no NAT Gateway, EKS cluster, database service or managed load balancer. The public page contains only the classroom identification, and resources are removed after evidence capture.

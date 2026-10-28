@@ -2,11 +2,13 @@
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-This assignment runs the instructor's [TaskBoard application and commands](https://github.com/Nency-Ravaliya/devops-heros/blob/main/session21-python/README.md). The supplied React/FastAPI/PostgreSQL source is in [taskboard/](taskboard/). My separate capstone is [StudySlot](../project/README.md).
+TaskBoard uses React, FastAPI and PostgreSQL. This lab covers Compose, CI, Kubernetes, monitoring and troubleshooting.
+
+[Source and command list](https://github.com/Nency-Ravaliya/devops-heros/blob/main/session21-python/README.md) · [Application files](taskboard/)
 
 ## Results
 
-The [recorded pipeline](https://github.com/archit0k/Devops-HW/actions/runs/37766328521) passed test, images and deploy on 8 October 2026. The local walkthrough used Minikube; AWS infrastructure was applied and destroyed separately. AWS root could not assume the Kubernetes access role, so an application deployment on EKS was not verified for this exercise.
+The [pipeline](https://github.com/archit0k/Devops-HW/actions/runs/37766328521) passed test, images and deploy on 8 October 2026. Application checks ran on Minikube and CI Kind. Terraform checks covered AWS infrastructure creation and cleanup.
 
 | Part | Commands/checks | Result |
 | --- | --- | --- |
@@ -26,7 +28,7 @@ The [recorded pipeline](https://github.com/archit0k/Devops-HW/actions/runs/37766
 
 ![All three pipeline stages passed](evidence/ci-final-passed.jpg)
 
-## Files to review
+## Files
 
 | Path | Purpose |
 | --- | --- |
@@ -35,7 +37,7 @@ The [recorded pipeline](https://github.com/archit0k/Devops-HW/actions/runs/37766
 | [taskboard/docker-compose.yml](taskboard/docker-compose.yml) | Local application and PostgreSQL stack |
 | [taskboard/helm/taskboard/](taskboard/helm/taskboard/) | Deployments, Services, Ingress, HPA, probes and PVC |
 | [taskboard/terraform/](taskboard/terraform/README.md) | AWS VPC/EKS configuration and access preflight |
-| [taskboard/troubleshooting/](taskboard/troubleshooting/) | Supplied broken image and Service manifests |
+| [taskboard/troubleshooting/](taskboard/troubleshooting/) | Broken image and Service examples |
 | [taskboard-lab.yml](../.github/workflows/taskboard-lab.yml) | Test, scan, publish and isolated Kubernetes deployment |
 
 ## Compose and direct-backend commands
@@ -62,7 +64,7 @@ curl http://localhost:8000/api/tasks
 docker compose down
 ```
 
-The app is on `http://localhost:3000`; Swagger is on `http://localhost:8000/docs`. Compose publishes PostgreSQL on 15432 to avoid an existing host database on 5432. `down` keeps the named volume; `down -v` deletes its classroom data.
+The app is on `http://localhost:3000`; Swagger is on `http://localhost:8000/docs`. PostgreSQL uses host port 15432. `down` keeps the database volume; `down -v` deletes it.
 
 For a direct backend setup, set a working PostgreSQL `DATABASE_URL`, then run `python -m venv .venv`, activate it, install `taskboard/backend/requirements.txt`, run `alembic upgrade head` and `uvicorn app.main:app --port 8000` from the backend directory. Readiness checks database access, while health checks the process.
 
@@ -89,9 +91,9 @@ ghcr.io/archit0k/taskboard-backend:be43b5c6c0a627713132ca8fab8e86318b4d17a4
 ghcr.io/archit0k/taskboard-frontend:be43b5c6c0a627713132ca8fab8e86318b4d17a4
 ```
 
-The local walkthrough used backend `09c8dec70b4652578823881ce4c51e73bfd945a4` and frontend `be43b5c6c0a627713132ca8fab8e86318b4d17a4`; the local helper defaults retain that tested pair. Earlier HPA/persistence checks used `25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f`. These are separate recorded runs, not one image tag throughout.
+Local helper defaults: backend `09c8dec70b4652578823881ce4c51e73bfd945a4`, frontend `be43b5c6c0a627713132ca8fab8e86318b4d17a4`. The HPA/persistence run used `25ef8e537db59c165ce4e9fe8f6d4c2e1d4e787f`.
 
-The frontend uses a Node build stage and Nginx runtime. The backend runs as a non-root user. Dependency fixes kept the security gate enabled; no CVE bypass was added. SAST, dependency scanning, secret scanning and image scanning cover different risks, and a scan result applies to its image/database at that time.
+The frontend uses a Node build stage and Nginx runtime. The backend runs as a non-root user. Trivy blocks HIGH/CRITICAL findings before image publication.
 
 ## Kubernetes, Helm, Ingress and HPA
 
@@ -136,7 +138,7 @@ Prometheus stores scraped time series; Grafana queries and plots them. These met
 
 | Problem | Investigation and cause | Fix | Result |
 | --- | --- | --- | --- |
-| Broken image | `get pods`, `describe pod`, events: supplied GHCR image did not exist | Correct image plus required database configuration | Replacement Ready; `/ready` returned READY |
+| Broken image | `get pods`, `describe pod`, events: image tag unavailable | Correct image plus database configuration | Replacement Ready; `/ready` returned READY |
 | Broken Service | Inspect selectors, labels, ports and endpoints: selector matched no Pods and target port was wrong | Select backend Pods; Service port 8080 → target port 8000 | Three endpoints; `/health` returned UP |
 | Create-task modal failed | Handler used `e.currentTarget` after an awaited request | Save the form reference before `await`; handle non-success responses | Task creation/reset verified in the browser |
 | PostgreSQL volume initialization | Volume root contained `lost+found` | Set `PGDATA` below the mount and use a single-writer rollout strategy | Database initialized and persistence check passed |
@@ -145,18 +147,18 @@ Saved command-output captures: broken image [before](evidence/troubleshooting-im
 
 ## Terraform and cleanup
 
-The [Terraform configuration](taskboard/terraform/README.md) demonstrates providers, modules, variables, state, outputs and dependencies. It provisioned the VPC, public/private networking, NAT, EKS and add-ons in `ap-south-1`. The completed apply added 66 resources; cleanup removed all 66. EKS infrastructure success is separate from application access: root was rejected when assuming the lab role, so application deployment was verified on local Minikube and CI Kind instead.
+The [Terraform configuration](taskboard/terraform/README.md) uses providers, modules, variables, state, outputs and dependencies. It created the VPC, public/private networking, NAT, EKS and add-ons in `ap-south-1`: 66 resources created and 66 destroyed. Application deployment checks used Minikube and Kind; AWS checks covered infrastructure.
 
 ![Recorded EKS infrastructure status](evidence/eks-active.jpg)
 
-The access preflight now requires an approved non-root Kubernetes principal before provisioning. No AWS account credentials are stored in the pipeline. The temporary AWS lab was destroyed; the screenshots are historical results, not a live endpoint.
+The access preflight requires a non-root Kubernetes principal before provisioning. Credentials, state and kubeconfig stay local.
 
-For local cleanup, [cleanup-local.sh](cleanup-local.sh) prints a SQL dump and removes only the TaskBoard/monitoring releases and their temporary database PVC, then stops Minikube. Save the dump first if its data is needed. Stop the forwarding terminal with Ctrl+C. [stop-local-services.sh](stop-local-services.sh) stops Docker/containerd; use it only when no unrelated containers need that daemon. These cleanup commands are not part of normal application startup.
+For cleanup, [cleanup-local.sh](cleanup-local.sh) prints a SQL dump, removes TaskBoard/monitoring and the database PVC, then stops Minikube. Save the dump if needed and stop port forwarding with Ctrl+C. [stop-local-services.sh](stop-local-services.sh) also stops Docker/containerd; this affects every container using those services.
 
 ## Notes from the exercise
 
 - Git commits identify the source used for each image; tests must pass before promotion.
 - A Deployment replaces failed Pods, while a Service gives clients a stable address. Labels and ports still need separate checks.
 - Helm values change an installed release without hand-editing every manifest; rollback restores a prior release revision.
-- A PVC protects data across Pod replacement, not deliberate claim deletion. Production database operation also needs backups, restore testing and availability planning.
-- The final checks included application/database behavior, routing and metrics, rather than only whether Pods showed Running.
+- A PVC keeps data across Pod replacement. Deleting the claim can delete its volume.
+- Check application requests, database persistence, routing and metrics after deployment.

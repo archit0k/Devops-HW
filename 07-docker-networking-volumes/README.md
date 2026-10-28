@@ -19,7 +19,7 @@ docker compose ps
 
 Set a disposable password before starting: `export MYSQL_ROOT_PASSWORD="$(openssl rand -hex 16)"`. It is passed to MySQL at runtime, not committed. The automated check uses a disposable copy of this folder and removes only its own lab containers, networks and volume.
 
-The third network, `database-network`, is created to meet the three-network exercise and can be used to attach an additional database client without exposing it to the frontend.
+`database-network` is the third bridge network.
 
 ## Task 2 - host networking
 
@@ -31,7 +31,7 @@ docker run -d --name apache-host --network host httpd:2.4-alpine
 curl http://localhost:80
 ```
 
-Host networking shares the host network namespace, so Docker ignores `-p` mappings. Docker Desktop's Linux VM differs from a native Linux host; the command is documented for Linux because that is the exercise's intended platform.
+Host networking shares the Linux host's network namespace, so `-p` mappings are unnecessary.
 
 ## Task 3 - bind mount
 
@@ -67,6 +67,6 @@ docker rm -f apache-host
 
 ## Results
 
-The [passing run](https://github.com/archit0k/Devops-HW/actions/runs/37664384256) and [saved output](evidence/commands.txt) show the three containers, backend connectivity to both peers, MySQL's port and frontend/database isolation. Updating the mounted page changed its response without changing the container start time. The host-network client reached Apache on port 80. Overlay networking was the research task; no multi-host Swarm was provisioned.
+The [passing run](https://github.com/archit0k/Devops-HW/actions/runs/37664384256) and [command output](evidence/commands.txt) show all three containers, backend connectivity, MySQL's port and frontend/database isolation. The mounted page updated without a container restart. Apache responded on host port 80. Overlay-network notes are in Task 4.
 
 ![Bind-mount update and unchanged start time in the saved output](evidence/bind-mount.jpg)

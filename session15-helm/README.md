@@ -6,7 +6,7 @@ Helm packages Kubernetes manifests as a chart. Templates are filled using `value
 
 ## Notes app exercise
 
-The files to review are [Chart.yaml](notes-chart/Chart.yaml), [development values](notes-chart/values.yaml), [production values](notes-chart/values-prod.yaml) and [templates](notes-chart/templates/). Run the commands below from this assignment directory with kubectl connected to the lab cluster.
+[Chart.yaml](notes-chart/Chart.yaml), [development values](notes-chart/values.yaml), [production values](notes-chart/values-prod.yaml) and [templates](notes-chart/templates/) define the Notes chart. Run these commands from this folder with kubectl connected to the cluster.
 
 The chart contains a Deployment, NodePort Service and ConfigMap. Default values run one Nginx 1.24 replica with `ENVIRONMENT=development`. `values-prod.yaml` changes this to three Nginx 1.25 replicas and `ENVIRONMENT=production`.
 

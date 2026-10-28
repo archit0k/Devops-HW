@@ -2,7 +2,7 @@
 
 [Back to Session 5](README.md)
 
-This file was committed on the `cherry-pick-lab` branch and selected specifically for transfer into `main` using `git cherry-pick`. Its presence in `main` is the verification that the selected change, rather than the complete branch, was applied.
+This file was committed on `cherry-pick-lab`, then copied to `main` with `git cherry-pick`.
 
 Commands used:
 

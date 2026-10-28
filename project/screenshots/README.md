@@ -2,7 +2,7 @@
 
 [Back to the project](../README.md)
 
-These selected captures document the completed 16 October lab. Application, AWS and monitoring images show the running UI. Command-output images show saved execution records, not new terminal sessions.
+Screenshots from 16 October 2026. Command-output images use saved lab output.
 
 | File | What it shows |
 | --- | --- |
@@ -18,4 +18,4 @@ These selected captures document the completed 16 October lab. Application, AWS 
 | [argocd.jpg](argocd.jpg) | Application Synced and Healthy |
 | [prometheus.jpg](prometheus.jpg), [grafana.jpg](grafana.jpg) | Two targets UP and application traffic/replica metrics |
 
-The [later six-job run](https://github.com/archit0k/Devops-HW/actions/runs/38943691357) also passed. The 26-resource destroy image belongs to the first deployment; the later deployment reused an existing OIDC provider and destroyed its 25 managed resources separately. No screenshot is presented as proof of an always-on service.
+The [later six-job run](https://github.com/archit0k/Devops-HW/actions/runs/38943691357) also passed. Its cleanup removed 25 resources; it reused an existing OIDC provider.

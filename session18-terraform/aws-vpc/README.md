@@ -8,7 +8,7 @@ Archit Kulkarni | 24BCS10194 | Section A
 
 A VPC is a logically isolated regional network with an IP address range. A subnet is a portion of that range in one Availability Zone. A public subnet has a route to an Internet Gateway; a private subnet does not. This classification does not by itself give an instance a public IP or permit incoming connections.
 
-Route tables choose the next hop for matching destinations. An Internet Gateway connects a VPC to the internet; a NAT Gateway lets private IPv4 workloads initiate outbound connections without allowing unsolicited inbound connections. NAT has separate charges, so it is not used in this small homework lab.
+Route tables choose the next hop for matching destinations. An Internet Gateway connects a VPC to the internet; a NAT Gateway lets private IPv4 workloads initiate outbound connections without allowing unsolicited inbound connections.
 
 ## Controls and connectivity
 

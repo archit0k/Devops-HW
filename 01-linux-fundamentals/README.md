@@ -2,7 +2,7 @@
 
 Archit Kulkarni | 24BCS10194 | Section A
 
-This exercise covers links, account creation, system logs and common Linux commands. [The execution record](evidence/foundations.txt) contains the command output; the link result is shown below.
+Links, user accounts, system logs and common Linux commands. [Command output](evidence/foundations.txt).
 
 ## Task 1 - soft links and hard links
 
@@ -59,8 +59,6 @@ For a service incident, I would first use `journalctl -u <service> -b`, then add
 | Storage | `df -h`, `du -sh`, `mount` |
 | Network | `ip addr`, `ss -tulpn`, `ping`, `curl` |
 | Archives | `tar -czf archive.tgz folder/`, `tar -xzf archive.tgz` |
-
-Practice each command in a disposable directory and read `man <command>` before using destructive flags.
 
 ## Results
 

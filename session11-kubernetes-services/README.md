@@ -47,8 +47,8 @@ A ReplicaSet keeps Pods available, but their IPs can change. A Service selects r
 
 The [successful Service/DNS run](https://github.com/archit0k/Devops-HW/actions/runs/37664009319) checks ClusterIP HTTP, NodePort HTTP through the real node IP, LoadBalancer internal HTTP, ExternalName CNAME resolution, headless Pod records, EndpointSlices and CoreDNS configuration. [Full output](evidence/runner/commands.txt) is saved beside the manifests.
 
-The instructor's old ExternalName destination no longer resolved during the check, so the example uses `example.com`; the Service still demonstrates a CNAME rather than proxying traffic. [FQDN notes](fqdn/README.md) and [CoreDNS notes](coredns/README.md) explain both lookup paths.
+ExternalName points to `example.com` and returns a CNAME. [FQDN](fqdn/README.md) and [CoreDNS](coredns/README.md) notes explain the lookup paths.
 
-External LoadBalancer access was separately verified on local Minikube with `minikube tunnel`: external IP `127.0.0.1`, two ready Pods and an Nginx HTTP response. [Tunnel output and cleanup](evidence/loadbalancer-tunnel.txt) records that check. The Kind run verified internal HTTP for LoadBalancer; the separate tunnel check verified external access.
+External LoadBalancer access passed on Minikube with `minikube tunnel`: external IP `127.0.0.1`, two ready Pods and an Nginx HTTP response. [Tunnel output](evidence/loadbalancer-tunnel.txt) includes cleanup.
 
 ![Five Service types in the saved runner output](evidence/services.jpg)

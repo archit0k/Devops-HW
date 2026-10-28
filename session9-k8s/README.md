@@ -50,7 +50,7 @@ NAME       STATUS   ROLES           VERSION
 minikube   Ready    control-plane   v1.37.0
 ```
 
-The [full recheck](evidence/lab.txt), produced by [run-basics.sh](run-basics.sh), also deploys Nginx, exposes its Service, scales to four replicas, changes the image, checks rollout history, rolls back and verifies HTTP from inside the cluster. The temporary `homework9` namespace is then removed. WSL uses the Docker driver; `minikube kubectl --` keeps the CLI version matched to the cluster.
+[Command output](evidence/lab.txt) shows the Nginx deployment, Service, four replicas, image update, rollback and HTTP response. The script removed the `homework9` namespace afterward. `minikube kubectl --` uses a CLI matched to the cluster version.
 
 ![Four-replica rollout in the saved local output](evidence/rollout.jpg)
 
